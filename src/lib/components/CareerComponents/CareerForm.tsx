@@ -10,6 +10,8 @@ import { useAppContext } from "@/lib/context/AppContext";
 import axios from "axios";
 import CareerActionModal from "./CareerActionModal";
 import FullScreenLoadingAnimation from "./FullScreenLoadingAnimation";
+import CareerProgressBar from "./CareerProgressBar";
+import styles from "@/lib/styles/components/careerForm.module.scss";
   // Setting List icons
   const screeningSettingList = [
     {
@@ -262,7 +264,10 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                       Save as Published
                   </button>
                 </div>
-        </div>) : (
+        </div>) : null}
+        {formType === "add" && <CareerProgressBar />}
+        {formType === "add" && <div className={styles.contentDivider}></div>}
+        {formType === "edit" && (
             <div style={{ marginBottom: "35px", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
             <h1 style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}>Edit Career Details</h1>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
@@ -291,16 +296,13 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
        </div>
         )}
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", gap: 16, alignItems: "flex-start", marginTop: 16 }}>
-        <div style={{ width: "60%", display: "flex", flexDirection: "column", gap: 8 }}>
-          <div className="layered-card-middle">
-              <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 32, height: 32, backgroundColor: "#181D27", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <i className="la la-suitcase" style={{ color: "#FFFFFF", fontSize: 20 }}></i>
+        <div className={styles.leftContainer}>
+          <div className={styles.careerCard}>
+              <div className={styles.careerCardHeader}>
+                      <span className={styles.careerCardTitle}>1. Career Information</span>
                   </div>
-                      <span style={{fontSize: 16, color: "#181D27", fontWeight: 700}}>Career Information</span>
-                  </div>
-                  <div className="layered-card-content">
-                      <span style={{fontSize: 16, color: "#181D27", fontWeight: 700}}>Basic Information</span>
+                  <div className={styles.careerCardContent}>
+                      <span className={styles.sectionTitle}>Basic Information</span>
                       <span>Job Title</span>
                       <input
                       value={jobTitle}
@@ -310,10 +312,8 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                           setJobTitle(e.target.value || "");
                       }}
                       ></input>
-                      <span>Description</span>
-                      <RichTextEditor setText={setDescription} text={description} />
                       
-                      <span style={{fontSize: 16, color: "#181D27", fontWeight: 700}}>Work Setting</span>
+                      <span className={styles.sectionTitle}>Work Setting</span>
                       <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
                         <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
                           <span>Employment Type</span>
@@ -339,7 +339,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                         </div>
                       </div>
 
-                      <span style={{fontSize: 16, color: "#181D27", fontWeight: 700}}>Location</span>
+                      <span className={styles.sectionTitle}>Location</span>
                       <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
                         <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
                           <span>Country</span>
@@ -381,13 +381,13 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                       </div>
 
                       <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                          <span style={{fontSize: 16, color: "#181D27", fontWeight: 700}}>Salary</span>
+                          <span className={styles.sectionTitle}>Salary</span>
                           <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
                               <label className="switch">
                                   <input type="checkbox" checked={salaryNegotiable} onChange={() => setSalaryNegotiable(!salaryNegotiable)} />
                                   <span className="slider round"></span>
                               </label>
-                              <span>{salaryNegotiable ? "Negotiable" : "Fixed"}</span>
+                              <span>{salaryNegotiable ? "Negotiable" : "Negotiable"}</span>
                           </div>
                       </div>
                       <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
@@ -428,6 +428,16 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                           </div>
                         </div>
                       </div>
+                  </div>
+              </div>
+
+          <div className={styles.careerCard}>
+              <div className={styles.careerCardHeader}>
+                      <span className={styles.careerCardTitle}>2. Job Description</span>
+                  </div>
+                  <div className={styles.careerCardContent}>
+                      <span>Description</span>
+                      <RichTextEditor setText={setDescription} text={description} />
                   </div>
               </div>
 

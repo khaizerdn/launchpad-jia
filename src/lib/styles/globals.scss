@@ -209,7 +209,7 @@ td {
 }
 
 .form-control {
-  border: 2px solid #9c99a4 !important;
+  border: 1px solid var(--Input-border-primary, #E9EAEB) !important;
   border-radius: 5px !important;
   color: #333 !important;
   font-size: 1rem !important;
@@ -2072,7 +2072,7 @@ $gifURL: "/gr-1.gif";
   width: 100%;
   background-color: #f8f9fc;
   border-radius: 20px;
-  padding: 8px;
+  padding: 10px 8px;
 }
 
 .layered-card-outer {
@@ -2180,7 +2180,7 @@ input:checked + .slider:before {
 }
 
 .interview-question-input {
-  border: 1px solid #e9eaeb;
+  border: 1px solid var(--Input-border-primary, #E9EAEB);
   border-radius: 8px;
   padding: 12px;
   width: 464px;
