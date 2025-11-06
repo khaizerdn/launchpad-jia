@@ -1,7 +1,7 @@
 import { guid } from "@/lib/Utils";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   errorToast,
   interviewQuestionCategoryMap,
@@ -343,8 +343,7 @@ export default function (props) {
   }, []);
 
   return (
-    <div className="layered-card-outer">
-        <div className="layered-card-middle">
+    <div className="layered-card-middle">
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 32, height: 32, backgroundColor: "#181D27", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -638,7 +637,6 @@ export default function (props) {
               ))}
             </div>
           </div>
-        </div>
         {showQuestionModal && (
           <InterviewQuestionModal groupId={questionModalGroupId} questionToEdit={questionModalQuestion} action={showQuestionModal} onAction={(action, groupId, question, questionId) => {
             setShowQuestionModal("");
