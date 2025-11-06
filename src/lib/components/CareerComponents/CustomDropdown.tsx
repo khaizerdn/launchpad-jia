@@ -1,12 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function CustomDropdown(props) {
     const { onSelectSetting, screeningSetting, settingList, placeholder } = props;
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    }
+
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
 
   return (
-        <div className="dropdown w-100">
+        <div className="dropdown w-100" ref={dropdownRef}>
           <button
             disabled={settingList.length === 0}
             className="dropdown-btn fade-in-bottom"
@@ -26,16 +49,15 @@ export default function CustomDropdown(props) {
             </span>
             <i className="la la-angle-down ml-10"></i>
           </button>
-          <div
-            className={`dropdown-menu w-100 mt-1 org-dropdown-anim${
-              dropdownOpen ? " show" : ""
-            }`}
-            style={{
-              padding: settingList.some(s => s.description) ? "8px" : "10px",
-              maxHeight: settingList.some(s => s.description) ? "none" : 200,
-              overflowY: settingList.some(s => s.description) ? "visible" : "auto",
-            }}
-          >
+          {dropdownOpen && (
+            <div
+              className="dropdown-menu w-100 mt-1 org-dropdown-anim show"
+              style={{
+                padding: settingList.some(s => s.description) ? "8px" : "10px",
+                maxHeight: settingList.some(s => s.description) ? "none" : 200,
+                overflowY: settingList.some(s => s.description) ? "visible" : "auto",
+              }}
+            >
             {settingList.map((setting, index) => {
               const isSelected = screeningSetting === setting.name;
               const hasDescription = setting.description;
@@ -117,7 +139,8 @@ export default function CustomDropdown(props) {
                 </button>
               );
             })}
-          </div>
+            </div>
+          )}
         </div>
   );
 }
