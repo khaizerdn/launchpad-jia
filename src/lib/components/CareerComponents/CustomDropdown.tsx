@@ -31,55 +31,92 @@ export default function CustomDropdown(props) {
               dropdownOpen ? " show" : ""
             }`}
             style={{
-              padding: "10px",
-              maxHeight: 200,
-              overflowY: "auto",
+              padding: settingList.some(s => s.description) ? "8px" : "10px",
+              maxHeight: settingList.some(s => s.description) ? "none" : 200,
+              overflowY: settingList.some(s => s.description) ? "visible" : "auto",
             }}
           >
-            {settingList.map((setting, index) => (
-              <div style={{ borderBottom: "1px solid #ddd" }} key={index}>
+            {settingList.map((setting, index) => {
+              const isSelected = screeningSetting === setting.name;
+              const hasDescription = setting.description;
+              
+              return (
                 <button
-                  className="dropdown-item d-flex align-items-center"
+                  key={index}
+                  className="dropdown-item"
                   style={{
-                    minWidth: 220,
-                    borderRadius: screeningSetting === setting.name ? 0 : 10,
+                    width: "100%",
+                    borderRadius: "12px",
                     overflow: "hidden",
-                    paddingBottom: 10,
-                    paddingTop: 10,
+                    padding: "10px 14px",
                     color: "#181D27",
-                    fontWeight: screeningSetting === setting.name ? 700 : 500,
-                    background: screeningSetting === setting.name ? "#F8F9FC" : "transparent",
+                    fontWeight: isSelected ? 700 : 500,
+                    background: isSelected ? "#EEF4FF" : "transparent",
                     display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    whiteSpace: "wrap",
+                    flexDirection: hasDescription ? "column" : "row",
+                    justifyContent: hasDescription ? "flex-start" : "space-between",
+                    alignItems: hasDescription ? "flex-start" : "center",
+                    gap: hasDescription ? "4px" : "8px",
+                    whiteSpace: "normal",
                     textTransform: "capitalize",
+                    border: "none",
+                    borderBottom: "none",
+                    marginBottom: hasDescription ? "0" : "0",
                   }}
                   onClick={() => {
                     onSelectSetting(setting.name);
                     setDropdownOpen(false);
                   }}
                 >
-                  <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "5px" }}>
-                  {setting.icon && <i className={setting.icon}></i>} {setting.name?.replace("_", " ")}
-                  </div>
-                  {setting.name === screeningSetting && (
-                            <i
-                                className="la la-check"
-                                style={{
-                                    fontSize: "20px",
-                                    background: "linear-gradient(180deg, #9FCAED 0%, #CEB6DA 33%, #EBACC9 66%, #FCCEC0 100%)",
-                                    WebkitBackgroundClip: "text",
-                                    WebkitTextFillColor: "transparent",
-                                    backgroundClip: "text",
-                                    color: "transparent"
-                                }}
-                            ></i>
+                  {hasDescription ? (
+                    <div style={{ display: "flex", flexDirection: "column", width: "100%", gap: "4px" }}>
+                      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", height: "20px" }}>
+                        <span style={{ fontFamily: "Satoshi", fontStyle: "normal", fontWeight: 700, fontSize: "14px", lineHeight: "20px", color: isSelected ? "#181D27" : "#414651" }}>
+                          {setting.icon && <i className={setting.icon} style={{ marginRight: "5px" }}></i>}
+                          {setting.name?.replace("_", " ")}
+                        </span>
+                        {isSelected && (
+                          <i
+                            className="la la-check"
+                            style={{
+                              width: "20px",
+                              height: "20px",
+                              fontSize: "20px",
+                              color: "#181D27",
+                              opacity: 1
+                            }}
+                          ></i>
                         )}
+                      </div>
+                      {setting.description && (
+                        <span style={{ fontFamily: "Satoshi", fontStyle: "normal", fontWeight: 500, fontSize: "14px", lineHeight: "20px", color: "#717680", width: "100%" }}>
+                          {setting.description}
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <>
+                      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "5px" }}>
+                        {setting.icon && <i className={setting.icon}></i>} {setting.name?.replace("_", " ")}
+                      </div>
+                      {isSelected && (
+                        <i
+                          className="la la-check"
+                          style={{
+                            fontSize: "20px",
+                            background: "linear-gradient(180deg, #9FCAED 0%, #CEB6DA 33%, #EBACC9 66%, #FCCEC0 100%)",
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
+                            backgroundClip: "text",
+                            color: "transparent"
+                          }}
+                        ></i>
+                      )}
+                    </>
+                  )}
                 </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
   );

@@ -11,6 +11,7 @@ import axios from "axios";
 import CareerActionModal from "./CareerActionModal";
 import FullScreenLoadingAnimation from "./FullScreenLoadingAnimation";
 import CareerProgressBar from "./CareerProgressBar";
+import MemberDropdown from "./MemberDropdown";
 import styles from "@/lib/styles/components/careerForm.module.scss";
   // Setting List icons
   const screeningSettingList = [
@@ -100,6 +101,24 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
     const [showSaveModal, setShowSaveModal] = useState("");
     const [isSavingCareer, setIsSavingCareer] = useState(false);
     const savingCareerRef = useRef(false);
+    const [teamMembers, setTeamMembers] = useState(career?.teamMembers || [
+        {
+            id: 1,
+            name: "Sabine Beatrix Dy",
+            email: "sabine@whitecloak.com",
+            role: "Job Owner",
+            avatar: "",
+            isCurrentUser: true
+        },
+        {
+            id: 2,
+            name: "Darlene Santo Tomas",
+            email: "darlene@whitecloak.com",
+            role: "Contributor",
+            avatar: "",
+            isCurrentUser: false
+        }
+    ]);
 
     const isFormValid = () => {
         return jobTitle?.trim().length > 0 && description?.trim().length > 0 && questions.some((q) => q.questions.length > 0) && workSetup?.trim().length > 0;
@@ -202,6 +221,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
             location: city,
             status,
             employmentType,
+            teamMembers,
         }
 
         try {
@@ -438,6 +458,73 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                   <div className={styles.careerCardContent}>
                       <span>Description</span>
                       <RichTextEditor setText={setDescription} text={description} />
+                  </div>
+              </div>
+
+          <div className={styles.careerCard}>
+              <div className={styles.careerCardHeader}>
+                      <span className={styles.careerCardTitle}>3. Team Access</span>
+                  </div>
+                  <div className={styles.careerCardContent}>
+                      <div className={styles.addMembersSection}>
+                          <div className={styles.addMembersText}>
+                              <span className={styles.sectionTitle}>Add more members</span>
+                              <span className={styles.addMembersDescription}>You can add other members to collaborate on this career.</span>
+                          </div>
+                          <MemberDropdown
+                              onSelectMember={(member) => {
+                                  setTeamMembers([...teamMembers, {
+                                      id: member.id,
+                                      name: member.name,
+                                      email: member.email,
+                                      role: "Contributor",
+                                      avatar: member.avatar || "",
+                                      isCurrentUser: false
+                                  }]);
+                              }}
+                              existingMemberIds={teamMembers.map(m => m.id)}
+                          />
+                      </div>
+
+                      <div className={styles.memberList}>
+                          {teamMembers.map((member) => (
+                              <div key={member.id} className={styles.memberRow}>
+                                  <div className={styles.memberInfo}>
+                                      <div className={styles.memberAvatar} style={{ backgroundImage: member.avatar ? `url(${member.avatar})` : 'none', backgroundColor: member.avatar ? 'transparent' : '#D7C0DD' }}></div>
+                                      <div className={styles.memberDetails}>
+                                          <span className={styles.memberName}>{member.name}{member.isCurrentUser ? " (You)" : ""}</span>
+                                          <span className={styles.memberEmail}>{member.email}</span>
+                                      </div>
+                                  </div>
+                                  <div className={styles.memberActions}>
+                                      <CustomDropdown
+                                          onSelectSetting={(role) => {
+                                              setTeamMembers(teamMembers.map(m => m.id === member.id ? { ...m, role } : m));
+                                          }}
+                                          screeningSetting={member.role}
+                                          settingList={[
+                                              { name: "Job Owner", description: "Full access to manage this career posting, including editing details, viewing candidates, and making hiring decisions." },
+                                              { name: "Contributor", description: "Can view and collaborate on this career, but cannot make final hiring decisions or edit core details." }
+                                          ]}
+                                          placeholder="Select Role"
+                                      />
+                                      <button 
+                                          className={styles.deleteMemberButton}
+                                          onClick={() => {
+                                              if (!member.isCurrentUser) {
+                                                  setTeamMembers(teamMembers.filter(m => m.id !== member.id));
+                                              }
+                                          }}
+                                          disabled={member.isCurrentUser}
+                                      >
+                                          <i className="la la-trash-alt"></i>
+                                      </button>
+                                  </div>
+                              </div>
+                          ))}
+                      </div>
+
+                      <p className={styles.adminNote}>*Admins can view all careers regardless of specific access settings.</p>
                   </div>
               </div>
 
