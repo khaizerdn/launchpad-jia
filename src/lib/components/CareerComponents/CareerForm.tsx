@@ -288,7 +288,15 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                   </button>
                 </div>
         </div>) : null}
-        {formType === "add" && <CareerProgressBar />}
+        {formType === "add" && <CareerProgressBar isStep1Complete={
+            jobTitle?.trim().length > 0 && 
+            description && description.replace(/<[^>]*>/g, '').trim().length > 0 && 
+            employmentType?.trim().length > 0 && 
+            workSetup?.trim().length > 0 && 
+            province?.trim().length > 0 && 
+            city?.trim().length > 0 && 
+            (minimumSalary?.trim().length > 0 || salaryNegotiable)
+        } />}
         {formType === "add" && <div className={styles.contentDivider}></div>}
         {formType === "edit" && (
             <div style={{ marginBottom: "35px", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>

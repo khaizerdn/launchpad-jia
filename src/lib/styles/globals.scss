@@ -217,6 +217,9 @@ td {
   &::placeholder {
     color: var(--Input-text-placeholder-or-disabled, #717680) !important;
     font-size: 16px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &:focus {
@@ -1224,7 +1227,7 @@ $gifURL: "/gr-1.gif";
     padding: 0 2px !important;
   }
 }
-@media (max-width: 1260px) {
+@media (max-width: 900px) {
   .sidebar-main {
     display: none !important;
   }
@@ -1235,7 +1238,7 @@ $gifURL: "/gr-1.gif";
   }
 }
 
-@media (min-width: 1261px) {
+@media (min-width: 901px) {
   .sidebar-main {
     width: 260px !important;
     left: 0;
