@@ -11,7 +11,7 @@
 .careerCardContent {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   width: 100%;
   background-color: #fff;
   border-radius: 12px;
@@ -40,6 +40,41 @@
   font-size: 14px;
   color: #181d27;
   font-weight: 700;
+}
+
+.basicInfoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.jobTitleField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sectionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+
+  > span {
+    color: var(--Input-text-label, #414651);
+  }
+}
+
+.jobTitleField {
+  > span {
+    color: var(--Input-text-label, #414651);
+  }
 }
 
 .mainContentContainer {

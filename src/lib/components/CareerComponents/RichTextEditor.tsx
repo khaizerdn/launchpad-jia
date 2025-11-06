@@ -67,7 +67,7 @@ export default function RichTextEditor({setText, text}) {
         <div
           ref={descriptionEditorRef}
           contentEditable={true}
-          className="form-control"
+          className="form-control rich-text-editor"
           style={{
             height: "300px",
             overflowY: "auto",
@@ -80,7 +80,7 @@ export default function RichTextEditor({setText, text}) {
           onInput={handleDescriptionChange}
           onBlur={handleDescriptionChange}
           onPaste={handlePaste}
-          data-placeholder="Enter description"
+          data-placeholder="Enter job description..."
         ></div>
         {/* Rich Text Editor Toolbar */}
         <div style={{ 

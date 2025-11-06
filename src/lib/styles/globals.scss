@@ -215,13 +215,28 @@ td {
   font-size: 1rem !important;
 
   &::placeholder {
-    color: #333333af !important;
+    color: var(--Input-text-placeholder-or-disabled, #717680) !important;
+    font-size: 16px !important;
   }
 
   &:focus {
     border: 2px solid #5e39d6 !important;
     box-shadow: none !important;
   }
+}
+
+.rich-text-editor[data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: var(--Input-text-placeholder-or-disabled, #717680);
+  font-size: 16px;
+  pointer-events: none;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.rich-text-editor[data-placeholder]:empty:focus:before {
+  content: "";
 }
 
 select.form-control {
@@ -810,6 +825,19 @@ th[scope="col"] {
   border-radius: 8px;
   transition: 0.3s;
   cursor: pointer;
+  font-size: 16px;
+  
+  &::placeholder,
+  span:empty:before {
+    color: var(--Input-text-placeholder-or-disabled, #717680);
+    font-size: 16px;
+  }
+  
+  &:disabled {
+    span {
+      color: var(--Input-text-placeholder-or-disabled, #717680);
+    }
+  }
 
   &:hover {
     background: #f8f9fa;

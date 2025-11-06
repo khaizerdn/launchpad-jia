@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 
 export default function CustomDropdown(props) {
-    const { onSelectSetting, screeningSetting, settingList, placeholder } = props;
+    const { onSelectSetting, screeningSetting, settingList, placeholder, allowEmpty = false } = props;
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -31,13 +31,13 @@ export default function CustomDropdown(props) {
   return (
         <div className="dropdown w-100" ref={dropdownRef}>
           <button
-            disabled={settingList.length === 0}
+            disabled={!allowEmpty && settingList.length === 0}
             className="dropdown-btn fade-in-bottom"
             style={{ width: "100%", textTransform: "capitalize" }}
             type="button"
             onClick={() => setDropdownOpen((v) => !v)}
           >
-            <span>
+            <span style={!screeningSetting ? { color: "var(--Input-text-placeholder-or-disabled, #717680)", fontSize: "16px" } : { fontSize: "16px" }}>
               <i
                 className={
                   settingList.find(
