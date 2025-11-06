@@ -57,6 +57,12 @@
   }
 }
 
+@media (max-width: 1260px) {
+  .sidebarContainer {
+    display: none !important;
+  }
+}
+
 @media (max-width: 992px) {
   .sidebarContainer {
     width: fit-content;

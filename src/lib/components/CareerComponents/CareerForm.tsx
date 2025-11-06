@@ -315,7 +315,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
               </div>
        </div>
         )}
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", gap: 16, alignItems: "flex-start", marginTop: 16 }}>
+        <div className={styles.mainContentContainer}>
         <div className={styles.leftContainer}>
           <div className={styles.careerCard}>
               <div className={styles.careerCardHeader}>
@@ -531,7 +531,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
           <InterviewQuestionGeneratorV2 questions={questions} setQuestions={(questions) => setQuestions(questions)} jobTitle={jobTitle} description={description} />
         </div>
 
-        <div style={{ width: "40%", display: "flex", flexDirection: "column", gap: 8 }}>
+        <div className={styles.rightContainer}>
         <div className="layered-card-middle">
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
                   <div style={{ width: 32, height: 32, backgroundColor: "#181D27", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>

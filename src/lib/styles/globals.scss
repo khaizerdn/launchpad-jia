@@ -1196,7 +1196,18 @@ $gifURL: "/gr-1.gif";
     padding: 0 2px !important;
   }
 }
-@media (min-width: 900px) {
+@media (max-width: 1260px) {
+  .sidebar-main {
+    display: none !important;
+  }
+  .main-content,
+  #panel {
+    margin-left: 0 !important;
+    width: 100vw !important;
+  }
+}
+
+@media (min-width: 1261px) {
   .sidebar-main {
     width: 260px !important;
     left: 0;
