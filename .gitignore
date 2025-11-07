@@ -10,3 +10,4 @@ next-env.d.ts
 .cursorignore
 note.txt
 launchpad-jia-67189-firebase-adminsdk-fbsvc-564342b71e.json
+MANUAL_TESTING_XSS_HTML_GUIDE.md
