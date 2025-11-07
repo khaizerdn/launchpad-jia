@@ -1,0 +1,459 @@
+.addQuestionButton {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 8px;
+  height: 100%;
+  background: #FFFFFF;
+  border: 1px solid #D5D7DA;
+  border-radius: 999px;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    background: #FAFAFA;
+  }
+
+  &:active {
+    background: #FFFFFF;
+    box-shadow: 0 0 0 5px #F5F5F5;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: var(--Button-bg-secondary, #FFFFFF);
+    border: 1px solid var(--Button-border-primary_disabled, #E9EAEB);
+  }
+}
+
+.suggestedQuestionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.suggestedQuestionItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+}
+
+.questionContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.questionTitle {
+  font-family: 'Satoshi';
+  font-weight: 700;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: var(--Text-text-secondary, #414651);
+}
+
+.questionDescription {
+  font-family: 'Satoshi';
+  font-weight: 500;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: var(--Text-text-tertiary, #717680);
+}
+
+.disabled {
+  color: var(--Text-text-disabled, #D5D7DA) !important;
+}
+
+.activeQuestionContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 12px;
+  width: 100%;
+  touch-action: none;
+}
+
+.dragHandleWrapper {
+  width: 20px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.dragHandle {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.questionContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #FFFFFF;
+  border: 1px solid #EAECF5;
+  border-radius: 12px;
+
+  &:hover {
+    border-color: #D5D7DA;
+  }
+}
+
+.questionHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  gap: 16px;
+  width: 100%;
+  height: 64px;
+  background: var(--Surface-dashboard-bg_light, #F8F9FC);
+}
+
+.typeDropdown {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 14px;
+  gap: 8px;
+  width: 232px;
+  height: 40px;
+  background: var(--Input-bg-primary, #FFFFFF);
+  border: 1px solid var(--Button-border-primary, #D5D7DA);
+  box-shadow: 0px 1px 2px 0px #0A0D120D;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.dropdownContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  flex: 1;
+}
+
+.dropdownText {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #414651;
+}
+
+.questionText {
+  font-family: 'Satoshi';
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #414651;
+}
+
+.questionOptionsContainer {
+  width: 100%;
+  padding-top: 12px;
+  padding-right: 16px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+}
+
+.optionsListContainer {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  gap: 12px;
+}
+
+.questionFooterContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 16px;
+  width: 100%;
+}
+
+.addOptionSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 32px;
+  width: 100%;
+}
+
+.addOptionButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 14px;
+  height: 100%;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 8px;
+  outline: none;
+  transition: background 0.2s ease-in-out;
+
+  &:hover {
+    background: #FAFAFA;
+  }
+
+  &:active {
+    background: transparent;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.addOptionText {
+  font-family: 'Satoshi';
+  font-weight: 700;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: var(--Button-text-tertiary, #535862);
+}
+
+.footerDivider {
+  width: 100%;
+  height: 1px;
+  background: #EAECF5;
+}
+
+.deleteButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.deleteQuestionButton {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 14px;
+  gap: 8px;
+  height: 36px;
+  background: var(--Button-bg-tertiary, #FFFFFF);
+  border: 1px solid var(--Button-border-destructive, #FDA29B);
+  box-shadow: 0px 1px 2px 0px #0A0D120D;
+  border-radius: 999px;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    background: #FEF3F2;
+  }
+
+  &:active {
+    background: var(--Button-bg-tertiary, #FFFFFF);
+    box-shadow: 0 0 0 5px #FEE4E2;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.deleteQuestionText {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Button-text-destructive, #B32318);
+}
+
+.optionItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  gap: 0;
+  touch-action: none;
+}
+
+.optionDragHandle {
+  width: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  opacity: 0;
+  overflow: hidden;
+  transition: width 0.2s ease, opacity 0.2s ease;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.optionItem:hover .optionDragHandle {
+  width: 20px;
+  opacity: 1;
+}
+
+.optionLeftContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  margin-right: 32px;
+  box-shadow: 0px 1px 2px 0px #0A0D120D;
+}
+
+.optionNumberContainer {
+  width: 34px;
+  height: 100%;
+  padding: 10px 12px 10px 14px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background: var(--Input-bg-primary, #FFFFFF);
+  border: 1px solid var(--Input-border-primary, #E9EAEB);
+  border-right: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.optionNumber {
+  font-family: 'Satoshi';
+  font-weight: 500;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--Text-text-secondary, #414651);
+}
+
+.optionInput {
+  width: 100%;
+  height: 100%;
+  padding: 10px 14px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background: var(--Input-bg-primary, #FFFFFF);
+  border: 1px solid var(--Input-border-primary, #E9EAEB);
+  font-family: 'Satoshi';
+  font-weight: 500;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: var(--Input-text-primary, #181D27);
+  outline: none;
+
+  &::placeholder {
+    color: var(--Input-text-placeholder-or-disabled, #717680);
+  }
+
+  &:focus {
+    border-color: var(--Input-border-primary, #E9EAEB);
+  }
+}
+
+.optionRemoveButton {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.optionRemoveButtonInner {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--Button-border-primary, #D5D7DA);
+  padding: 6px;
+  background: var(--Button-bg-secondary, #FFFFFF);
+  box-shadow: 0px 1px 2px 0px #0A0D120D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.optionRemoveButton:hover .optionRemoveButtonInner {
+  background: #FAFAFA;
+}
+
+.optionRemoveButton:active .optionRemoveButtonInner {
+  background: var(--Button-bg-secondary, #FFFFFF);
+  box-shadow: 0 0 0 5px #F5F5F5;
+}
+
+.salaryRangeContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  width: 100%;
+}
+
+.salaryInput {
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  & {
+    -moz-appearance: textfield;
+  }
+}
+

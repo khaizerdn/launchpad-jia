@@ -304,7 +304,7 @@ export default function CareerContentDetails({
                                         <span style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>P</span>
                                         <input
                                             type="number"
-                                            className="form-control"
+                                            className={`form-control ${cardStyles.salaryInput}`}
                                             style={{ 
                                                 paddingLeft: "28px", 
                                                 paddingRight: fieldErrors.minimumSalary ? "60px" : "35px",
@@ -321,6 +321,7 @@ export default function CareerContentDetails({
                                                     setFieldErrors(newErrors);
                                                 }
                                             }}
+                                            onWheel={(e) => e.currentTarget.blur()}
                                         />
                                         {fieldErrors.minimumSalary && (
                                             <div style={{ position: "absolute", right: "50px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
@@ -343,7 +344,7 @@ export default function CareerContentDetails({
                                         <span style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>P</span>
                                         <input
                                             type="number"
-                                            className="form-control"
+                                            className={`form-control ${cardStyles.salaryInput}`}
                                             style={{ 
                                                 paddingLeft: "28px", 
                                                 paddingRight: fieldErrors.maximumSalary ? "60px" : "35px",
@@ -360,6 +361,7 @@ export default function CareerContentDetails({
                                                     setFieldErrors(newErrors);
                                                 }
                                             }}
+                                            onWheel={(e) => e.currentTarget.blur()}
                                         />
                                         {fieldErrors.maximumSalary && (
                                             <div style={{ position: "absolute", right: "50px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
