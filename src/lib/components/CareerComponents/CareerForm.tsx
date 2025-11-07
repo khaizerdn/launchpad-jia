@@ -348,7 +348,8 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                 </div>
         </div>) : null}
         {formType === "add" && <CareerProgressBar 
-            isStep1Complete={
+            isStep1Complete={currentStep > 1}
+            isStep1Ready={
                 jobTitle?.trim().length > 0 && 
                 description && description.replace(/<[^>]*>/g, '').trim().length > 0 && 
                 employmentType?.trim().length > 0 && 
@@ -358,6 +359,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                 (minimumSalary?.trim().length > 0 || salaryNegotiable)
             }
             currentStep={currentStep}
+            hasStep1Errors={currentStep === 1 && Object.keys(fieldErrors).length > 0}
         />}
         {formType === "add" && <div className={styles.contentDivider}></div>}
         {formType === "edit" && (

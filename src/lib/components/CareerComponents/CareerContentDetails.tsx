@@ -230,7 +230,7 @@ export default function CareerContentDetails({
                                                 .filter((city) => city.province === provinceObj.key)
                                                 .sort((a, b) => a.name.localeCompare(b.name));
                                             setCityList(cities);
-                                            setCity(cities[0].name);
+                                            setCity(""); // Clear city when province changes
                                             if (fieldErrors.province) {
                                                 const newErrors = { ...fieldErrors };
                                                 delete newErrors.province;

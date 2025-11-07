@@ -105,6 +105,17 @@
   transform: matrix(1, 0, 0, -1, 0, 0);
 }
 
+.dividerFull {
+  width: 100%;
+  min-width: 0;
+  height: 5px;
+  border: none;
+  background: linear-gradient(90deg, #9FCAED 0%, #CEB6DA 34%, #EBACC9 67%, #FCCEC0 100%);
+  transform: matrix(1, 0, 0, -1, 0, 0);
+  border-radius: 2px;
+  flex: 1 1 0;
+}
+
 .textGroup {
   display: flex;
   flex-direction: column;
