@@ -213,6 +213,7 @@ td {
   border-radius: 5px !important;
   color: #333 !important;
   font-size: 1rem !important;
+  box-shadow: 0px 1px 2px 0px #0A0D120D !important;
 
   &::placeholder {
     color: var(--Input-text-placeholder-or-disabled, #717680) !important;
@@ -226,6 +227,10 @@ td {
     border: 2px solid #5e39d6 !important;
     box-shadow: none !important;
   }
+}
+
+.rich-text-editor {
+  border: none !important;
 }
 
 .rich-text-editor[data-placeholder]:empty:before {
@@ -829,6 +834,7 @@ th[scope="col"] {
   transition: 0.3s;
   cursor: pointer;
   font-size: 16px;
+  box-shadow: 0px 1px 2px 0px #0A0D120D;
   
   &::placeholder,
   span:empty:before {
