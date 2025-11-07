@@ -50,7 +50,7 @@ const employmentTypeOptions = [
     },
 ];
 
-export default function CareerForm({ career, formType, setShowEditModal }: { career?: any, formType: string, setShowEditModal?: (show: boolean) => void }) {
+export default function CareerForm({ career, formType, setShowEditModal, initialStep }: { career?: any, formType: string, setShowEditModal?: (show: boolean) => void, initialStep?: number }) {
     const { user, orgID } = useAppContext();
     const [jobTitle, setJobTitle] = useState(career?.jobTitle || "");
     const [description, setDescription] = useState(career?.description || "");
@@ -60,8 +60,8 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
     const [employmentType, setEmploymentType] = useState(career?.employmentType || "");
     const [requireVideo, setRequireVideo] = useState(career?.requireVideo || true);
     const [salaryNegotiable, setSalaryNegotiable] = useState(career?.salaryNegotiable || true);
-    const [minimumSalary, setMinimumSalary] = useState(career?.minimumSalary || "");
-    const [maximumSalary, setMaximumSalary] = useState(career?.maximumSalary || "");
+    const [minimumSalary, setMinimumSalary] = useState(career?.minimumSalary ? String(career.minimumSalary) : "");
+    const [maximumSalary, setMaximumSalary] = useState(career?.maximumSalary ? String(career.maximumSalary) : "");
     const [questions, setQuestions] = useState(career?.questions || [
       {
         id: 1,
@@ -100,7 +100,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
     const [showSaveModal, setShowSaveModal] = useState("");
     const [isSavingCareer, setIsSavingCareer] = useState(false);
     const savingCareerRef = useRef(false);
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useState(initialStep || 1);
     const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
     const [teamMembers, setTeamMembers] = useState(career?.teamMembers || [
         {
@@ -167,16 +167,19 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
             if (!city?.trim().length) {
                 errors.city = "City is required";
             }
-            if (!minimumSalary?.trim().length) {
+            const minSalaryStr = minimumSalary ? String(minimumSalary).trim() : "";
+            const maxSalaryStr = maximumSalary ? String(maximumSalary).trim() : "";
+            
+            if (!minSalaryStr.length) {
                 errors.minimumSalary = "This is a required field.";
             } else if (Number(minimumSalary) === 0 || isNaN(Number(minimumSalary))) {
                 errors.minimumSalary = "Minimum salary must be greater than 0";
             }
-            if (!maximumSalary?.trim().length) {
+            if (!maxSalaryStr.length) {
                 errors.maximumSalary = "This is a required field.";
             } else if (Number(maximumSalary) === 0 || isNaN(Number(maximumSalary))) {
                 errors.maximumSalary = "Maximum salary must be greater than 0";
-            } else if (minimumSalary?.trim().length && Number(minimumSalary) > Number(maximumSalary)) {
+            } else if (minSalaryStr.length && Number(minimumSalary) > Number(maximumSalary)) {
                 errors.maximumSalary = "Maximum salary must be greater than minimum salary";
             }
             if (!teamMembers.some(member => member.role === "Job Owner")) {
@@ -188,7 +191,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
         return Object.keys(errors).length === 0;
     }
 
-    const handleSaveAndContinue = () => {
+    const handleSaveAndContinue = async () => {
         if (currentStep === 1) {
             const isValid = validateCurrentStep();
             if (!isValid) {
@@ -203,7 +206,11 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
             setCurrentStep(currentStep + 1);
         } else {
             // On the last step, save and publish
-            confirmSaveCareer("active");
+            if (formType === "add") {
+                confirmSaveCareer("active");
+            } else {
+                updateCareer("active");
+            }
         }
     }
 
@@ -224,6 +231,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
             workSetup,
             workSetupRemarks,
             questions,
+            teamMembers,
             lastEditedBy: userInfoSlice,
             status,
             updatedAt: Date.now(),
@@ -237,6 +245,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
             // Backwards compatibility
             location: city,
             employmentType,
+            currentStep, // Save the current step progress
         }
         try {
             setIsSavingCareer(true);
@@ -248,13 +257,14 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                     </div>,
                     1300,
                 <i className="la la-check-circle" style={{ color: "#039855", fontSize: 32 }}></i>)
-                setTimeout(() => {
-                    window.location.href = `/recruiter-dashboard/careers/manage/${career._id}`;
-                }, 1300);
+                // Wait for the API call to complete before redirecting
+                await new Promise(resolve => setTimeout(resolve, 1300));
+                window.location.href = `/recruiter-dashboard/careers/manage/${career._id}`;
             }
         } catch (error) {
             console.error(error);
             errorToast("Failed to update career", 1300);
+            setIsSavingCareer(false);
         } finally {
             setIsSavingCareer(false);
         }
@@ -305,6 +315,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
             status,
             employmentType,
             teamMembers,
+            currentStep, // Save the current step progress
         }
 
         try {
@@ -359,7 +370,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                   </button>
                 </div>
         </div>) : null}
-        {formType === "add" && <CareerProgressBar 
+        <CareerProgressBar 
             isStep1Complete={currentStep > 1}
             isStep1Ready={
                 jobTitle?.trim().length > 0 && 
@@ -368,95 +379,51 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                 workSetup?.trim().length > 0 && 
                 province?.trim().length > 0 && 
                 city?.trim().length > 0 && 
-                (minimumSalary?.trim().length > 0 || salaryNegotiable)
+                ((minimumSalary ? String(minimumSalary).trim().length > 0 : false) || salaryNegotiable)
             }
             currentStep={currentStep}
             hasStep1Errors={currentStep === 1 && Object.keys(fieldErrors).length > 0}
-        />}
-        {formType === "add" && <div className={styles.contentDivider}></div>}
+        />
+        <div className={styles.contentDivider}></div>
         {formType === "edit" && (
             <div style={{ marginBottom: "35px", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
             <h1 style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}>Edit Career Details</h1>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
                 <button
                  style={{ width: "fit-content", color: "#414651", background: "#fff", border: "1px solid #D5D7DA", padding: "8px 16px", borderRadius: "60px", cursor: "pointer", whiteSpace: "nowrap" }} onClick={() => {
-                  setShowEditModal?.(false);
+                  if (setShowEditModal) {
+                    setShowEditModal(false);
+                  } else {
+                    window.location.href = `/recruiter-dashboard/careers/manage/${career?._id}`;
+                  }
                     }}>
                         Cancel
                 </button>
                 <button
-                  disabled={!isFormValid() || isSavingCareer}
-                   style={{ width: "fit-content", color: "#414651", background: "#fff", border: "1px solid #D5D7DA", padding: "8px 16px", borderRadius: "60px", cursor: !isFormValid() || isSavingCareer ? "not-allowed" : "pointer", whiteSpace: "nowrap" }} onClick={() => {
+                  disabled={currentStep === 1 || isSavingCareer}
+                   style={{ 
+                     width: "fit-content", 
+                     color: (currentStep === 1 || isSavingCareer) ? "var(--Button-text-secondary-disabled, #D5D7DA)" : "var(--Button-text-secondary, #414651)", 
+                     background: "#fff", 
+                     border: (currentStep === 1 || isSavingCareer) ? "1px solid var(--Button-border-primary_disabled, #E9EAEB)" : "1px solid var(--Button-border-primary, #D5D7DA)", 
+                     padding: "8px 16px", 
+                     borderRadius: "60px", 
+                     cursor: (currentStep === 1 || isSavingCareer) ? "not-allowed" : "pointer", 
+                     whiteSpace: "nowrap" 
+                   }} onClick={() => {
                     updateCareer("inactive");
                     }}>
-                          Save Changes as Unpublished
+                          Save as Unpublished
                   </button>
                   <button 
-                  disabled={!isFormValid() || isSavingCareer}
-                  style={{ width: "fit-content", background: !isFormValid() || isSavingCareer ? "#D5D7DA" : "black", color: "#fff", border: "1px solid #E9EAEB", padding: "8px 16px", borderRadius: "60px", cursor: !isFormValid() || isSavingCareer ? "not-allowed" : "pointer", whiteSpace: "nowrap"}} onClick={() => {
-                    updateCareer("active");
-                  }}>
-                    <i className="la la-check-circle" style={{ color: "#fff", fontSize: 20, marginRight: 8 }}></i>
-                      Save Changes as Published
+                  style={{ width: "fit-content", background: "black", color: "#fff", border: "1px solid #E9EAEB", padding: "8px 16px", borderRadius: "60px", cursor: "pointer", whiteSpace: "nowrap", display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }} onClick={handleSaveAndContinue}>
+                      Save and Continue
+                      <i className="la la-arrow-right" style={{ color: "#fff", fontSize: 20 }}></i>
                   </button>
               </div>
        </div>
         )}
-        {formType === "add" ? (
-            <>
-                {currentStep === 1 && (
-                    <CareerContentDetails
-                        jobTitle={jobTitle}
-                        setJobTitle={setJobTitle}
-                        description={description}
-                        setDescription={setDescription}
-                        workSetup={workSetup}
-                        setWorkSetup={setWorkSetup}
-                        employmentType={employmentType}
-                        setEmploymentType={setEmploymentType}
-                        country={country}
-                        setCountry={setCountry}
-                        province={province}
-                        setProvince={setProvince}
-                        city={city}
-                        setCity={setCity}
-                        minimumSalary={minimumSalary}
-                        setMinimumSalary={setMinimumSalary}
-                        maximumSalary={maximumSalary}
-                        setMaximumSalary={setMaximumSalary}
-                        salaryNegotiable={salaryNegotiable}
-                        setSalaryNegotiable={setSalaryNegotiable}
-                        teamMembers={teamMembers}
-                        setTeamMembers={setTeamMembers}
-                        screeningSetting={screeningSetting}
-                        setScreeningSetting={setScreeningSetting}
-                        requireVideo={requireVideo}
-                        setRequireVideo={setRequireVideo}
-                        screeningSettingList={screeningSettingList}
-                        fieldErrors={fieldErrors}
-                        setFieldErrors={setFieldErrors}
-                    />
-                )}
-                {currentStep === 2 && (
-                    <CareerContentScreening
-                        screeningSetting={screeningSetting}
-                        setScreeningSetting={setScreeningSetting}
-                        screeningSettingList={screeningSettingList}
-                    />
-                )}
-                {currentStep === 3 && (
-                    <CareerContentInterview
-                        screeningSetting={screeningSetting}
-                        setScreeningSetting={setScreeningSetting}
-                        screeningSettingList={screeningSettingList}
-                        requireVideo={requireVideo}
-                        setRequireVideo={setRequireVideo}
-                    />
-                )}
-                {currentStep === 4 && <CareerContentPipeline />}
-                {currentStep === 5 && <CareerContentReview />}
-            </>
-        ) : (
+        {currentStep === 1 && (
             <CareerContentDetails
                 jobTitle={jobTitle}
                 setJobTitle={setJobTitle}
@@ -489,6 +456,24 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                 setFieldErrors={setFieldErrors}
             />
         )}
+        {currentStep === 2 && (
+            <CareerContentScreening
+                screeningSetting={screeningSetting}
+                setScreeningSetting={setScreeningSetting}
+                screeningSettingList={screeningSettingList}
+            />
+        )}
+        {currentStep === 3 && (
+            <CareerContentInterview
+                screeningSetting={screeningSetting}
+                setScreeningSetting={setScreeningSetting}
+                screeningSettingList={screeningSettingList}
+                requireVideo={requireVideo}
+                setRequireVideo={setRequireVideo}
+            />
+        )}
+        {currentStep === 4 && <CareerContentPipeline />}
+        {currentStep === 5 && <CareerContentReview />}
       {showSaveModal && (
          <CareerActionModal action={showSaveModal} onAction={(action) => saveCareer(action)} />
         )}

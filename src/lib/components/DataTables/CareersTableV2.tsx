@@ -356,7 +356,8 @@ export default function CareersV2Table() {
                                 if (e.defaultPrevented) return;
                                 e.preventDefault();
                                 setMenuOpen(false);
-                                window.location.href = `/recruiter-dashboard/careers/manage/${item._id}?tab=edit`;
+                                // Navigate to edit page instead of opening modal
+                                window.location.href = `/recruiter-dashboard/careers/edit/${item._id}`;
                             }}>
                                 <span>Edit Career</span>
                             </div>
