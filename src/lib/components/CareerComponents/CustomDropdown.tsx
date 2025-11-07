@@ -4,7 +4,43 @@ import { useState, useRef, useEffect } from "react";
 export default function CustomDropdown(props) {
     const { onSelectSetting, screeningSetting, settingList, placeholder, allowEmpty = false, error } = props;
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Calculate dropdown position based on available space
+  useEffect(() => {
+    if (dropdownOpen && buttonRef.current) {
+      // Use setTimeout to ensure menu is rendered before calculating
+      const calculatePosition = () => {
+        if (buttonRef.current && menuRef.current) {
+          const buttonRect = buttonRef.current.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          const spaceBelow = viewportHeight - buttonRect.bottom;
+          const spaceAbove = buttonRect.top;
+          
+          // Get actual menu height or estimate
+          const menuHeight = menuRef.current.offsetHeight || 
+            (settingList.some(s => s.description) ? 200 : Math.min(settingList.length * 44, 200));
+          
+          // Open upward if not enough space below but enough space above
+          // Add some buffer (50px) to ensure menu doesn't touch viewport edge
+          if (spaceBelow < menuHeight + 50 && spaceAbove > spaceBelow) {
+            setOpenUpward(true);
+          } else {
+            setOpenUpward(false);
+          }
+        }
+      };
+      
+      // Calculate immediately and after a short delay to account for rendering
+      calculatePosition();
+      const timeoutId = setTimeout(calculatePosition, 0);
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [dropdownOpen, settingList]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -29,8 +65,9 @@ export default function CustomDropdown(props) {
   }, [dropdownOpen]);
 
   return (
-        <div className="dropdown w-100" ref={dropdownRef}>
+        <div className="dropdown w-100" ref={dropdownRef} style={{ position: "relative" }}>
           <button
+            ref={buttonRef}
             disabled={!allowEmpty && settingList.length === 0}
             className="dropdown-btn fade-in-bottom"
             style={{ width: "100%", textTransform: "capitalize", border: error ? "1px solid var(--Input-border-destructive, #FDA29B)" : undefined }}
@@ -51,11 +88,21 @@ export default function CustomDropdown(props) {
           </button>
           {dropdownOpen && (
             <div
-              className="dropdown-menu w-100 mt-1 org-dropdown-anim show"
+              ref={menuRef}
+              className="dropdown-menu w-100 org-dropdown-anim show"
               style={{
+                position: "absolute",
                 padding: settingList.some(s => s.description) ? "8px" : "10px",
                 maxHeight: settingList.some(s => s.description) ? "none" : 200,
                 overflowY: settingList.some(s => s.description) ? "visible" : "auto",
+                top: openUpward ? "auto" : "calc(100% + 4px)",
+                bottom: openUpward ? "calc(100% + 4px)" : "auto",
+                left: 0,
+                right: 0,
+                zIndex: 1000,
+                width: "100%",
+                marginTop: openUpward ? "0" : "4px",
+                marginBottom: openUpward ? "4px" : "0",
               }}
             >
             {settingList.map((setting, index) => {

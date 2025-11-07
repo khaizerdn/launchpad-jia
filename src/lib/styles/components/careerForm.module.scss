@@ -31,15 +31,15 @@
   align-items: flex-start;
   width: 100%;
   max-width: 1620px;
-  height: 100%;
+  height: fit-content;
   gap: 16px;
-  margin: 16px auto 0;
+  margin: 16px auto;
 }
 
 .leftContainer {
   width: 100%;
   max-width: 960px;
-  height: 1246px;
+  height: fit-content;
   gap: 24px;
   opacity: 1;
   display: flex;

@@ -30,7 +30,10 @@ const defaultMembers: Member[] = [
 export default function MemberDropdown({ onSelectMember, existingMemberIds = [], availableMembers = defaultMembers }: MemberDropdownProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [openUpward, setOpenUpward] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     const filteredMembers = availableMembers.filter(member => {
         const matchesSearch = member.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -38,6 +41,38 @@ export default function MemberDropdown({ onSelectMember, existingMemberIds = [],
         const notAlreadyAdded = !existingMemberIds.includes(member.id);
         return matchesSearch && notAlreadyAdded;
     });
+
+    // Calculate dropdown position based on available space
+    useEffect(() => {
+        if (isOpen && buttonRef.current) {
+            // Use setTimeout to ensure menu is rendered before calculating
+            const calculatePosition = () => {
+                if (buttonRef.current && menuRef.current) {
+                    const buttonRect = buttonRef.current.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight;
+                    const spaceBelow = viewportHeight - buttonRect.bottom;
+                    const spaceAbove = buttonRect.top;
+                    
+                    // Get actual menu height or estimate (header + items, max 280px)
+                    const menuHeight = menuRef.current.offsetHeight || 280;
+                    
+                    // Open upward if not enough space below but enough space above
+                    // Add some buffer (50px) to ensure menu doesn't touch viewport edge
+                    if (spaceBelow < menuHeight + 50 && spaceAbove > spaceBelow) {
+                        setOpenUpward(true);
+                    } else {
+                        setOpenUpward(false);
+                    }
+                }
+            };
+            
+            // Calculate immediately and after a short delay to account for rendering
+            calculatePosition();
+            const timeoutId = setTimeout(calculatePosition, 0);
+            
+            return () => clearTimeout(timeoutId);
+        }
+    }, [isOpen, filteredMembers]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -63,9 +98,10 @@ export default function MemberDropdown({ onSelectMember, existingMemberIds = [],
     };
 
     return (
-        <div className={styles.memberDropdownContainer} ref={dropdownRef}>
+        <div className={styles.memberDropdownContainer} ref={dropdownRef} style={{ position: "relative" }}>
             <div className="dropdown w-100">
                 <button
+                    ref={buttonRef}
                     className="dropdown-btn fade-in-bottom"
                     style={{ width: "100%", textTransform: "capitalize" }}
                     type="button"
@@ -80,7 +116,14 @@ export default function MemberDropdown({ onSelectMember, existingMemberIds = [],
             </div>
 
             {isOpen && (
-                <div className={styles.dropdownMenu}>
+                <div 
+                    ref={menuRef}
+                    className={styles.dropdownMenu}
+                    style={{
+                        top: openUpward ? "auto" : "calc(100% + 8px)",
+                        bottom: openUpward ? "calc(100% + 8px)" : "auto",
+                    }}
+                >
                     <div className={styles.dropdownHeader}>
                         <div className={styles.searchInputContainer}>
                             <i className="la la-search" style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", fontSize: "14px", color: "#717680", zIndex: 1, pointerEvents: "none" }}></i>
