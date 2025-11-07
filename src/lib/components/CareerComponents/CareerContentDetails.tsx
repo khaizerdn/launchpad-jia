@@ -134,20 +134,32 @@ export default function CareerContentDetails({
                             <span className={cardStyles.sectionTitle}>Basic Information</span>
                             <div className={styles.jobTitleField}>
                                 <span>Job Title</span>
-                                <input
-                                    value={jobTitle}
-                                    className="form-control"
-                                    placeholder="Enter job title"
-                                    style={{ border: fieldErrors.jobTitle ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined }}
-                                    onChange={(e) => {
-                                        setJobTitle(e.target.value || "");
-                                        if (fieldErrors.jobTitle) {
-                                            const newErrors = { ...fieldErrors };
-                                            delete newErrors.jobTitle;
-                                            setFieldErrors(newErrors);
-                                        }
-                                    }}
-                                ></input>
+                                <div style={{ position: "relative" }}>
+                                    <input
+                                        value={jobTitle}
+                                        className="form-control"
+                                        placeholder="Enter job title"
+                                        style={{ 
+                                            border: fieldErrors.jobTitle ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined,
+                                            paddingRight: fieldErrors.jobTitle ? "35px" : undefined
+                                        }}
+                                        onChange={(e) => {
+                                            setJobTitle(e.target.value || "");
+                                            if (fieldErrors.jobTitle) {
+                                                const newErrors = { ...fieldErrors };
+                                                delete newErrors.jobTitle;
+                                                setFieldErrors(newErrors);
+                                            }
+                                        }}
+                                    ></input>
+                                    {fieldErrors.jobTitle && (
+                                        <div style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
+                                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M7.33341 4.66666V7.33332M7.33341 9.99999H7.34008M14.0001 7.33332C14.0001 11.0152 11.0153 14 7.33341 14C3.65152 14 0.666748 11.0152 0.666748 7.33332C0.666748 3.65142 3.65152 0.666656 7.33341 0.666656C11.0153 0.666656 14.0001 3.65142 14.0001 7.33332Z" stroke="#F04438" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                        </div>
+                                    )}
+                                </div>
                                 {fieldErrors.jobTitle && (
                                     <span className={errorStyles.errorMessage}>
                                         {fieldErrors.jobTitle}
@@ -293,7 +305,11 @@ export default function CareerContentDetails({
                                         <input
                                             type="number"
                                             className="form-control"
-                                            style={{ paddingLeft: "28px", border: fieldErrors.minimumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined }}
+                                            style={{ 
+                                                paddingLeft: "28px", 
+                                                paddingRight: fieldErrors.minimumSalary ? "60px" : "35px",
+                                                border: fieldErrors.minimumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined 
+                                            }}
                                             placeholder="0"
                                             min={0}
                                             value={minimumSalary}
@@ -306,7 +322,14 @@ export default function CareerContentDetails({
                                                 }
                                             }}
                                         />
-                                        <span style={{ position: "absolute", right: "30px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
+                                        {fieldErrors.minimumSalary && (
+                                            <div style={{ position: "absolute", right: "50px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
+                                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M7.33341 4.66666V7.33332M7.33341 9.99999H7.34008M14.0001 7.33332C14.0001 11.0152 11.0153 14 7.33341 14C3.65152 14 0.666748 11.0152 0.666748 7.33332C0.666748 3.65142 3.65152 0.666656 7.33341 0.666656C11.0153 0.666656 14.0001 3.65142 14.0001 7.33332Z" stroke="#F04438" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
+                                                </svg>
+                                            </div>
+                                        )}
+                                        <span style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
                                     </div>
                                     {fieldErrors.minimumSalary && (
                                         <span className={errorStyles.errorMessage}>
@@ -321,7 +344,11 @@ export default function CareerContentDetails({
                                         <input
                                             type="number"
                                             className="form-control"
-                                            style={{ paddingLeft: "28px", border: fieldErrors.maximumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined }}
+                                            style={{ 
+                                                paddingLeft: "28px", 
+                                                paddingRight: fieldErrors.maximumSalary ? "60px" : "35px",
+                                                border: fieldErrors.maximumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined 
+                                            }}
                                             placeholder="0"
                                             min={0}
                                             value={maximumSalary}
@@ -334,7 +361,14 @@ export default function CareerContentDetails({
                                                 }
                                             }}
                                         />
-                                        <span style={{ position: "absolute", right: "30px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
+                                        {fieldErrors.maximumSalary && (
+                                            <div style={{ position: "absolute", right: "50px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
+                                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M7.33341 4.66666V7.33332M7.33341 9.99999H7.34008M14.0001 7.33332C14.0001 11.0152 11.0153 14 7.33341 14C3.65152 14 0.666748 11.0152 0.666748 7.33332C0.666748 3.65142 3.65152 0.666656 7.33341 0.666656C11.0153 0.666656 14.0001 3.65142 14.0001 7.33332Z" stroke="#F04438" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
+                                                </svg>
+                                            </div>
+                                        )}
+                                        <span style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
                                     </div>
                                     {fieldErrors.maximumSalary && (
                                         <span className={errorStyles.errorMessage}>
@@ -399,6 +433,27 @@ export default function CareerContentDetails({
                             />
                         </div>
 
+                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+
+                        {!teamMembers.some(member => member.role === "Job Owner") && (
+                            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: "0px", gap: "8px" }}>
+                                <svg width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.54164 5.92058V9.25391M9.54164 12.5872H9.54998M8.11664 1.63725L1.05831 13.4206C0.912783 13.6726 0.835782 13.9583 0.834967 14.2493C0.834153 14.5404 0.909552 14.8265 1.05367 15.0794C1.19778 15.3322 1.40558 15.5429 1.6564 15.6905C1.90722 15.838 2.19231 15.9174 2.48331 15.9206H16.6C16.891 15.9174 17.1761 15.838 17.4269 15.6905C17.6777 15.5429 17.8855 15.3322 18.0296 15.0794C18.1737 14.8265 18.2491 14.5404 18.2483 14.2493C18.2475 13.9583 18.1705 13.6726 18.025 13.4206L10.9666 1.63725C10.8181 1.39234 10.6089 1.18985 10.3593 1.04932C10.1097 0.908788 9.82809 0.834961 9.54164 0.834961C9.2552 0.834961 8.97359 0.908788 8.72398 1.04932C8.47438 1.18985 8.2652 1.39234 8.11664 1.63725Z" stroke="#F04438" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                                <span style={{
+                                    fontFamily: 'Satoshi',
+                                    fontWeight: 500,
+                                    fontStyle: 'normal',
+                                    fontSize: '14px',
+                                    lineHeight: '20px',
+                                    letterSpacing: '0%',
+                                    color: 'var(--Text-text-error, #D92D20)'
+                                }}>
+                                    Career must have a job owner. Please assign a job owner.
+                                </span>
+                            </div>
+                        )}
+
                         <div className={styles.memberList}>
                             {teamMembers.map((member) => (
                                 <div key={member.id} className={styles.memberRow}>
@@ -413,6 +468,12 @@ export default function CareerContentDetails({
                                         <CustomDropdown
                                             onSelectSetting={(role) => {
                                                 setTeamMembers(teamMembers.map(m => m.id === member.id ? { ...m, role } : m));
+                                                // Clear job owner error if a job owner is now assigned
+                                                if (role === "Job Owner" && fieldErrors.jobOwner) {
+                                                    const newErrors = { ...fieldErrors };
+                                                    delete newErrors.jobOwner;
+                                                    setFieldErrors(newErrors);
+                                                }
                                             }}
                                             screeningSetting={member.role}
                                             settingList={[
@@ -425,7 +486,9 @@ export default function CareerContentDetails({
                                             className={styles.deleteMemberButton}
                                             onClick={() => {
                                                 if (!member.isCurrentUser) {
-                                                    setTeamMembers(teamMembers.filter(m => m.id !== member.id));
+                                                    const updatedMembers = teamMembers.filter(m => m.id !== member.id);
+                                                    setTeamMembers(updatedMembers);
+                                                    // If deleted member was the only job owner, the error will show on next validation
                                                 }
                                             }}
                                             disabled={member.isCurrentUser}

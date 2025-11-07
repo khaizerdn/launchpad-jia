@@ -179,6 +179,9 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
             } else if (minimumSalary?.trim().length && Number(minimumSalary) > Number(maximumSalary)) {
                 errors.maximumSalary = "Maximum salary must be greater than minimum salary";
             }
+            if (!teamMembers.some(member => member.role === "Job Owner")) {
+                errors.jobOwner = "Career must have a job owner. Please assign a job owner.";
+            }
         }
         
         setFieldErrors(errors);
@@ -334,8 +337,17 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
               <h1 style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}>Add new career</h1>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
                   <button
-                  disabled={!isFormValid() || isSavingCareer}
-                   style={{ width: "fit-content", color: "#414651", background: "#fff", border: "1px solid #D5D7DA", padding: "8px 16px", borderRadius: "60px", cursor: !isFormValid() || isSavingCareer ? "not-allowed" : "pointer", whiteSpace: "nowrap" }} onClick={() => {
+                  disabled={currentStep === 1 || isSavingCareer}
+                   style={{ 
+                     width: "fit-content", 
+                     color: (currentStep === 1 || isSavingCareer) ? "var(--Button-text-secondary-disabled, #D5D7DA)" : "var(--Button-text-secondary, #414651)", 
+                     background: "#fff", 
+                     border: (currentStep === 1 || isSavingCareer) ? "1px solid var(--Button-border-primary_disabled, #E9EAEB)" : "1px solid var(--Button-border-primary, #D5D7DA)", 
+                     padding: "8px 16px", 
+                     borderRadius: "60px", 
+                     cursor: (currentStep === 1 || isSavingCareer) ? "not-allowed" : "pointer", 
+                     whiteSpace: "nowrap" 
+                   }} onClick={() => {
                     confirmSaveCareer("inactive");
                       }}>
                           Save as Unpublished
