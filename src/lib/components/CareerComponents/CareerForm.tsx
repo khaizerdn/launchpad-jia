@@ -345,8 +345,22 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                         screeningSettingList={screeningSettingList}
                     />
                 )}
-                {currentStep === 2 && <CareerContentScreening />}
-                {currentStep === 3 && <CareerContentInterview />}
+                {currentStep === 2 && (
+                    <CareerContentScreening
+                        screeningSetting={screeningSetting}
+                        setScreeningSetting={setScreeningSetting}
+                        screeningSettingList={screeningSettingList}
+                    />
+                )}
+                {currentStep === 3 && (
+                    <CareerContentInterview
+                        screeningSetting={screeningSetting}
+                        setScreeningSetting={setScreeningSetting}
+                        screeningSettingList={screeningSettingList}
+                        requireVideo={requireVideo}
+                        setRequireVideo={setRequireVideo}
+                    />
+                )}
                 {currentStep === 4 && <CareerContentPipeline />}
                 {currentStep === 5 && <CareerContentReview />}
             </>
