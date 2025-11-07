@@ -124,6 +124,35 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
         return jobTitle?.trim().length > 0 && description?.trim().length > 0 && questions.some((q) => q.questions.length > 0) && workSetup?.trim().length > 0;
     }
 
+    const isCurrentStepValid = () => {
+        switch (currentStep) {
+            case 1:
+                return jobTitle?.trim().length > 0 && 
+                       description && description.replace(/<[^>]*>/g, '').trim().length > 0 && 
+                       employmentType?.trim().length > 0 && 
+                       workSetup?.trim().length > 0 && 
+                       province?.trim().length > 0 && 
+                       city?.trim().length > 0 && 
+                       (minimumSalary?.trim().length > 0 || salaryNegotiable);
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                return true; // Add validation for other steps as needed
+            default:
+                return false;
+        }
+    }
+
+    const handleSaveAndContinue = () => {
+        if (currentStep < 5) {
+            setCurrentStep(currentStep + 1);
+        } else {
+            // On the last step, save and publish
+            confirmSaveCareer("active");
+        }
+    }
+
     const updateCareer = async (status: string) => {
         if (Number(minimumSalary) && Number(maximumSalary) && Number(minimumSalary) > Number(maximumSalary)) {
             errorToast("Minimum salary cannot be greater than maximum salary", 1300);
@@ -261,12 +290,9 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                           Save as Unpublished
                   </button>
                   <button 
-                  disabled={!isFormValid() || isSavingCareer}
-                  style={{ width: "fit-content", background: !isFormValid() || isSavingCareer ? "#D5D7DA" : "black", color: "#fff", border: "1px solid #E9EAEB", padding: "8px 16px", borderRadius: "60px", cursor: !isFormValid() || isSavingCareer ? "not-allowed" : "pointer", whiteSpace: "nowrap"}} onClick={() => {
-                    confirmSaveCareer("active");
-                  }}>
-                    <i className="la la-check-circle" style={{ color: "#fff", fontSize: 20, marginRight: 8 }}></i>
-                      Save as Published
+                  style={{ width: "fit-content", background: "black", color: "#fff", border: "1px solid #E9EAEB", padding: "8px 16px", borderRadius: "60px", cursor: "pointer", whiteSpace: "nowrap", display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }} onClick={handleSaveAndContinue}>
+                      Save and Continue
+                      <i className="la la-arrow-right" style={{ color: "#fff", fontSize: 20 }}></i>
                   </button>
                 </div>
         </div>) : null}
@@ -281,7 +307,6 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                 (minimumSalary?.trim().length > 0 || salaryNegotiable)
             }
             currentStep={currentStep}
-            onStepClick={setCurrentStep}
         />}
         {formType === "add" && <div className={styles.contentDivider}></div>}
         {formType === "edit" && (

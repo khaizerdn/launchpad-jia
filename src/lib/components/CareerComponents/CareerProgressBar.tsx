@@ -5,19 +5,12 @@ import styles from "@/lib/styles/components/careerProgressBar.module.scss";
 interface CareerProgressBarProps {
     isStep1Complete?: boolean;
     currentStep?: number;
-    onStepClick?: (step: number) => void;
 }
 
-export default function CareerProgressBar({ isStep1Complete = false, currentStep = 1, onStepClick }: CareerProgressBarProps) {
-    const handleStepClick = (step: number) => {
-        if (onStepClick) {
-            onStepClick(step);
-        }
-    };
-
+export default function CareerProgressBar({ isStep1Complete = false, currentStep = 1 }: CareerProgressBarProps) {
     return (
         <div className={styles.progressBar}>
-            <div className={styles.stepProgress} style={{ cursor: onStepClick ? 'pointer' : 'default' }} onClick={() => handleStepClick(1)}>
+            <div className={styles.stepProgress} style={{ cursor: 'default' }}>
                 <div className={styles.stepContainer}>
                     <div className={styles.stepDot}>
                         <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +26,7 @@ export default function CareerProgressBar({ isStep1Complete = false, currentStep
                     <span className={currentStep === 1 ? styles.stepTitle : `${styles.stepTitle} ${styles.inactive}`}>Career Details & Team Access</span>
                 </div>
             </div>
-            <div className={styles.stepProgress} style={{ cursor: onStepClick ? 'pointer' : 'default' }} onClick={() => handleStepClick(2)}>
+            <div className={styles.stepProgress} style={{ cursor: 'default' }}>
                 <div className={styles.stepContainer}>
                     <div className={styles.stepDot}>
                         <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,7 +42,7 @@ export default function CareerProgressBar({ isStep1Complete = false, currentStep
                     <span className={currentStep === 2 ? styles.stepTitle : `${styles.stepTitle} ${styles.inactive}`}>CV Review & Pre-screening</span>
                 </div>
             </div>
-            <div className={styles.stepProgress} style={{ cursor: onStepClick ? 'pointer' : 'default' }} onClick={() => handleStepClick(3)}>
+            <div className={styles.stepProgress} style={{ cursor: 'default' }}>
                 <div className={styles.stepContainer}>
                     <div className={styles.stepDot}>
                         <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +58,7 @@ export default function CareerProgressBar({ isStep1Complete = false, currentStep
                     <span className={currentStep === 3 ? styles.stepTitle : `${styles.stepTitle} ${styles.inactive}`}>AI Interview Setup</span>
                 </div>
             </div>
-            <div className={styles.stepProgress} style={{ cursor: onStepClick ? 'pointer' : 'default' }} onClick={() => handleStepClick(4)}>
+            <div className={styles.stepProgress} style={{ cursor: 'default' }}>
                 <div className={styles.stepContainer}>
                     <div className={styles.stepDot}>
                         <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +74,7 @@ export default function CareerProgressBar({ isStep1Complete = false, currentStep
                     <span className={currentStep === 4 ? styles.stepTitle : `${styles.stepTitle} ${styles.inactive}`}>Pipeline Stages</span>
                 </div>
             </div>
-            <div className={`${styles.stepProgress} ${styles.stepProgressLast}`} style={{ cursor: onStepClick ? 'pointer' : 'default' }} onClick={() => handleStepClick(5)}>
+            <div className={`${styles.stepProgress} ${styles.stepProgressLast}`} style={{ cursor: 'default' }}>
                 <div className={`${styles.stepContainer} ${styles.stepContainerLast}`}>
                     <div className={styles.stepDot}>
                         <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
