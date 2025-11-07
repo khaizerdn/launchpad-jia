@@ -3,7 +3,7 @@
 import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
 import styles from "@/lib/styles/components/careerForm.module.scss";
 import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
-import cardStyles from "@/lib/styles/components/careerContentCards.module.css";
+import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
 
 interface CareerContentScreeningProps {
     screeningSetting: string;

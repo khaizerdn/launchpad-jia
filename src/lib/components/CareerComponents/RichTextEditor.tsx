@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from "react";
 
-export default function RichTextEditor({setText, text}) {
+export default function RichTextEditor({setText, text, error}) {
     const descriptionEditorRef = useRef(null);
 
     const formatText = (command, value = null) => {
@@ -63,7 +63,11 @@ export default function RichTextEditor({setText, text}) {
       }, []);
 
       return (
-        <>
+        <div style={{
+          border: error ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : "1px solid #E9EAEB",
+          borderRadius: "4px",
+          overflow: "hidden"
+        }}>
         <div
           ref={descriptionEditorRef}
           contentEditable={true}
@@ -71,8 +75,11 @@ export default function RichTextEditor({setText, text}) {
           style={{
             height: "300px",
             overflowY: "auto",
-            borderTopLeftRadius: "0",
-            borderTopRightRadius: "0",
+            border: "none",
+            borderTopLeftRadius: "4px",
+            borderTopRightRadius: "4px",
+            borderBottomLeftRadius: "0",
+            borderBottomRightRadius: "0",
             padding: "12px",
             lineHeight: "1.5",
             position: "relative"
@@ -84,7 +91,8 @@ export default function RichTextEditor({setText, text}) {
         ></div>
         {/* Rich Text Editor Toolbar */}
         <div style={{ 
-          border: "1px solid #E9EAEB",
+          border: "none",
+          borderTop: "1px solid #E9EAEB",
           borderRadius: "0 0 4px 4px",
           backgroundColor: "#FFFFFF",
           display: "flex",
@@ -161,6 +169,6 @@ export default function RichTextEditor({setText, text}) {
             left: 12px;
           }
         `}</style>
-        </>
+        </div>
       )
 }

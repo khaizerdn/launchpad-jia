@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 
 export default function CustomDropdown(props) {
-    const { onSelectSetting, screeningSetting, settingList, placeholder, allowEmpty = false } = props;
+    const { onSelectSetting, screeningSetting, settingList, placeholder, allowEmpty = false, error } = props;
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +33,7 @@ export default function CustomDropdown(props) {
           <button
             disabled={!allowEmpty && settingList.length === 0}
             className="dropdown-btn fade-in-bottom"
-            style={{ width: "100%", textTransform: "capitalize" }}
+            style={{ width: "100%", textTransform: "capitalize", border: error ? "1px solid var(--Input-border-destructive, #FDA29B)" : undefined }}
             type="button"
             onClick={() => setDropdownOpen((v) => !v)}
           >

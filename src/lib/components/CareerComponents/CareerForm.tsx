@@ -101,6 +101,7 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
     const [isSavingCareer, setIsSavingCareer] = useState(false);
     const savingCareerRef = useRef(false);
     const [currentStep, setCurrentStep] = useState(1);
+    const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
     const [teamMembers, setTeamMembers] = useState(career?.teamMembers || [
         {
             id: 1,
@@ -144,7 +145,57 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
         }
     }
 
+    const validateCurrentStep = () => {
+        const errors: {[key: string]: string} = {};
+        
+        if (currentStep === 1) {
+            if (!jobTitle?.trim().length) {
+                errors.jobTitle = "Job title is required";
+            }
+            if (!description || !description.replace(/<[^>]*>/g, '').trim().length) {
+                errors.description = "Job description is required";
+            }
+            if (!employmentType?.trim().length) {
+                errors.employmentType = "Employment type is required";
+            }
+            if (!workSetup?.trim().length) {
+                errors.workSetup = "Work arrangement is required";
+            }
+            if (!province?.trim().length) {
+                errors.province = "Province is required";
+            }
+            if (!city?.trim().length) {
+                errors.city = "City is required";
+            }
+            if (!minimumSalary?.trim().length) {
+                errors.minimumSalary = "This is a required field.";
+            } else if (Number(minimumSalary) === 0 || isNaN(Number(minimumSalary))) {
+                errors.minimumSalary = "Minimum salary must be greater than 0";
+            }
+            if (!maximumSalary?.trim().length) {
+                errors.maximumSalary = "This is a required field.";
+            } else if (Number(maximumSalary) === 0 || isNaN(Number(maximumSalary))) {
+                errors.maximumSalary = "Maximum salary must be greater than 0";
+            } else if (minimumSalary?.trim().length && Number(minimumSalary) > Number(maximumSalary)) {
+                errors.maximumSalary = "Maximum salary must be greater than minimum salary";
+            }
+        }
+        
+        setFieldErrors(errors);
+        return Object.keys(errors).length === 0;
+    }
+
     const handleSaveAndContinue = () => {
+        if (currentStep === 1) {
+            const isValid = validateCurrentStep();
+            if (!isValid) {
+                return; // Don't proceed if validation fails
+            }
+        }
+        
+        // Clear errors when moving to next step
+        setFieldErrors({});
+        
         if (currentStep < 5) {
             setCurrentStep(currentStep + 1);
         } else {
@@ -368,6 +419,8 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                         requireVideo={requireVideo}
                         setRequireVideo={setRequireVideo}
                         screeningSettingList={screeningSettingList}
+                        fieldErrors={fieldErrors}
+                        setFieldErrors={setFieldErrors}
                     />
                 )}
                 {currentStep === 2 && (
@@ -418,6 +471,8 @@ export default function CareerForm({ career, formType, setShowEditModal }: { car
                 requireVideo={requireVideo}
                 setRequireVideo={setRequireVideo}
                 screeningSettingList={screeningSettingList}
+                fieldErrors={fieldErrors}
+                setFieldErrors={setFieldErrors}
             />
         )}
       {showSaveModal && (

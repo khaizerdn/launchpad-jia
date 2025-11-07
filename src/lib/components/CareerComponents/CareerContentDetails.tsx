@@ -7,7 +7,8 @@ import philippineCitiesAndProvinces from "../../../../public/philippines-locatio
 import MemberDropdown from "./MemberDropdown";
 import styles from "@/lib/styles/components/careerForm.module.scss";
 import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
-import cardStyles from "@/lib/styles/components/careerContentCards.module.css";
+import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
+import errorStyles from "@/lib/styles/components/careerErrorField.module.scss";
 
 const workSetupOptions = [
     {
@@ -58,6 +59,8 @@ interface CareerContentDetailsProps {
     requireVideo: boolean;
     setRequireVideo: (value: boolean) => void;
     screeningSettingList: any[];
+    fieldErrors: {[key: string]: string};
+    setFieldErrors: (errors: {[key: string]: string}) => void;
 }
 
 export default function CareerContentDetails({
@@ -88,22 +91,31 @@ export default function CareerContentDetails({
     requireVideo,
     setRequireVideo,
     screeningSettingList,
+    fieldErrors,
+    setFieldErrors,
 }: CareerContentDetailsProps) {
     const [provinceList, setProvinceList] = useState([]);
     const [cityList, setCityList] = useState([]);
 
     useEffect(() => {
         const parseProvinces = () => {
-            setProvinceList(philippineCitiesAndProvinces.provinces);
-            const defaultProvince = philippineCitiesAndProvinces.provinces[0];
+            const sortedProvinces = [...philippineCitiesAndProvinces.provinces].sort((a, b) => 
+                a.name.localeCompare(b.name)
+            );
+            setProvinceList(sortedProvinces);
+            const defaultProvince = sortedProvinces[0];
             if (province) {
-                const selectedProvince = philippineCitiesAndProvinces.provinces.find(p => p.name === province);
+                const selectedProvince = sortedProvinces.find(p => p.name === province);
                 if (selectedProvince) {
-                    const cities = philippineCitiesAndProvinces.cities.filter((city) => city.province === selectedProvince.key);
+                    const cities = philippineCitiesAndProvinces.cities
+                        .filter((city) => city.province === selectedProvince.key)
+                        .sort((a, b) => a.name.localeCompare(b.name));
                     setCityList(cities);
                 }
             } else {
-                const cities = philippineCitiesAndProvinces.cities.filter((city) => city.province === defaultProvince.key);
+                const cities = philippineCitiesAndProvinces.cities
+                    .filter((city) => city.province === defaultProvince.key)
+                    .sort((a, b) => a.name.localeCompare(b.name));
                 setCityList(cities);
             }
         }
@@ -126,10 +138,21 @@ export default function CareerContentDetails({
                                     value={jobTitle}
                                     className="form-control"
                                     placeholder="Enter job title"
+                                    style={{ border: fieldErrors.jobTitle ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined }}
                                     onChange={(e) => {
                                         setJobTitle(e.target.value || "");
+                                        if (fieldErrors.jobTitle) {
+                                            const newErrors = { ...fieldErrors };
+                                            delete newErrors.jobTitle;
+                                            setFieldErrors(newErrors);
+                                        }
                                     }}
                                 ></input>
+                                {fieldErrors.jobTitle && (
+                                    <span className={errorStyles.errorMessage}>
+                                        {fieldErrors.jobTitle}
+                                    </span>
+                                )}
                             </div>
                         </div>
 
@@ -141,22 +164,44 @@ export default function CareerContentDetails({
                                     <CustomDropdown
                                         onSelectSetting={(employmentType) => {
                                             setEmploymentType(employmentType);
+                                            if (fieldErrors.employmentType) {
+                                                const newErrors = { ...fieldErrors };
+                                                delete newErrors.employmentType;
+                                                setFieldErrors(newErrors);
+                                            }
                                         }}
                                         screeningSetting={employmentType}
                                         settingList={employmentTypeOptions}
                                         placeholder="Choose employment type"
+                                        error={fieldErrors.employmentType}
                                     />
+                                    {fieldErrors.employmentType && (
+                                        <span className={errorStyles.errorMessage}>
+                                            {fieldErrors.employmentType}
+                                        </span>
+                                    )}
                                 </div>
                                 <div className={cardStyles.fieldContainer}>
                                     <span>Arrangement</span>
                                     <CustomDropdown
                                         onSelectSetting={(setting) => {
                                             setWorkSetup(setting);
+                                            if (fieldErrors.workSetup) {
+                                                const newErrors = { ...fieldErrors };
+                                                delete newErrors.workSetup;
+                                                setFieldErrors(newErrors);
+                                            }
                                         }}
                                         screeningSetting={workSetup}
                                         settingList={workSetupOptions}
                                         placeholder="Choose work arrangement"
+                                        error={fieldErrors.workSetup}
                                     />
+                                    {fieldErrors.workSetup && (
+                                        <span className={errorStyles.errorMessage}>
+                                            {fieldErrors.workSetup}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -181,26 +226,50 @@ export default function CareerContentDetails({
                                         onSelectSetting={(province) => {
                                             setProvince(province);
                                             const provinceObj = provinceList.find((p) => p.name === province);
-                                            const cities = philippineCitiesAndProvinces.cities.filter((city) => city.province === provinceObj.key);
+                                            const cities = philippineCitiesAndProvinces.cities
+                                                .filter((city) => city.province === provinceObj.key)
+                                                .sort((a, b) => a.name.localeCompare(b.name));
                                             setCityList(cities);
                                             setCity(cities[0].name);
+                                            if (fieldErrors.province) {
+                                                const newErrors = { ...fieldErrors };
+                                                delete newErrors.province;
+                                                setFieldErrors(newErrors);
+                                            }
                                         }}
                                         screeningSetting={province}
                                         settingList={provinceList}
                                         placeholder="Choose state / province"
+                                        error={fieldErrors.province}
                                     />
+                                    {fieldErrors.province && (
+                                        <span className={errorStyles.errorMessage}>
+                                            {fieldErrors.province}
+                                        </span>
+                                    )}
                                 </div>
                                 <div className={cardStyles.fieldContainer}>
                                     <span>City</span>
                                     <CustomDropdown
                                         onSelectSetting={(city) => {
                                             setCity(city);
+                                            if (fieldErrors.city) {
+                                                const newErrors = { ...fieldErrors };
+                                                delete newErrors.city;
+                                                setFieldErrors(newErrors);
+                                            }
                                         }}
                                         screeningSetting={city}
                                         settingList={cityList}
                                         placeholder="Choose city"
                                         allowEmpty={true}
+                                        error={fieldErrors.city}
                                     />
+                                    {fieldErrors.city && (
+                                        <span className={errorStyles.errorMessage}>
+                                            {fieldErrors.city}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -224,16 +293,26 @@ export default function CareerContentDetails({
                                         <input
                                             type="number"
                                             className="form-control"
-                                            style={{ paddingLeft: "28px" }}
+                                            style={{ paddingLeft: "28px", border: fieldErrors.minimumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined }}
                                             placeholder="0"
                                             min={0}
                                             value={minimumSalary}
                                             onChange={(e) => {
                                                 setMinimumSalary(e.target.value || "");
+                                                if (fieldErrors.minimumSalary) {
+                                                    const newErrors = { ...fieldErrors };
+                                                    delete newErrors.minimumSalary;
+                                                    setFieldErrors(newErrors);
+                                                }
                                             }}
                                         />
                                         <span style={{ position: "absolute", right: "30px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
                                     </div>
+                                    {fieldErrors.minimumSalary && (
+                                        <span className={errorStyles.errorMessage}>
+                                            {fieldErrors.minimumSalary}
+                                        </span>
+                                    )}
                                 </div>
                                 <div className={cardStyles.fieldContainer}>
                                     <span>Maximum Salary</span>
@@ -242,16 +321,26 @@ export default function CareerContentDetails({
                                         <input
                                             type="number"
                                             className="form-control"
-                                            style={{ paddingLeft: "28px" }}
+                                            style={{ paddingLeft: "28px", border: fieldErrors.maximumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined }}
                                             placeholder="0"
                                             min={0}
                                             value={maximumSalary}
                                             onChange={(e) => {
                                                 setMaximumSalary(e.target.value || "");
+                                                if (fieldErrors.maximumSalary) {
+                                                    const newErrors = { ...fieldErrors };
+                                                    delete newErrors.maximumSalary;
+                                                    setFieldErrors(newErrors);
+                                                }
                                             }}
                                         />
                                         <span style={{ position: "absolute", right: "30px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
                                     </div>
+                                    {fieldErrors.maximumSalary && (
+                                        <span className={errorStyles.errorMessage}>
+                                            {fieldErrors.maximumSalary}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -263,7 +352,25 @@ export default function CareerContentDetails({
                         <span className={cardStyles.careerCardTitle}>2. Job Description</span>
                     </div>
                     <div className={cardStyles.careerCardContent}>
-                        <RichTextEditor setText={setDescription} text={description} />
+                        <div className={cardStyles.fieldContainer}>
+                            <RichTextEditor 
+                                setText={(text) => {
+                                    setDescription(text);
+                                    if (fieldErrors.description) {
+                                        const newErrors = { ...fieldErrors };
+                                        delete newErrors.description;
+                                        setFieldErrors(newErrors);
+                                    }
+                                }} 
+                                text={description}
+                                error={fieldErrors.description}
+                            />
+                            {fieldErrors.description && (
+                                <span className={errorStyles.errorMessage}>
+                                    {fieldErrors.description}
+                                </span>
+                            )}
+                        </div>
                     </div>
                 </div>
 
