@@ -4,9 +4,8 @@ A comprehensive overview of the segmented career form system with validation, sa
 
 ---
 
-## 🎯 Key Features
+## 1. Update the career form in the recruiter portal to be a segmented form
 
-### 1. Segmented Form
 The career form is divided into **5 steps** that users must complete sequentially:
 - **Step 1:** Career Details & Team Access
 - **Step 2:** CV Screening
@@ -19,7 +18,63 @@ The career form is divided into **5 steps** that users must complete sequentiall
 - Progress bar shows current step and completion status
 - Each step must be validated before proceeding
 
-### 2. Progress Saving
+**Step Navigation:**
+1. **Initial Load:**
+   - New career: Starts at Step 1
+   - Edit career: Loads at last saved `currentStep`
+
+2. **Advancing Steps:**
+   - User fills current step
+   - Clicks "Save and Continue"
+   - `validateCurrentStep()` runs
+   - If valid: `currentStep` increments, data saved
+   - If invalid: Errors shown, step doesn't advance
+
+3. **Progress Bar:**
+   - Shows all 5 steps
+   - Highlights current step
+   - Shows completion status (circle, warning, or checkmark)
+
+**Validation Rules:**
+
+### Step 1: Career Details & Team Access
+**Required Fields:**
+- Job Title
+- Job Description
+- Employment Type
+- Work Arrangement
+- Province
+- City
+- Minimum Salary
+- Maximum Salary
+- At least one team member with "Job Owner" role
+
+**Validation:**
+- All fields must be filled
+- Salaries must be > 0
+- Maximum salary must be > minimum salary
+- Job Owner must be assigned
+
+### Step 2: CV Screening
+**Pre-Screening Questions:**
+- Optional questions can be added
+- Questions support multiple types (Short Answer, Long Answer, Dropdown, Checkboxes, Range)
+- Custom questions can be created with editable text input
+- Questions can be reordered and deleted
+
+### Other Steps
+- Validation rules defined per step
+- Each step validates before allowing progression
+
+**Files:**
+- `src/lib/components/CareerComponents/CareerForm.tsx` - Main form component, handles step navigation and validation
+- `src/lib/components/CareerComponents/CareerContentDetails.tsx` - Step 1 form fields
+- `src/lib/components/CareerComponents/CareerProgressBar.tsx` - Progress bar display
+
+---
+
+## 2. User must be able to save current progress and return to last step
+
 Users can save their current progress and return to the last step later.
 
 **How it works:**
@@ -42,16 +97,21 @@ API saves currentStep to database
 Form displays next step
 ```
 
-**File:** `src/lib/components/CareerComponents/CareerForm.tsx`
-- `currentStep` state (line 103)
-- `handleSaveAndContinue()` (line 194-215)
-- `saveCareer()` / `updateCareer()` - saves `currentStep` to database
+**Saving Progress:**
+- "Save as Unpublished" saves current `currentStep`
+- User can return later and resume from saved step
+
+**Files:**
+- `src/lib/components/CareerComponents/CareerForm.tsx`
+  - `currentStep` state (line 103)
+  - `handleSaveAndContinue()` (line 194-215)
+  - `saveCareer()` / `updateCareer()` - saves `currentStep` to database
+- `src/app/recruiter-dashboard/careers/edit/[slug]/page.tsx` - Edit career page, loads career at last saved step
 
 ---
 
-## 🔒 Security Features
+## 3. Add validation and sanitize input in add career API against XSS scripts and invalid HTML
 
-### Input Validation & Sanitization
 All user inputs are validated and sanitized to prevent XSS attacks and invalid data.
 
 **What gets sanitized:**
@@ -70,14 +130,25 @@ All user inputs are validated and sanitized to prevent XSS attacks and invalid d
 - ObjectId format validation
 - Array structure validation
 
-**Files:**
-- `src/lib/utils/validation.ts` - Core validation functions
-- `src/app/api/add-career/route.ts` - Server-side validation
+**XSS Protection:**
+All user inputs are sanitized before database storage:
 
----
+```typescript
+// Example: Job Title
+Input:  "Developer <script>alert('XSS')</script>"
+Output: "Developer " (script tag removed)
 
-## 📊 System Flow
+// Example: Description (allows safe HTML)
+Input:  "<p>Hello</p><script>alert('XSS')</script>"
+Output: "<p>Hello</p>" (script removed, safe HTML kept)
+```
 
+**Validation Layers:**
+1. **Client-side:** Quick feedback, prevents unnecessary API calls
+2. **Server-side:** Final validation, ensures data integrity
+3. **Sanitization:** Removes dangerous content while preserving safe formatting
+
+**System Flow:**
 ```
 ┌─────────────────────────────────────────┐
 │ 1. User Input (Frontend)                │
@@ -120,112 +191,46 @@ All user inputs are validated and sanitized to prevent XSS attacks and invalid d
 └─────────────────────────────────────────┘
 ```
 
----
-
-## 📁 Key Files
-
-### Frontend Components
-- **`src/lib/components/CareerComponents/CareerForm.tsx`**
-  - Main form component
-  - Handles step navigation and validation
-  - Manages `currentStep` state
-
-- **`src/lib/components/CareerComponents/CareerContentDetails.tsx`**
-  - Step 1 form fields
-  - Displays validation errors
-
-- **`src/lib/components/CareerComponents/CareerProgressBar.tsx`**
-  - Progress bar display
-  - Shows step completion status
-
-### Backend
-- **`src/app/api/add-career/route.ts`**
-  - API endpoint for creating careers
-  - Server-side validation and sanitization
-  - Saves `currentStep` to database
-
-- **`src/lib/utils/validation.ts`**
-  - Validation utility functions
-  - HTML sanitization logic
-
-### Edit Page
-- **`src/app/recruiter-dashboard/careers/edit/[slug]/page.tsx`**
-  - Edit career page
-  - Loads career at last saved step
+**Files:**
+- `src/lib/utils/validation.ts` - Core validation functions and HTML sanitization logic
+- `src/app/api/add-career/route.ts` - API endpoint for creating careers, server-side validation and sanitization
 
 ---
 
-## 🔄 Step Navigation
+## 4. Update the career form in the recruiter portal to add and edit pre-screening questions
 
-### How Steps Work
+Users can add and edit pre-screening questions in Step 2 (CV Screening).
 
-1. **Initial Load:**
-   - New career: Starts at Step 1
-   - Edit career: Loads at last saved `currentStep`
+**How it works:**
+- Users can add suggested questions (Notice Period, Work Setup, Asking Salary) or create custom questions
+- Each question has a type dropdown: Short Answer, Long Answer, Dropdown, Checkboxes, or Range
+- Custom questions use an editable input field that shows as plain text when not focused
+- Questions can be reordered via drag-and-drop (using `@dnd-kit` library)
+- Options can be added/removed for Dropdown and Checkboxes types
+- Range type uses minimum/maximum salary inputs
 
-2. **Advancing Steps:**
-   - User fills current step
-   - Clicks "Save and Continue"
-   - `validateCurrentStep()` runs
-   - If valid: `currentStep` increments, data saved
-   - If invalid: Errors shown, step doesn't advance
+**Drag and Drop Implementation:**
+- Uses `@dnd-kit/core`, `@dnd-kit/sortable`, and `@dnd-kit/utilities` libraries
+- `DndContext` wraps the sortable list
+- `useSortable` hook enables drag functionality for each question/option
+- `SortableContext` manages sortable items with `verticalListSortingStrategy`
+- Supports both mouse and keyboard navigation
 
-3. **Saving Progress:**
-   - "Save as Unpublished" saves current `currentStep`
-   - User can return later and resume from saved step
+**Question Types:**
+- **Short Answer:** Single-line text input
+- **Long Answer:** Multi-line text input
+- **Dropdown:** Select from predefined options
+- **Checkboxes:** Multiple selection from options
+- **Range:** Minimum and maximum salary inputs
 
-4. **Progress Bar:**
-   - Shows all 5 steps
-   - Highlights current step
-   - Shows completion status (circle, warning, or checkmark)
-
----
-
-## ✅ Validation Rules
-
-### Step 1: Career Details & Team Access
-**Required Fields:**
-- Job Title
-- Job Description
-- Employment Type
-- Work Arrangement
-- Province
-- City
-- Minimum Salary
-- Maximum Salary
-- At least one team member with "Job Owner" role
-
-**Validation:**
-- All fields must be filled
-- Salaries must be > 0
-- Maximum salary must be > minimum salary
-- Job Owner must be assigned
-
-### Other Steps
-- Validation rules defined per step
-- Each step validates before allowing progression
-
----
-
-## 🛡️ Security Implementation
-
-### XSS Protection
-All user inputs are sanitized before database storage:
-
-```typescript
-// Example: Job Title
-Input:  "Developer <script>alert('XSS')</script>"
-Output: "Developer " (script tag removed)
-
-// Example: Description (allows safe HTML)
-Input:  "<p>Hello</p><script>alert('XSS')</script>"
-Output: "<p>Hello</p>" (script removed, safe HTML kept)
-```
-
-### Validation Layers
-1. **Client-side:** Quick feedback, prevents unnecessary API calls
-2. **Server-side:** Final validation, ensures data integrity
-3. **Sanitization:** Removes dangerous content while preserving safe formatting
+**Files:**
+- `src/lib/components/CareerComponents/CareerContentScreening.tsx`
+  - `handleAddQuestion()` - Adds suggested questions
+  - `handleAddCustomQuestion()` - Creates custom question with editable input
+  - `handleUpdateType()` - Updates question type
+  - `handleUpdateDescription()` - Updates custom question text
+  - `handleDragEnd()` - Handles question reordering
+  - `handleDragOptionEnd()` - Handles option reordering within questions
 
 ---
 
@@ -255,6 +260,13 @@ Output: "<p>Hello</p>" (script removed, safe HTML kept)
 3. Check database - script tag should be removed
 4. View saved career - no script execution
 
+### Testing Pre-Screening Questions
+1. Navigate to Step 2 (CV Screening)
+2. Click "Add Custom" to create a custom question
+3. Select question type from dropdown
+4. Add options for Dropdown/Checkboxes types
+5. Reorder questions via drag-and-drop
+
 ---
 
 ## 🔍 Troubleshooting
@@ -282,4 +294,3 @@ For detailed testing instructions and code flow diagrams, see:
 - Component files in `src/lib/components/CareerComponents/`
 - API routes in `src/app/api/`
 - Validation utilities in `src/lib/utils/validation.ts`
-

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react";
-import styles from "@/lib/styles/components/memberDropdown.module.scss";
+import styles from "@/lib/styles/components/careerMemberDropdown.module.scss";
 
 interface Member {
     id: number;
