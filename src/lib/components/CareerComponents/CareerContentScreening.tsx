@@ -5,6 +5,7 @@ import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, us
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
+import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
 import styles from "@/lib/styles/components/careerForm.module.scss";
 import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
@@ -14,6 +15,8 @@ interface CareerContentScreeningProps {
     screeningSetting: string;
     setScreeningSetting: (value: string) => void;
     screeningSettingList: any[];
+    cvSecretPrompt: string;
+    setCvSecretPrompt: (value: string) => void;
 }
 
 interface SortableQuestionItemProps {
@@ -382,13 +385,23 @@ export default function CareerContentScreening({
     screeningSetting,
     setScreeningSetting,
     screeningSettingList,
+    cvSecretPrompt,
+    setCvSecretPrompt,
 }: CareerContentScreeningProps) {
     const [showTooltip, setShowTooltip] = useState(false);
     const [activeQuestions, setActiveQuestions] = useState<{id: string, title: string, description: string, type?: string}[]>([]);
     const [questionOptions, setQuestionOptions] = useState<{[questionId: string]: {id: string, value: string, number: number}[]}>({});
     const [questionSalaryRanges, setQuestionSalaryRanges] = useState<{[questionId: string]: {minimum: string, maximum: string}}>({});
     const tooltipRef = useRef<HTMLDivElement>(null);
+    const cvSecretPromptRef = useRef<HTMLDivElement>(null);
     const iconRef = useRef<HTMLDivElement>(null);
+
+    // Sync editor content when cvSecretPrompt changes from outside
+    useEffect(() => {
+        if (cvSecretPromptRef.current && cvSecretPrompt !== cvSecretPromptRef.current.innerHTML) {
+            cvSecretPromptRef.current.innerHTML = cvSecretPrompt || '';
+        }
+    }, [cvSecretPrompt]);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -588,14 +601,16 @@ export default function CareerContentScreening({
                                 </p>
                             </div>
                             <div className={cardStyles.fieldContainer}>
-                                <CustomDropdown
-                                    onSelectSetting={(setting) => {
-                                        setScreeningSetting(setting);
-                                    }}
-                                    screeningSetting={screeningSetting}
-                                    settingList={screeningSettingList}
-                                    placeholder="Select screening setting"
-                                />
+                                <div style={{ width: "320px" }}>
+                                    <CustomDropdown
+                                        onSelectSetting={(setting) => {
+                                            setScreeningSetting(setting);
+                                        }}
+                                        screeningSetting={screeningSetting}
+                                        settingList={screeningSettingList}
+                                        placeholder="Select screening setting"
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div style={{ width: '100%', height: '1px', backgroundColor: '#E9EAEB' }}></div>
@@ -659,6 +674,39 @@ export default function CareerContentScreening({
                                     Secret Prompts give you extra control over Jia's evaluation style, complementing her accurate assessment of requirements from the job description.
                                 </p>
                             </div>
+                            <div
+                                ref={cvSecretPromptRef}
+                                contentEditable={true}
+                                className={`form-control rich-text-editor ${preScreeningStyles.cvSecretPromptInput}`}
+                                style={{
+                                    width: "100%",
+                                    height: "180px",
+                                    overflowY: "auto",
+                                    padding: "12px",
+                                    lineHeight: "1.5",
+                                    position: "relative",
+                                    minHeight: "180px"
+                                }}
+                                onInput={() => {
+                                    if (cvSecretPromptRef.current) {
+                                        setCvSecretPrompt(cvSecretPromptRef.current.innerHTML);
+                                    }
+                                }}
+                                onBlur={() => {
+                                    if (cvSecretPromptRef.current) {
+                                        setCvSecretPrompt(cvSecretPromptRef.current.innerHTML);
+                                    }
+                                }}
+                                onPaste={(e) => {
+                                    e.preventDefault();
+                                    const text = e.clipboardData.getData('text/plain');
+                                    document.execCommand('insertText', false, text);
+                                    if (cvSecretPromptRef.current) {
+                                        setCvSecretPrompt(cvSecretPromptRef.current.innerHTML);
+                                    }
+                                }}
+                                data-placeholder="Enter a secret prompt (e.g. Give higher fit scores to candidates who participate in hackathons or competitions.)"
+                            ></div>
                         </div>
                     </div>
                 </div>

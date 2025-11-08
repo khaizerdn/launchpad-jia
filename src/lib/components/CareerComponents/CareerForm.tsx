@@ -57,6 +57,8 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
     const [workSetup, setWorkSetup] = useState(career?.workSetup || "");
     const [workSetupRemarks, setWorkSetupRemarks] = useState(career?.workSetupRemarks || "");
     const [screeningSetting, setScreeningSetting] = useState(career?.screeningSetting || "Good Fit and above");
+    const [cvSecretPrompt, setCvSecretPrompt] = useState(career?.cvSecretPrompt || "");
+    const [aiInterviewSecretPrompt, setAiInterviewSecretPrompt] = useState(career?.aiInterviewSecretPrompt || "");
     const [employmentType, setEmploymentType] = useState(career?.employmentType || "");
     const [requireVideo, setRequireVideo] = useState(career?.requireVideo || true);
     const [salaryNegotiable, setSalaryNegotiable] = useState(career?.salaryNegotiable || true);
@@ -102,24 +104,22 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
     const savingCareerRef = useRef(false);
     const [currentStep, setCurrentStep] = useState(initialStep || 1);
     const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
-    const [teamMembers, setTeamMembers] = useState(career?.teamMembers || [
-        {
-            id: 1,
-            name: "Sabine Beatrix Dy",
-            email: "sabine@whitecloak.com",
-            role: "Job Owner",
-            avatar: "",
-            isCurrentUser: true
-        },
-        {
-            id: 2,
-            name: "Darlene Santo Tomas",
-            email: "darlene@whitecloak.com",
-            role: "Contributor",
-            avatar: "",
-            isCurrentUser: false
+    const [teamMembers, setTeamMembers] = useState(career?.teamMembers || []);
+
+    // Initialize current user as Job Owner if no team members exist
+    useEffect(() => {
+        if (user && teamMembers.length === 0) {
+            const currentUserMember = {
+                id: user.id || Date.now(),
+                name: user.name || "",
+                email: user.email || "",
+                role: "Job Owner",
+                avatar: user.image || user.picture || "",
+                isCurrentUser: true
+            };
+            setTeamMembers([currentUserMember]);
         }
-    ]);
+    }, [user, teamMembers.length]);
 
     const isFormValid = () => {
         return jobTitle?.trim().length > 0 && description?.trim().length > 0 && questions.some((q) => q.questions.length > 0) && workSetup?.trim().length > 0;
@@ -461,6 +461,8 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                 screeningSetting={screeningSetting}
                 setScreeningSetting={setScreeningSetting}
                 screeningSettingList={screeningSettingList}
+                cvSecretPrompt={cvSecretPrompt}
+                setCvSecretPrompt={setCvSecretPrompt}
             />
         )}
         {currentStep === 3 && (
@@ -470,6 +472,8 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                 screeningSettingList={screeningSettingList}
                 requireVideo={requireVideo}
                 setRequireVideo={setRequireVideo}
+                aiInterviewSecretPrompt={aiInterviewSecretPrompt}
+                setAiInterviewSecretPrompt={setAiInterviewSecretPrompt}
             />
         )}
         {currentStep === 4 && <CareerContentPipeline />}
