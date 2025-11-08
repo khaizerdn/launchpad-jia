@@ -59,6 +59,13 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
     const [screeningSetting, setScreeningSetting] = useState(career?.screeningSetting || "Good Fit and above");
     const [cvSecretPrompt, setCvSecretPrompt] = useState(career?.cvSecretPrompt || "");
     const [aiInterviewSecretPrompt, setAiInterviewSecretPrompt] = useState(career?.aiInterviewSecretPrompt || "");
+    const [interviewQuestions, setInterviewQuestions] = useState<{[category: string]: {id: string, text: string, isEditing: boolean}[]}>({
+        'CV Validation / Experience': [],
+        'Technical': [],
+        'Behavioral': [],
+        'Analytical': [],
+        'Others': []
+    });
     const [employmentType, setEmploymentType] = useState(career?.employmentType || "");
     const [requireVideo, setRequireVideo] = useState(career?.requireVideo || true);
     const [salaryNegotiable, setSalaryNegotiable] = useState(career?.salaryNegotiable || true);
@@ -187,12 +194,19 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
             }
         }
         
+        if (currentStep === 3) {
+            const totalQuestions = Object.values(interviewQuestions).flat().length;
+            if (totalQuestions < 5) {
+                errors.interviewQuestions = "Please add at least 5 interview questions.";
+            }
+        }
+        
         setFieldErrors(errors);
         return Object.keys(errors).length === 0;
     }
 
     const handleSaveAndContinue = async () => {
-        if (currentStep === 1) {
+        if (currentStep === 1 || currentStep === 3) {
             const isValid = validateCurrentStep();
             if (!isValid) {
                 return; // Don't proceed if validation fails
@@ -345,7 +359,16 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
     return (
         <div className="col">
         {formType === "add" ? (<div style={{ marginBottom: "35px", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-              <h1 style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}>Add new career</h1>
+              <h1 style={{ fontSize: "24px", fontWeight: 550, color: "#111827", display: "flex", flexDirection: "row", alignItems: "center", gap: "8px" }}>
+                {currentStep > 1 && jobTitle?.trim() ? (
+                  <>
+                    <span style={{ color: "var(--Text-text-tertiary, #717680)" }}>[Draft]</span>
+                    <span>{jobTitle}</span>
+                  </>
+                ) : (
+                  "Add new career"
+                )}
+              </h1>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
                   <button
                   disabled={currentStep === 1 || isSavingCareer}
@@ -474,6 +497,9 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                 setRequireVideo={setRequireVideo}
                 aiInterviewSecretPrompt={aiInterviewSecretPrompt}
                 setAiInterviewSecretPrompt={setAiInterviewSecretPrompt}
+                interviewQuestions={interviewQuestions}
+                setInterviewQuestions={setInterviewQuestions}
+                fieldErrors={fieldErrors}
             />
         )}
         {currentStep === 4 && <CareerContentPipeline />}
