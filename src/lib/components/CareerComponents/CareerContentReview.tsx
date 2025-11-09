@@ -1,49 +1,223 @@
 "use client"
 
+import { useState } from "react";
 import styles from "@/lib/styles/components/careerForm.module.scss";
-import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
+import { assetConstants } from "@/lib/utils/constantsV2";
 
-export default function CareerContentReview() {
+interface CareerContentReviewProps {
+    jobTitle?: string;
+    employmentType?: string;
+    workSetup?: string;
+    country?: string;
+    province?: string;
+    city?: string;
+    minimumSalary?: string;
+    maximumSalary?: string;
+    salaryNegotiable?: boolean;
+    description?: string;
+    responsibilities?: string[];
+    qualifications?: string[];
+    niceToHave?: string[];
+    teamMembers?: any[];
+}
+
+export default function CareerContentReview({
+    jobTitle = "",
+    employmentType = "",
+    workSetup = "",
+    country = "",
+    province = "",
+    city = "",
+    minimumSalary = "",
+    maximumSalary = "",
+    salaryNegotiable = false,
+    description = "",
+    responsibilities = [],
+    qualifications = [],
+    niceToHave = [],
+    teamMembers = [],
+}: CareerContentReviewProps) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const formatSalary = (salary: string, isNegotiable: boolean) => {
+        if (isNegotiable) return "Negotiable";
+        if (!salary || salary === "0") return "Negotiable";
+        return `₱${Number(salary).toLocaleString()}`;
+    };
+
     return (
         <div className={styles.mainContentContainer}>
-            <div className={styles.leftContainer}>
-                <div className={cardStyles.careerCard}>
-                    <div className={cardStyles.careerCardHeader}>
-                        <span className={cardStyles.careerCardTitle}>Review Career</span>
-                    </div>
-                    <div className={cardStyles.careerCardContent}>
-                        {/* Content will be added here */}
-                    </div>
-                </div>
-            </div>
-
-            <div className={styles.rightContainer}>
-                <div className="layered-card-middle">
-                    <div className={cardStyles.careerCardHeader}>
-                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.58333 16.6667H7.91667C7.91667 17.5833 7.16667 18.3333 6.25 18.3333C5.33333 18.3333 4.58333 17.5833 4.58333 16.6667ZM2.91667 15.8333H9.58333V14.1667H2.91667V15.8333ZM12.5 7.91667C12.5 11.1 10.2833 12.8 9.35833 13.3333H3.14167C2.21667 12.8 0 11.1 0 7.91667C0 4.46667 2.8 1.66667 6.25 1.66667C9.7 1.66667 12.5 4.46667 12.5 7.91667ZM10.8333 7.91667C10.8333 5.39167 8.775 3.33333 6.25 3.33333C3.725 3.33333 1.66667 5.39167 1.66667 7.91667C1.66667 9.975 2.90833 11.1583 3.625 11.6667H8.875C9.59167 11.1583 10.8333 9.975 10.8333 7.91667ZM16.5583 6.14167L15.4167 6.66667L16.5583 7.19167L17.0833 8.33333L17.6083 7.19167L18.75 6.66667L17.6083 6.14167L17.0833 5L16.5583 6.14167ZM14.5833 5L15.3667 3.28333L17.0833 2.5L15.3667 1.71667L14.5833 0L13.8 1.71667L12.0833 2.5L13.8 3.28333L14.5833 5Z" fill="url(#paint0_linear_1238_3980)"/>
-                            <defs>
-                                <linearGradient id="paint0_linear_1238_3980" x1="-0.000291994" y1="18.3332" x2="18.3285" y2="-0.412159" gradientUnits="userSpaceOnUse">
-                                    <stop stopColor="#FCCEC0"/>
-                                    <stop offset="0.33" stopColor="#EBACC9"/>
-                                    <stop offset="0.66" stopColor="#CEB6DA"/>
-                                    <stop offset="1" stopColor="#9FCAED"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        <span className={cardStyles.careerCardTitle}>Tips</span>
-                    </div>
-                    <div className={tipsStyles.tipsContent}>
-                        <div className={tipsStyles.tipsText}>
-                            <span className={tipsStyles.tipsTextBold}>Use clear, standard job titles</span> for better searchability (e.g., "Software Engineer" instead of "Code Ninja" or "Tech Rockstar").
-                            <br /><br />
-                            <span className={tipsStyles.tipsTextBold}>Avoid abbreviations</span> or internal role codes that applicants may not understand (e.g., use "QA Engineer" instead of "QE II" or "QA-TL").
-                            <br /><br />
-                            <span className={tipsStyles.tipsTextBold}>Keep it concise</span> – job titles should be no more than a few words (2–4 max), avoiding fluff or marketing terms.
+            <div className={cardStyles.careerCard} style={{ width: "960px" }}>
+                <div className={cardStyles.careerCardHeader} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <div 
+                            style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+                            onClick={() => setIsExpanded(!isExpanded)}
+                        >
+                            <svg 
+                                width="12" 
+                                height="7" 
+                                viewBox="0 0 12 7" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg"
+                                style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
+                            >
+                                <path d="M0.833984 0.833328L5.83398 5.83333L10.834 0.833328" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
                         </div>
+                        <span className={cardStyles.careerCardTitle}>Career Details & Team Access</span>
+                    </div>
+                    <div style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--Button-bg-secondary, #ffffff)", border: "1px solid var(--Button-border-primary, #d5d7da)", borderRadius: "50%", cursor: "pointer" }}>
+                        <img alt="" src={assetConstants.edit} />
                     </div>
                 </div>
+                {isExpanded && (
+                <div className={cardStyles.careerCardContent} style={{ padding: "24px" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-md, 16px)" }}>
+                        {/* Job Title */}
+                        <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                            <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Job Title</div>
+                            <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{jobTitle || "—"}</div>
+                        </div>
+                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+
+                        {/* Employment Type & Work Arrangement */}
+                        <div style={{ display: "flex", gap: "24px" }}>
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Employment Type</div>
+                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{employmentType || "—"}</div>
+                            </div>
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Work Arrangement</div>
+                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{workSetup || "—"}</div>
+                            </div>
+                            <div style={{ flex: 1 }}></div>
+                        </div>
+                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+
+                        {/* Location */}
+                        <div style={{ display: "flex", gap: "24px" }}>
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Country</div>
+                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{country || "—"}</div>
+                            </div>
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>State / Province</div>
+                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{province || "—"}</div>
+                            </div>
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>City</div>
+                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{city || "—"}</div>
+                            </div>
+                        </div>
+                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+
+                        {/* Salary Range */}
+                        <div style={{ display: "flex", gap: "24px" }}>
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Minimum Salary</div>
+                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{formatSalary(minimumSalary, salaryNegotiable)}</div>
+                            </div>
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Maximum Salary</div>
+                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{formatSalary(maximumSalary, salaryNegotiable)}</div>
+                            </div>
+                            <div style={{ flex: 1 }}></div>
+                        </div>
+                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+
+                        {/* Job Description */}
+                        {description && (
+                            <>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                    <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Job Description</div>
+                                    <div 
+                                        style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}
+                                        dangerouslySetInnerHTML={{ __html: description }}
+                                    />
+                                </div>
+                                <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                            </>
+                        )}
+
+                        {/* Responsibilities */}
+                        {responsibilities.length > 0 && (
+                            <>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                    <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Responsibilities:</div>
+                                    <ul style={{ margin: 0, paddingLeft: "20px", fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>
+                                        {responsibilities.map((item, index) => (
+                                            <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                            </>
+                        )}
+
+                        {/* Qualifications */}
+                        {qualifications.length > 0 && (
+                            <>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                    <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Qualifications:</div>
+                                    <ul style={{ margin: 0, paddingLeft: "20px", fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>
+                                        {qualifications.map((item, index) => (
+                                            <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                            </>
+                        )}
+
+                        {/* Nice to have */}
+                        {niceToHave.length > 0 && (
+                            <>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
+                                    <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Nice to have:</div>
+                                    <ul style={{ margin: 0, paddingLeft: "20px", fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>
+                                        {niceToHave.map((item, index) => (
+                                            <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                            </>
+                        )}
+
+                        {/* Team Access */}
+                        {teamMembers.length > 0 && (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-md, 16px)" }}>
+                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Team Access</div>
+                                {teamMembers.map((member, index) => (
+                                    <div key={index} style={{ display: "flex", alignItems: "center" }}>
+                                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                                            <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden", backgroundColor: "#E9EAEB", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                                {member.avatar ? (
+                                                    <img src={member.avatar} alt={member.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                                ) : (
+                                                    <div style={{ fontSize: "16px", fontWeight: 600, color: "#717680" }}>
+                                                        {member.name?.charAt(0)?.toUpperCase() || "?"}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", color: "var(--Text-text-secondary, #414651)" }}>
+                                                    {member.name}{member.isCurrentUser ? <span style={{ color: "var(--Text-text-tertiary, #717680)" }}> (You)</span> : ""}
+                                                </div>
+                                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", color: "var(--Text-text-tertiary, #717680)" }}>{member.email || "—"}</div>
+                                            </div>
+                                        </div>
+                                        <div style={{ flex: 1 }}></div>
+                                        <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{member.role || "—"}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                )}
             </div>
         </div>
     );
