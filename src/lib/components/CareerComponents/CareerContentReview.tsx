@@ -38,7 +38,7 @@ export default function CareerContentReview({
     niceToHave = [],
     teamMembers = [],
 }: CareerContentReviewProps) {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
 
     const formatSalary = (salary: string, isNegotiable: boolean) => {
         if (isNegotiable) return "Negotiable";
