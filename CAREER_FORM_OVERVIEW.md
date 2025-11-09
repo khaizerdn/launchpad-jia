@@ -286,44 +286,6 @@ New applicants applying to a job posting are required to answer all pre-screenin
 
 ---
 
-## ⭐ Icons
-
-All SVG icons used in the career form components are centralized in `public/iconsV3/` for better maintainability and reusability.
-
-### Icon Files Created/Used:
-
-**Alert Icons:**
-- `alertV2.svg` - Circle alert icon with exclamation mark (used in input field error indicators)
-- `alertV3.svg` - Triangle alert icon (used in error messages and progress bar)
-
-**Arrow Icons:**
-- `arrowDown.svg` - Down arrow chevron icon (used in dropdown buttons)
-
-**Check Icons:**
-- `checkV7.svg` - Checkmark icon with circular background (used in progress bar for completed steps)
-- `checkV8.svg` - White checkmark icon with circular background (used in "Publish" button)
-
-**Action Icons:**
-- `edit.svg` - Edit/pencil icon (used in edit buttons)
-- `plus.svg` - Circle plus icon (used in "Manually add" buttons)
-- `plusV2.svg` - White plus icon (used in "Add Custom" buttons)
-- `trashV2.svg` - Red trash/delete icon (used in delete buttons)
-
-**UI Icons:**
-- `bulb.svg` - Lightbulb with star icon (used in "Tips" sections)
-- `question.svg` - Question mark icon (used in tooltip triggers for secret prompts)
-- `sparkle.svg` - Colored sparkle/star icon with gradient (used in "Secret Prompt" sections)
-- `sparkleV2.svg` - White sparkle/star icon (used in button icons)
-
-**Status Icons:**
-- `circleDot.svg` - Circle with dot icon (used in progress bar for inactive steps)
-
-**Files:**
-- All icon files: `public/iconsV3/*.svg`
-- Component files reference icons via: `<img alt="" src="/iconsV3/[icon-name].svg" />`
-
----
-
 ## 📝 Quick Reference
 
 ### Testing the Segmented Form
@@ -384,3 +346,95 @@ For detailed testing instructions and code flow diagrams, see:
 - Component files in `src/lib/components/CareerComponents/`
 - API routes in `src/app/api/`
 - Validation utilities in `src/lib/utils/validation.ts`
+
+---
+
+## 🗂️ Configured Files
+
+### `src/lib/components/CareerComponents/CareerForm.tsx`
+**Usage:** Main form orchestrator used in `/careers/new-career` and `/careers/edit/[slug]` pages to manage the 5-step career creation/editing workflow.
+
+### `src/lib/components/CareerComponents/CareerContentCareerDetails.tsx`
+**Usage:** Step 1 component in CareerForm for editing job title, employment type, work setup, location, salary, job description, and team access.
+
+### `src/lib/components/CareerComponents/CareerContentCVReview.tsx`
+**Usage:** Step 2 component in CareerForm for configuring CV screening settings, CV secret prompts, and pre-screening questions.
+
+### `src/lib/components/CareerComponents/CareerContentAIInterview.tsx`
+**Usage:** Step 3 component in CareerForm for setting up AI interview screening, video requirements, secret prompts, and interview questions by category.
+
+### `src/lib/components/CareerComponents/CareerContentPipelineStages.tsx`
+**Usage:** Step 4 component in CareerForm for configuring pipeline stages (currently displays empty state).
+
+### `src/lib/components/CareerComponents/CareerContentReviewCareer.tsx`
+**Usage:** Step 5 (Review) component in CareerForm that displays all review cards (Career Details, CV Review, AI Interview, Pipeline Stages) in a merged, collapsible format.
+
+### `src/lib/components/CareerComponents/CareerProgressBar.tsx`
+**Usage:** Progress indicator component used in CareerForm to show current step and validation status.
+
+### `src/lib/components/Dropdown/CareerDropdown.tsx`
+**Usage:** Reusable dropdown component used across CareerContentCareerDetails, CareerContentCVReview, CareerContentAIInterview, and UploadCV_PreScreeningQuestions for consistent dropdown UI with dynamic positioning.
+
+### `src/lib/components/InputField/CareerInputField.tsx`
+**Usage:** Reusable input field component used in CareerContentCareerDetails for job title input with error handling and validation display.
+
+### `src/lib/components/screens/UploadCV.tsx`
+**Usage:** Main CV upload page component used in `/dashboard/upload-cv` route for displaying and editing uploaded CV sections with markdown stripping.
+
+### `src/lib/components/screens/UploadCV_PreScreeningQuestions.tsx`
+**Usage:** Pre-screening questions component used in UploadCV page for candidates to answer pre-screening questions before submitting their application.
+
+## Style Files
+
+### `src/lib/styles/components/careerForm.module.scss`
+**Usage:** CSS module for CareerForm and related components, containing styles for mainContentContainer, sectionContainer, reviewMainContainer, member management, and form layouts.
+
+### `src/lib/styles/components/careerContentCards.module.scss`
+**Usage:** CSS module for career card components, containing shared review card styles (reviewCard, reviewCardHeader, reviewTitle, reviewData, reviewDivider, reviewBadge, etc.) used across all review components.
+
+### `src/lib/styles/components/careerPreScreeningQuestions.module.scss`
+**Usage:** CSS module for pre-screening questions UI, containing styles for question containers, drag handles, option items, add/delete buttons, and suggested questions.
+
+### `src/lib/styles/screens/uploadCV.module.scss`
+**Usage:** CSS module for UploadCV page, containing styles for section titles, section details, and CV display formatting.
+
+### `src/lib/styles/globals.scss`
+**Usage:** Global stylesheet containing form-control classes, error states, and shared utility styles used across the entire application.
+
+---
+
+## ⭐ Icons
+
+All SVG icons used in the career form components are centralized in `public/iconsV3/` for better maintainability and reusability.
+
+### Icon Files Created/Used:
+
+**Alert Icons:**
+- `alertV2.svg` - Circle alert icon with exclamation mark (used in input field error indicators)
+- `alertV3.svg` - Triangle alert icon (used in error messages and progress bar)
+
+**Arrow Icons:**
+- `arrowDown.svg` - Down arrow chevron icon (used in dropdown buttons)
+
+**Check Icons:**
+- `checkV7.svg` - Checkmark icon with circular background (used in progress bar for completed steps)
+- `checkV8.svg` - White checkmark icon with circular background (used in "Publish" button)
+
+**Action Icons:**
+- `edit.svg` - Edit/pencil icon (used in edit buttons)
+- `plus.svg` - Circle plus icon (used in "Manually add" buttons)
+- `plusV2.svg` - White plus icon (used in "Add Custom" buttons)
+- `trashV2.svg` - Red trash/delete icon (used in delete buttons)
+
+**UI Icons:**
+- `bulb.svg` - Lightbulb with star icon (used in "Tips" sections)
+- `question.svg` - Question mark icon (used in tooltip triggers for secret prompts)
+- `sparkle.svg` - Colored sparkle/star icon with gradient (used in "Secret Prompt" sections)
+- `sparkleV2.svg` - White sparkle/star icon (used in button icons)
+
+**Status Icons:**
+- `circleDot.svg` - Circle with dot icon (used in progress bar for inactive steps)
+
+**Directories:**
+- All icon files: `public/iconsV3/*.svg`
+- Component files reference icons via: `<img alt="" src="/iconsV3/[icon-name].svg" />`

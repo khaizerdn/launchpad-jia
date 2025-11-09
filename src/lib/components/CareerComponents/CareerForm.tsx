@@ -407,8 +407,8 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                           </>
                       ) : (
                           <>
-                              Save and Continue
-                              <i className="la la-arrow-right" style={{ color: "#fff", fontSize: 20 }}></i>
+                      Save and Continue
+                      <i className="la la-arrow-right" style={{ color: "#fff", fontSize: 20 }}></i>
                           </>
                       )}
                   </button>
@@ -471,8 +471,8 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                           </>
                       ) : (
                           <>
-                              Save and Continue
-                              <i className="la la-arrow-right" style={{ color: "#fff", fontSize: 20 }}></i>
+                      Save and Continue
+                      <i className="la la-arrow-right" style={{ color: "#fff", fontSize: 20 }}></i>
                           </>
                       )}
                   </button>
