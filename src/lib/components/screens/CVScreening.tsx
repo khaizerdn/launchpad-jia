@@ -50,6 +50,7 @@ export default function CVScreening({
   const [preScreeningQuestionOptions, setPreScreeningQuestionOptions] = useState<{[questionId: string]: {id: string, value: string, number: number}[]}>({});
   const [preScreeningQuestionSalaryRanges, setPreScreeningQuestionSalaryRanges] = useState<{[questionId: string]: {minimum: string, maximum: string}}>({});
   const [questionAnswers, setQuestionAnswers] = useState<{[questionId: string]: any}>({});
+  const [loadingPreScreeningQuestions, setLoadingPreScreeningQuestions] = useState(true);
 
   const cvSections = [
     "Introduction",
@@ -66,6 +67,7 @@ export default function CVScreening({
   // Fetch pre-screening questions when component mounts
   useEffect(() => {
     if (interview?.id) {
+      setLoadingPreScreeningQuestions(true);
       // Try the dedicated endpoint first, fallback to fetch-career-data if needed
       axios({
         method: "POST",
@@ -80,6 +82,7 @@ export default function CVScreening({
             setPreScreeningQuestionOptions(res.data.preScreeningQuestionOptions || {});
             setPreScreeningQuestionSalaryRanges(res.data.preScreeningQuestionSalaryRanges || {});
           }
+          setLoadingPreScreeningQuestions(false);
         })
         .catch((err) => {
           console.error("Error fetching pre-screening questions:", err);
@@ -96,12 +99,18 @@ export default function CVScreening({
                   setPreScreeningQuestionOptions(res.data.preScreeningQuestionOptions || {});
                   setPreScreeningQuestionSalaryRanges(res.data.preScreeningQuestionSalaryRanges || {});
                 }
+                setLoadingPreScreeningQuestions(false);
               })
               .catch((fallbackErr) => {
                 console.error("Error fetching pre-screening questions from fallback:", fallbackErr);
+                setLoadingPreScreeningQuestions(false);
               });
+          } else {
+            setLoadingPreScreeningQuestions(false);
           }
         });
+    } else {
+      setLoadingPreScreeningQuestions(false);
     }
   }, [interview?.id, interview?._id]);
 
@@ -147,12 +156,14 @@ export default function CVScreening({
         );
       case "Dropdown":
         return (
-          <CareerDropdown
-            questionId={questionId}
-            options={options}
-            value={answer}
-            onChange={(value) => handleAnswerChange(questionId, value)}
-          />
+          <div style={{ width: "320px" }}>
+            <CareerDropdown
+              questionId={questionId}
+              options={options}
+              value={answer}
+              onChange={(value) => handleAnswerChange(questionId, value)}
+            />
+          </div>
         );
       case "Checkboxes":
         return (
@@ -226,12 +237,14 @@ export default function CVScreening({
         );
       default:
         return (
-          <CareerDropdown
-            questionId={questionId}
-            options={options}
-            value={answer}
-            onChange={(value) => handleAnswerChange(questionId, value)}
-          />
+          <div style={{ width: "320px" }}>
+            <CareerDropdown
+              questionId={questionId}
+              options={options}
+              value={answer}
+              onChange={(value) => handleAnswerChange(questionId, value)}
+            />
+          </div>
         );
     }
   };
@@ -433,11 +446,6 @@ export default function CVScreening({
                 <div 
                   className={styles.stepBar} 
                   key={index}
-                  onClick={() => {
-                    // TEMPORARY: Make steps clickable for navigation
-                    setCurrentStep(step[index]);
-                  }}
-                  style={{ cursor: 'pointer' }}
                 >
                   <img
                     alt=""
@@ -471,11 +479,6 @@ export default function CVScreening({
                     ]
                   }`}
                   key={index}
-                  onClick={() => {
-                    // TEMPORARY: Make steps clickable for navigation
-                    setCurrentStep(step[index]);
-                  }}
-                  style={{ cursor: 'pointer' }}
                 >
                   {item === "Review Next Steps" ? "Review" : item}
                 </span>
@@ -561,34 +564,36 @@ export default function CVScreening({
               </div>
 
               <div className={styles.cvScreeningQuestionsContainer}>
-                {preScreeningQuestions.length > 0 ? (
-                  preScreeningQuestions.map((question, index) => (
-                    <div key={question.id} className={styles.cvDetailsContainer}>
+                {loadingPreScreeningQuestions ? null : (
+                  preScreeningQuestions.length > 0 ? (
+                    preScreeningQuestions.map((question, index) => (
+                      <div key={question.id} className={styles.cvDetailsContainer}>
+                        <div className={styles.gradient}>
+                          <div className={styles.cvDetailsCard}>
+                            <span className={styles.sectionTitle}>
+                              {question.description || `Question ${index + 1}`}
+                            </span>
+                            <div className={styles.detailsContainer}>
+                              {renderQuestionInput(question)}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className={styles.cvDetailsContainer}>
                       <div className={styles.gradient}>
                         <div className={styles.cvDetailsCard}>
                           <span className={styles.sectionTitle}>
-                            {question.description || `Question ${index + 1}`}
+                            No pre-screening questions
                           </span>
                           <div className={styles.detailsContainer}>
-                            {renderQuestionInput(question)}
+                            <p>There are no pre-screening questions for this position.</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className={styles.cvDetailsContainer}>
-                    <div className={styles.gradient}>
-                      <div className={styles.cvDetailsCard}>
-                        <span className={styles.sectionTitle}>
-                          No pre-screening questions
-                        </span>
-                        <div className={styles.detailsContainer}>
-                          <p>There are no pre-screening questions for this position.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  )
                 )}
               </div>
               <div className={styles.cvScreeningButtonContainer}>
