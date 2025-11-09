@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
 import CareerDropdown from "@/lib/components/Dropdown/CareerDropdown";
+import CareerInputField from "@/lib/components/InputField/CareerInputField";
 import philippineCitiesAndProvinces from "../../../../public/philippines-locations.json";
-import MemberDropdown from "./MemberDropdown";
+import CareerMemberDropdown from "@/lib/components/Dropdown/CareerMemberDropdown";
 import styles from "@/lib/styles/components/careerForm.module.scss";
 import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
@@ -147,32 +148,17 @@ export default function CareerContentDetails({
                             <span className={cardStyles.sectionTitle}>Basic Information</span>
                             <div className={styles.jobTitleField}>
                                 <span>Job Title</span>
-                                <div style={{ position: "relative" }}>
-                                    <input
-                                        value={jobTitle}
-                                        className="form-control"
-                                        placeholder="Enter job title"
-                                        style={{ 
-                                            border: fieldErrors.jobTitle ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined,
-                                            paddingRight: fieldErrors.jobTitle ? "35px" : undefined
-                                        }}
-                                        onChange={(e) => {
-                                            setJobTitle(e.target.value || "");
-                                            if (fieldErrors.jobTitle) {
-                                                const newErrors = { ...fieldErrors };
-                                                delete newErrors.jobTitle;
-                                                setFieldErrors(newErrors);
-                                            }
-                                        }}
-                                    ></input>
-                                    {fieldErrors.jobTitle && (
-                                        <div style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
-                                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M7.33341 4.66666V7.33332M7.33341 9.99999H7.34008M14.0001 7.33332C14.0001 11.0152 11.0153 14 7.33341 14C3.65152 14 0.666748 11.0152 0.666748 7.33332C0.666748 3.65142 3.65152 0.666656 7.33341 0.666656C11.0153 0.666656 14.0001 3.65142 14.0001 7.33332Z" stroke="#F04438" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-                                            </svg>
-                                        </div>
-                                    )}
-                                </div>
+                                <CareerInputField
+                                    value={jobTitle}
+                                    onChange={(value) => setJobTitle(value)}
+                                    placeholder="Enter job title"
+                                    error={fieldErrors.jobTitle}
+                                    onErrorClear={() => {
+                                        const newErrors = { ...fieldErrors };
+                                        delete newErrors.jobTitle;
+                                        setFieldErrors(newErrors);
+                                    }}
+                                />
                                 {fieldErrors.jobTitle && (
                                     <span className={errorStyles.errorMessage}>
                                         {fieldErrors.jobTitle}
@@ -433,7 +419,7 @@ export default function CareerContentDetails({
                                 <span className={cardStyles.sectionTitle}>Add more members</span>
                                 <span className={styles.addMembersDescription}>You can add other members to collaborate on this career.</span>
                             </div>
-                            <MemberDropdown
+                            <CareerMemberDropdown
                                 onSelectMember={(member) => {
                                     setTeamMembers([...teamMembers, {
                                         id: member.id,

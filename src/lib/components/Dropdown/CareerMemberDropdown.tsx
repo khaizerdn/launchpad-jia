@@ -11,7 +11,7 @@ interface Member {
     avatarColor?: string;
 }
 
-interface MemberDropdownProps {
+interface CareerMemberDropdownProps {
     onSelectMember: (member: Member) => void;
     existingMemberIds?: number[];
     availableMembers?: Member[];
@@ -27,7 +27,7 @@ const defaultMembers: Member[] = [
     { id: 7, name: "Kelly Williams", email: "kelly@whitecloak.com", avatarColor: "#D8C7B6" },
 ];
 
-export default function MemberDropdown({ onSelectMember, existingMemberIds = [], availableMembers = defaultMembers }: MemberDropdownProps) {
+export default function CareerMemberDropdown({ onSelectMember, existingMemberIds = [], availableMembers = defaultMembers }: CareerMemberDropdownProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [openUpward, setOpenUpward] = useState(false);
@@ -172,4 +172,3 @@ export default function MemberDropdown({ onSelectMember, existingMemberIds = [],
         </div>
     );
 }
-

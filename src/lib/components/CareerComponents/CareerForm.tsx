@@ -7,7 +7,7 @@ import axios from "axios";
 import CareerActionModal from "./CareerActionModal";
 import FullScreenLoadingAnimation from "./FullScreenLoadingAnimation";
 import CareerProgressBar from "./CareerProgressBar";
-import MemberDropdown from "./MemberDropdown";
+import CareerMemberDropdown from "@/lib/components/Dropdown/CareerMemberDropdown";
 import CareerContentDetails from "./CareerContentDetails";
 import CareerContentScreening from "./CareerContentScreening";
 import CareerContentInterview from "./CareerContentInterview";

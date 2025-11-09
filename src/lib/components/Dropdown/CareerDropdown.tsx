@@ -120,7 +120,7 @@ export default function CareerDropdown({
       <button
         ref={buttonRef}
         disabled={!allowEmpty && dropdownOptions.length === 0}
-        className="dropdown-btn fade-in-bottom"
+        className="form-control dropdown-btn fade-in-bottom"
         style={{ 
           width: "100%",
           height: "44px",
@@ -139,7 +139,7 @@ export default function CareerDropdown({
           alignItems: "center",
           justifyContent: "space-between",
           cursor: "pointer",
-          transition: "all 0.3s ease-out",
+          transition: "background 0.3s ease-out, color 0.3s ease-out",
           textTransform: "capitalize",
           outline: "none",
         }}
