@@ -4,7 +4,8 @@ import styles from "@/lib/styles/screens/uploadCV.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
 import { assetConstants } from "@/lib/utils/constantsV2";
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import CareerDropdown from "@/lib/components/Dropdown/CareerDropdown";
 
 interface CVScreeningProps {
   interview: any;
@@ -111,216 +112,6 @@ export default function CVScreening({
     }));
   };
 
-  // Custom Dropdown Component for matching CareerForm styling
-  const QuestionDropdown = ({ questionId, options, value, onChange }: { questionId: string, options: any[], value: string, onChange: (value: string) => void }) => {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [openUpward, setOpenUpward] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const menuRef = useRef<HTMLDivElement>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
-
-    // Calculate dropdown position based on available space
-    useEffect(() => {
-      if (dropdownOpen && buttonRef.current) {
-        const calculatePosition = () => {
-          if (buttonRef.current && menuRef.current) {
-            const buttonRect = buttonRef.current.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-            const spaceBelow = viewportHeight - buttonRect.bottom;
-            const spaceAbove = buttonRect.top;
-            
-            const menuHeight = menuRef.current.offsetHeight || Math.min(options.length * 44, 200);
-            
-            if (spaceBelow < menuHeight + 50 && spaceAbove > spaceBelow) {
-              setOpenUpward(true);
-            } else {
-              setOpenUpward(false);
-            }
-          }
-        };
-        
-        calculatePosition();
-        const timeoutId = setTimeout(calculatePosition, 0);
-        
-        return () => clearTimeout(timeoutId);
-      }
-    }, [dropdownOpen, options.length]);
-
-    useEffect(() => {
-      function handleClickOutside(event: MouseEvent) {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-          setDropdownOpen(false);
-        }
-      }
-      if (dropdownOpen) {
-        document.addEventListener("mousedown", handleClickOutside);
-      }
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [dropdownOpen]);
-
-    const selectedOption = options.find(opt => opt.value === value);
-    const displayValue = selectedOption ? selectedOption.value : "Select an option";
-
-    return (
-      <div className="dropdown w-100" ref={dropdownRef} style={{ position: "relative", width: "320px", marginTop: "0" }}>
-        <button
-          ref={buttonRef}
-          className="dropdown-btn"
-          style={{ 
-            width: "320px",
-            height: "44px",
-            gap: "8px",
-            borderRadius: "8px",
-            paddingTop: "10px",
-            paddingRight: "14px",
-            paddingBottom: "10px",
-            paddingLeft: "14px",
-            borderWidth: "1px",
-            background: "var(--Input-bg-primary, #FFFFFF)",
-            border: "1px solid var(--Button-border-primary, #D5D7DA)",
-            boxShadow: "0px 1px 2px 0px #0A0D120D",
-            marginTop: "0",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            cursor: "pointer",
-            transition: "all 0.3s ease-out",
-          }}
-          type="button"
-          onClick={() => setDropdownOpen((v) => !v)}
-        >
-          <span style={{
-            fontFamily: "inherit",
-            fontWeight: 500,
-            fontStyle: "normal",
-            fontSize: "16px",
-            lineHeight: "24px",
-            letterSpacing: "0%",
-            color: "var(--Input-text-placeholder-or-disabled, #717680)",
-            textTransform: "none"
-          }}>
-            {displayValue}
-          </span>
-          <div style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.832031 0.833344L5.83203 5.83334L10.832 0.833344" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-        </button>
-        {dropdownOpen && (
-          <div
-            ref={menuRef}
-            className="dropdown-menu w-100 show"
-            style={{
-              position: "absolute",
-              width: "320px",
-              borderRadius: "8px",
-              borderWidth: "1px",
-              background: "var(--Surface-white, #FFFFFF)",
-              border: "1px solid var(--Colors-Primary_Colors-Neutrals-100, #F5F5F5)",
-              boxShadow: "0px 4px 6px -2px #0A0D1208, 0px 12px 16px -4px #0A0D1214",
-              paddingTop: "4px",
-              paddingBottom: "4px",
-              paddingLeft: "0",
-              paddingRight: "0",
-              maxHeight: 200,
-              overflowY: "auto",
-              top: openUpward ? "auto" : "calc(100% + 4px)",
-              bottom: openUpward ? "calc(100% + 4px)" : "auto",
-              left: 0,
-              right: 0,
-              zIndex: 1000,
-              marginTop: openUpward ? "0" : "4px",
-              marginBottom: openUpward ? "4px" : "0",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0",
-              opacity: 0,
-              animation: "dissolve 0.3s ease-out forwards",
-              WebkitAnimation: "dissolve 0.3s ease-out forwards",
-            }}
-          >
-            {options.map((option) => {
-              const isSelected = value === option.value;
-              return (
-                <button
-                  key={option.id}
-                  className="dropdown-item"
-                  style={{
-                    width: "100%",
-                    height: "44px",
-                    gap: "8px",
-                    paddingTop: "10px",
-                    paddingRight: "14px",
-                    paddingBottom: "10px",
-                    paddingLeft: "14px",
-                    borderRadius: "0",
-                    overflow: "hidden",
-                    color: "var(--Input-text-primary, #181D27)",
-                    fontWeight: isSelected ? 700 : 500,
-                    background: isSelected ? "#EEF4FF" : "transparent",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    textTransform: "capitalize",
-                    border: "none",
-                    borderTop: "none",
-                    borderBottom: "none",
-                    borderLeft: "none",
-                    borderRight: "none",
-                    boxShadow: "none",
-                    marginBottom: "0",
-                    marginTop: "0",
-                    transition: "background 0.2s, color 0.2s",
-                    fontFamily: "inherit",
-                    fontStyle: "normal",
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    letterSpacing: "0%",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.background = "#f6f6f6";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.background = "transparent";
-                    }
-                  }}
-                  onClick={() => {
-                    onChange(option.value);
-                    setDropdownOpen(false);
-                  }}
-                >
-                  <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "5px" }}>
-                    {option.value}
-                  </div>
-                  {isSelected && (
-                    <i
-                      className="la la-check"
-                      style={{
-                        fontSize: "20px",
-                        background: "linear-gradient(180deg, #9FCAED 0%, #CEB6DA 33%, #EBACC9 66%, #FCCEC0 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                        color: "transparent"
-                      }}
-                    ></i>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    );
-  };
-
   const renderQuestionInput = (question: any) => {
     const questionId = question.id;
     const questionType = question.type || "Dropdown";
@@ -356,7 +147,7 @@ export default function CVScreening({
         );
       case "Dropdown":
         return (
-          <QuestionDropdown
+          <CareerDropdown
             questionId={questionId}
             options={options}
             value={answer}
@@ -435,7 +226,7 @@ export default function CVScreening({
         );
       default:
         return (
-          <QuestionDropdown
+          <CareerDropdown
             questionId={questionId}
             options={options}
             value={answer}

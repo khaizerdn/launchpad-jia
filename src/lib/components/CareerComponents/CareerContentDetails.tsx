@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
-import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
+import CareerDropdown from "@/lib/components/Dropdown/CareerDropdown";
 import philippineCitiesAndProvinces from "../../../../public/philippines-locations.json";
 import MemberDropdown from "./MemberDropdown";
 import styles from "@/lib/styles/components/careerForm.module.scss";
@@ -28,6 +28,12 @@ const employmentTypeOptions = [
     },
     {
         name: "Part-Time",
+    },
+];
+
+const countryOptions = [
+    {
+        name: "Philippines",
     },
 ];
 
@@ -96,6 +102,13 @@ export default function CareerContentDetails({
 }: CareerContentDetailsProps) {
     const [provinceList, setProvinceList] = useState([]);
     const [cityList, setCityList] = useState([]);
+
+    // Initialize country to "Philippines" if empty
+    useEffect(() => {
+        if (!country) {
+            setCountry("Philippines");
+        }
+    }, []);
 
     useEffect(() => {
         const parseProvinces = () => {
@@ -173,7 +186,7 @@ export default function CareerContentDetails({
                             <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
                                 <div className={cardStyles.fieldContainer}>
                                     <span>Employment Type</span>
-                                    <CustomDropdown
+                                    <CareerDropdown
                                         onSelectSetting={(employmentType) => {
                                             setEmploymentType(employmentType);
                                             if (fieldErrors.employmentType) {
@@ -195,7 +208,7 @@ export default function CareerContentDetails({
                                 </div>
                                 <div className={cardStyles.fieldContainer}>
                                     <span>Arrangement</span>
-                                    <CustomDropdown
+                                    <CareerDropdown
                                         onSelectSetting={(setting) => {
                                             setWorkSetup(setting);
                                             if (fieldErrors.workSetup) {
@@ -223,18 +236,18 @@ export default function CareerContentDetails({
                             <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
                                 <div className={cardStyles.fieldContainer}>
                                     <span>Country</span>
-                                    <CustomDropdown
+                                    <CareerDropdown
                                         onSelectSetting={(setting) => {
                                             setCountry(setting);
                                         }}
                                         screeningSetting={country}
-                                        settingList={[]}
+                                        settingList={countryOptions}
                                         placeholder="Select Country"
                                     />
                                 </div>
                                 <div className={cardStyles.fieldContainer}>
                                     <span>State / Province</span>
-                                    <CustomDropdown
+                                    <CareerDropdown
                                         onSelectSetting={(province) => {
                                             setProvince(province);
                                             const provinceObj = provinceList.find((p) => p.name === province);
@@ -262,7 +275,7 @@ export default function CareerContentDetails({
                                 </div>
                                 <div className={cardStyles.fieldContainer}>
                                     <span>City</span>
-                                    <CustomDropdown
+                                    <CareerDropdown
                                         onSelectSetting={(city) => {
                                             setCity(city);
                                             if (fieldErrors.city) {
@@ -467,7 +480,7 @@ export default function CareerContentDetails({
                                         </div>
                                     </div>
                                     <div className={styles.memberActions}>
-                                        <CustomDropdown
+                                        <CareerDropdown
                                             onSelectSetting={(role) => {
                                                 setTeamMembers(teamMembers.map(m => m.id === member.id ? { ...m, role } : m));
                                                 // Clear job owner error if a job owner is now assigned
