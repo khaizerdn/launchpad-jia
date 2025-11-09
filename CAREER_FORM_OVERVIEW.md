@@ -286,6 +286,44 @@ New applicants applying to a job posting are required to answer all pre-screenin
 
 ---
 
+## ⭐ Icons
+
+All SVG icons used in the career form components are centralized in `public/iconsV3/` for better maintainability and reusability.
+
+### Icon Files Created/Used:
+
+**Alert Icons:**
+- `alertV2.svg` - Circle alert icon with exclamation mark (used in input field error indicators)
+- `alertV3.svg` - Triangle alert icon (used in error messages and progress bar)
+
+**Arrow Icons:**
+- `arrowDown.svg` - Down arrow chevron icon (used in dropdown buttons)
+
+**Check Icons:**
+- `checkV7.svg` - Checkmark icon with circular background (used in progress bar for completed steps)
+- `checkV8.svg` - White checkmark icon with circular background (used in "Publish" button)
+
+**Action Icons:**
+- `edit.svg` - Edit/pencil icon (used in edit buttons)
+- `plus.svg` - Circle plus icon (used in "Manually add" buttons)
+- `plusV2.svg` - White plus icon (used in "Add Custom" buttons)
+- `trashV2.svg` - Red trash/delete icon (used in delete buttons)
+
+**UI Icons:**
+- `bulb.svg` - Lightbulb with star icon (used in "Tips" sections)
+- `question.svg` - Question mark icon (used in tooltip triggers for secret prompts)
+- `sparkle.svg` - Colored sparkle/star icon with gradient (used in "Secret Prompt" sections)
+- `sparkleV2.svg` - White sparkle/star icon (used in button icons)
+
+**Status Icons:**
+- `circleDot.svg` - Circle with dot icon (used in progress bar for inactive steps)
+
+**Files:**
+- All icon files: `public/iconsV3/*.svg`
+- Component files reference icons via: `<img alt="" src="/iconsV3/[icon-name].svg" />`
+
+---
+
 ## 📝 Quick Reference
 
 ### Testing the Segmented Form
