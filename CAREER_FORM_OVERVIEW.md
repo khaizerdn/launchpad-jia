@@ -349,7 +349,26 @@ For detailed testing instructions and code flow diagrams, see:
 
 ---
 
-## 🗂️ Configured Files
+## 🔌 Backend Files and Its Usage
+
+### `src/app/api/add-career/route.ts`
+**Usage:** Creates a new career/job posting with validation, sanitization, and job limit checking.
+
+### `src/app/api/update-career/route.tsx`
+**Usage:** Updates an existing career/job posting with all form data including currentStep progress.
+
+### `src/app/api/career-data/route.tsx`
+**Usage:** Fetches a single career by MongoDB ObjectId for recruiter/admin editing or viewing.
+
+### `src/app/api/fetch-career-data/route.tsx`
+**Usage:** Fetches a single career by MongoDB ObjectId or GUID, with inactive status check and optional pre-screening-only response for candidate-facing pages.
+
+### `src/app/api/update-member/route.ts`
+**Usage:** Updates team member information and roles in a career.
+
+---
+
+## 🗂️ Front End Files and Its Usage
 
 ### `src/lib/components/CareerComponents/CareerForm.tsx`
 **Usage:** Main form orchestrator used in `/careers/new-career` and `/careers/edit/[slug]` pages to manage the 5-step career creation/editing workflow.
