@@ -8,11 +8,11 @@ import CareerActionModal from "./CareerActionModal";
 import FullScreenLoadingAnimation from "./FullScreenLoadingAnimation";
 import CareerProgressBar from "./CareerProgressBar";
 import CareerMemberDropdown from "@/lib/components/Dropdown/CareerMemberDropdown";
-import CareerContentDetails from "./CareerContentDetails";
-import CareerContentScreening from "./CareerContentScreening";
-import CareerContentInterview from "./CareerContentInterview";
-import CareerContentPipeline from "./CareerContentPipeline";
-import CareerContentReview from "./CareerContentReview";
+import CareerContentCareerDetails from "./CareerContentCareerDetails";
+import CareerContentCVReview from "./CareerContentCVReview";
+import CareerContentAIInterview from "./CareerContentAIInterview";
+import CareerContentPipelineStages from "./CareerContentPipelineStages";
+import CareerContentReviewCareer from "./CareerContentReviewCareer";
 import CareerContentReviewScreening from "./CareerContentReviewScreening";
 import CareerContentReviewInterview from "./CareerContentReviewInterview";
 import CareerContentReviewPipeline from "./CareerContentReviewPipeline";
@@ -405,9 +405,7 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                   onClick={handleSaveAndContinue}>
                       {currentStep === 5 ? (
                           <>
-                              <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M17.5026 8.40644V9.1731C17.5016 10.9701 16.9197 12.7187 15.8437 14.158C14.7677 15.5973 13.2553 16.6502 11.5321 17.1597C9.8088 17.6692 7.96699 17.608 6.28133 16.9853C4.59567 16.3625 3.15648 15.2115 2.1784 13.704C1.20033 12.1965 0.735763 10.4132 0.854001 8.62003C0.97224 6.82691 1.66694 5.12004 2.8345 3.754C4.00207 2.38795 5.57993 1.43592 7.33276 1.03989C9.0856 0.643862 10.9195 0.825052 12.5609 1.55644M17.5026 2.50644L9.16928 10.8481L6.66928 8.3481" stroke="white" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                              </svg>
+                              <img alt="" src="/iconsV3/checkV8.svg" />
                               Publish
                           </>
                       ) : (
@@ -471,9 +469,7 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                   onClick={handleSaveAndContinue}>
                       {currentStep === 5 ? (
                           <>
-                              <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M17.5026 8.40644V9.1731C17.5016 10.9701 16.9197 12.7187 15.8437 14.158C14.7677 15.5973 13.2553 16.6502 11.5321 17.1597C9.8088 17.6692 7.96699 17.608 6.28133 16.9853C4.59567 16.3625 3.15648 15.2115 2.1784 13.704C1.20033 12.1965 0.735763 10.4132 0.854001 8.62003C0.97224 6.82691 1.66694 5.12004 2.8345 3.754C4.00207 2.38795 5.57993 1.43592 7.33276 1.03989C9.0856 0.643862 10.9195 0.825052 12.5609 1.55644M17.5026 2.50644L9.16928 10.8481L6.66928 8.3481" stroke="white" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                              </svg>
+                              <img alt="" src="/iconsV3/checkV8.svg" />
                               Publish
                           </>
                       ) : (
@@ -487,7 +483,7 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
        </div>
         )}
         {currentStep === 1 && (
-            <CareerContentDetails
+            <CareerContentCareerDetails
                 jobTitle={jobTitle}
                 setJobTitle={setJobTitle}
                 description={description}
@@ -520,7 +516,7 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
             />
         )}
         {currentStep === 2 && (
-            <CareerContentScreening
+            <CareerContentCVReview
                 screeningSetting={screeningSetting}
                 setScreeningSetting={setScreeningSetting}
                 screeningSettingList={screeningSettingList}
@@ -535,7 +531,7 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
             />
         )}
         {currentStep === 3 && (
-            <CareerContentInterview
+            <CareerContentAIInterview
                 screeningSetting={screeningSetting}
                 setScreeningSetting={setScreeningSetting}
                 screeningSettingList={screeningSettingList}
@@ -548,10 +544,10 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                 fieldErrors={fieldErrors}
             />
         )}
-        {currentStep === 4 && <CareerContentPipeline />}
+        {currentStep === 4 && <CareerContentPipelineStages />}
         {currentStep === 5 && (
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-lg, 24px)" }}>
-                <CareerContentReview
+                <CareerContentReviewCareer
                     jobTitle={jobTitle}
                     employmentType={employmentType}
                     workSetup={workSetup}

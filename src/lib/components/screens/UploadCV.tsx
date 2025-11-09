@@ -11,7 +11,7 @@ import { CORE_API_URL } from "@/lib/Utils";
 import axios from "axios";
 import Markdown from "react-markdown";
 import { useEffect, useRef, useState } from "react";
-import CVScreening from "./CVScreening";
+import UploadCV_PreScreeningQuestions from "./UploadCV_PreScreeningQuestions";
 
 export default function () {
   const fileInputRef = useRef(null);
@@ -590,7 +590,7 @@ export default function () {
           )}
 
           {currentStep == step[1] && (
-            <CVScreening
+            <UploadCV_PreScreeningQuestions
               interview={interview}
               user={user}
               userCV={userCV}

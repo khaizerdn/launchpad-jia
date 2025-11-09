@@ -13,12 +13,12 @@ interface CareerDropdownOption {
 }
 
 interface CareerDropdownProps {
-  // For CVScreening usage
+  // For UploadCV_PreScreeningQuestions usage
   questionId?: string;
   options?: CareerDropdownOption[];
   value?: string;
   onChange?: (value: string) => void;
-  // For CareerContentDetails usage (compatible with CustomDropdown)
+  // For CareerContentCareerDetails usage (compatible with CustomDropdown)
   onSelectSetting?: (value: string) => void;
   screeningSetting?: string;
   settingList?: CareerDropdownOption[];
@@ -45,7 +45,7 @@ export default function CareerDropdown({
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Support both interfaces: CVScreening (options/value/onChange) and CareerContentDetails (settingList/screeningSetting/onSelectSetting)
+  // Support both interfaces: UploadCV_PreScreeningQuestions (options/value/onChange) and CareerContentCareerDetails (settingList/screeningSetting/onSelectSetting)
   const dropdownOptions = options || settingList || [];
   const selectedValue = value || screeningSetting || "";
   const handleChange = onChange || onSelectSetting || (() => {});
@@ -210,9 +210,7 @@ export default function CareerDropdown({
           </span>
         </span>
         <div style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", margin: 0, padding: 0 }}>
-          <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: 0 }}>
-            <path d="M0.833252 0.833313L5.83325 5.83331L10.8333 0.833313" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <img alt="" src="/iconsV3/arrowDown.svg" style={{ margin: 0 }} />
         </div>
       </button>
       {dropdownOpen && (

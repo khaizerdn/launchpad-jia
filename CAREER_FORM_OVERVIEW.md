@@ -234,6 +234,58 @@ Users can add and edit pre-screening questions in Step 2 (CV Screening).
 
 ---
 
+## 5. New applicants who apply to the job post must answer the questions to proceed with their application
+
+New applicants applying to a job posting are required to answer all pre-screening questions before they can complete their application submission.
+
+**How it works:**
+- When a job posting has pre-screening questions configured, applicants must answer them during the application process
+- Questions are displayed in the order defined by the recruiter in Step 2 (CV Screening)
+- Each question type (Short Answer, Long Answer, Dropdown, Checkboxes, Range) requires appropriate input
+- Applicants cannot proceed to submit their application until all questions are answered
+- Answers are validated and saved along with the application
+
+**Application Flow:**
+1. **Applicant Views Job Posting:**
+   - Applicant navigates to the job posting page
+   - Pre-screening questions are displayed if configured
+
+2. **Question Display:**
+   - Questions appear in the order set by the recruiter
+   - Each question displays its type and required format
+   - Questions are numbered sequentially
+
+3. **Answer Collection:**
+   - Dropdown: Select one option from list
+   - Range: Enter minimum and maximum salary values
+
+4. **Validation:**
+   - All questions must be answered before submission
+   - Required fields are validated
+   - Format validation based on question type
+
+5. **Application Submission:**
+   - Once all questions are answered, applicant can submit
+   - Answers are saved with the application
+   - Application proceeds to CV screening stage
+
+**Question Types and Requirements:**
+- **Dropdown:** Must select one option from provided list
+- **Range:** Must provide both minimum and maximum values (for salary questions)
+
+**Data Storage:**
+- Question answers are stored with the application
+- Answers are linked to the specific question ID
+- Answers are preserved for recruiter review during CV screening
+
+**Files:**
+- `src/lib/components/screens/UploadCV.tsx` - Application form that displays and collects pre-screening question answers
+- `src/lib/components/screens/CVScreening.tsx` - Displays pre-screening questions and handles answer submission
+- `src/lib/components/CareerComponents/CareerContentScreening.tsx` - Recruiter interface for configuring questions
+- API endpoints that handle application submission with question answers
+
+---
+
 ## 📝 Quick Reference
 
 ### Testing the Segmented Form

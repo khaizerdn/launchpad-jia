@@ -117,15 +117,7 @@ export default function CareerInputField({
           pointerEvents: "none",
           zIndex: 1
         }}>
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path 
-              d="M7.33341 4.66666V7.33332M7.33341 9.99999H7.34008M14.0001 7.33332C14.0001 11.0152 11.0153 14 7.33341 14C3.65152 14 0.666748 11.0152 0.666748 7.33332C0.666748 3.65142 3.65152 0.666656 7.33341 0.666656C11.0153 0.666656 14.0001 3.65142 14.0001 7.33332Z" 
-              stroke="#F04438" 
-              strokeWidth="1.33333" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            />
-          </svg>
+          <img alt="" src="/iconsV3/alertV2.svg" />
         </div>
       )}
 

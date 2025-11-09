@@ -131,31 +131,7 @@ export default function CareerContentReviewScreening({
                             <>
                                 <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
                                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M15 6.66667L16.0417 4.375L18.3333 3.33333L16.0417 2.29167L15 0L13.9583 2.29167L11.6667 3.33333L13.9583 4.375L15 6.66667Z" fill="url(#paint0_linear_3485_10389)"/>
-                                            <path d="M15 11.6667L13.9583 13.9583L11.6667 15L13.9583 16.0417L15 18.3333L16.0417 16.0417L18.3333 15L16.0417 13.9583L15 11.6667Z" fill="url(#paint1_linear_3485_10389)"/>
-                                            <path d="M8.75 7.08333L6.66667 2.5L4.58333 7.08333L0 9.16667L4.58333 11.25L6.66667 15.8333L8.75 11.25L13.3333 9.16667L8.75 7.08333ZM7.49167 9.99167L6.66667 11.8083L5.84167 9.99167L4.025 9.16667L5.84167 8.34167L6.66667 6.525L7.49167 8.34167L9.30833 9.16667L7.49167 9.99167Z" fill="url(#paint2_linear_3485_10389)"/>
-                                            <defs>
-                                                <linearGradient id="paint0_linear_3485_10389" x1="-0.000285505" y1="18.3332" x2="18.3331" y2="-0.000223217" gradientUnits="userSpaceOnUse">
-                                                    <stop stopColor="#FCCEC0"/>
-                                                    <stop offset="0.33" stopColor="#EBACC9"/>
-                                                    <stop offset="0.66" stopColor="#CEB6DA"/>
-                                                    <stop offset="1" stopColor="#9FCAED"/>
-                                                </linearGradient>
-                                                <linearGradient id="paint1_linear_3485_10389" x1="-0.000285505" y1="18.3332" x2="18.3331" y2="-0.000223217" gradientUnits="userSpaceOnUse">
-                                                    <stop stopColor="#FCCEC0"/>
-                                                    <stop offset="0.33" stopColor="#EBACC9"/>
-                                                    <stop offset="0.66" stopColor="#CEB6DA"/>
-                                                    <stop offset="1" stopColor="#9FCAED"/>
-                                                </linearGradient>
-                                                <linearGradient id="paint2_linear_3485_10389" x1="-0.000285505" y1="18.3332" x2="18.3331" y2="-0.000223217" gradientUnits="userSpaceOnUse">
-                                                    <stop stopColor="#FCCEC0"/>
-                                                    <stop offset="0.33" stopColor="#EBACC9"/>
-                                                    <stop offset="0.66" stopColor="#CEB6DA"/>
-                                                    <stop offset="1" stopColor="#9FCAED"/>
-                                                </linearGradient>
-                                            </defs>
-                                        </svg>
+                                        <img alt="" src="/iconsV3/sparkle.svg" />
                                         <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>CV Secret Prompt</div>
                                     </div>
                                     <ul style={{ margin: 0, paddingLeft: "20px", fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>

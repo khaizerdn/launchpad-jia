@@ -7,7 +7,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import CareerDropdown from "@/lib/components/Dropdown/CareerDropdown";
 
-interface CVScreeningProps {
+interface UploadCV_PreScreeningQuestionsProps {
   interview: any;
   user: any;
   userCV: any;
@@ -26,7 +26,7 @@ interface CVScreeningProps {
   onStartInterview: () => void;
 }
 
-export default function CVScreening({
+export default function UploadCV_PreScreeningQuestions({
   interview,
   user,
   userCV,
@@ -43,7 +43,7 @@ export default function CVScreening({
   onScreeningComplete,
   onGoToDashboard,
   onStartInterview,
-}: CVScreeningProps) {
+}: UploadCV_PreScreeningQuestionsProps) {
   const [isScreening, setIsScreening] = useState(false);
   const [screeningResult, setScreeningResult] = useState(null);
   const [preScreeningQuestions, setPreScreeningQuestions] = useState<any[]>([]);
@@ -76,8 +76,6 @@ export default function CVScreening({
       })
         .then((res) => {
           if (res.data.preScreeningQuestions) {
-            console.log("Fetched pre-screening questions:", res.data.preScreeningQuestions);
-            console.log("Fetched question options:", res.data.preScreeningQuestionOptions);
             setPreScreeningQuestions(res.data.preScreeningQuestions || []);
             setPreScreeningQuestionOptions(res.data.preScreeningQuestionOptions || {});
             setPreScreeningQuestionSalaryRanges(res.data.preScreeningQuestionSalaryRanges || {});
@@ -127,11 +125,6 @@ export default function CVScreening({
     const options = preScreeningQuestionOptions[questionId] || [];
     const salaryRange = preScreeningQuestionSalaryRanges[questionId];
     const answer = questionAnswers[questionId] || "";
-    
-    // Debug logging for custom questions
-    if (!question.title && (questionType === "Dropdown" || questionType === "Checkboxes")) {
-      console.log(`Custom question ${questionId} (type: ${questionType}) has ${options.length} options:`, options);
-    }
 
     switch (questionType) {
       case "Short Answer":

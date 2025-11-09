@@ -5,7 +5,7 @@ import styles from "@/lib/styles/components/careerForm.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
 import { assetConstants } from "@/lib/utils/constantsV2";
 
-interface CareerContentReviewProps {
+interface CareerContentReviewCareerProps {
     jobTitle?: string;
     employmentType?: string;
     workSetup?: string;
@@ -22,7 +22,7 @@ interface CareerContentReviewProps {
     teamMembers?: any[];
 }
 
-export default function CareerContentReview({
+export default function CareerContentReviewCareer({
     jobTitle = "",
     employmentType = "",
     workSetup = "",
@@ -37,7 +37,7 @@ export default function CareerContentReview({
     qualifications = [],
     niceToHave = [],
     teamMembers = [],
-}: CareerContentReviewProps) {
+}: CareerContentReviewCareerProps) {
     const [isExpanded, setIsExpanded] = useState(true);
 
     const formatSalary = (salary: string, isNegotiable: boolean) => {
@@ -55,14 +55,7 @@ export default function CareerContentReview({
                             style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
                             onClick={() => setIsExpanded(!isExpanded)}
                         >
-                            <svg 
-                                width="12" 
-                                height="7" 
-                                viewBox="0 0 12 7" 
-                                fill="none" 
-                                xmlns="http://www.w3.org/2000/svg"
-                                style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
-                            >
+                            <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}>
                                 <path d="M0.833984 0.833328L5.83398 5.83333L10.834 0.833328" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                         </div>

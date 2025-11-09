@@ -11,34 +11,11 @@ import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
 import errorStyles from "@/lib/styles/components/careerErrorField.module.scss";
 
-const workSetupOptions = [
-    {
-        name: "Fully Remote",
-    },
-    {
-        name: "Onsite",
-    },
-    {
-        name: "Hybrid",
-    },
-];
+const workSetupOptions = [{ name: "Fully Remote" }, { name: "Onsite" }, { name: "Hybrid" }];
+const employmentTypeOptions = [{ name: "Full-Time" }, { name: "Part-Time" }];
+const countryOptions = [{ name: "Philippines" }];
 
-const employmentTypeOptions = [
-    {
-        name: "Full-Time",
-    },
-    {
-        name: "Part-Time",
-    },
-];
-
-const countryOptions = [
-    {
-        name: "Philippines",
-    },
-];
-
-interface CareerContentDetailsProps {
+interface CareerContentCareerDetailsProps {
     jobTitle: string;
     setJobTitle: (value: string) => void;
     description: string;
@@ -70,7 +47,7 @@ interface CareerContentDetailsProps {
     setFieldErrors: (errors: {[key: string]: string}) => void;
 }
 
-export default function CareerContentDetails({
+export default function CareerContentCareerDetails({
     jobTitle,
     setJobTitle,
     description,
@@ -100,7 +77,7 @@ export default function CareerContentDetails({
     screeningSettingList,
     fieldErrors,
     setFieldErrors,
-}: CareerContentDetailsProps) {
+}: CareerContentCareerDetailsProps) {
     const [provinceList, setProvinceList] = useState([]);
     const [cityList, setCityList] = useState([]);
 
@@ -304,11 +281,7 @@ export default function CareerContentDetails({
                                         <input
                                             type="number"
                                             className={`form-control ${cardStyles.salaryInput}`}
-                                            style={{ 
-                                                paddingLeft: "28px", 
-                                                paddingRight: fieldErrors.minimumSalary ? "60px" : "35px",
-                                                border: fieldErrors.minimumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined 
-                                            }}
+                                            style={{ paddingLeft: "28px", paddingRight: fieldErrors.minimumSalary ? "60px" : "35px", border: fieldErrors.minimumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined }}
                                             placeholder="0"
                                             min={0}
                                             value={minimumSalary}
@@ -324,9 +297,7 @@ export default function CareerContentDetails({
                                         />
                                         {fieldErrors.minimumSalary && (
                                             <div style={{ position: "absolute", right: "50px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
-                                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M7.33341 4.66666V7.33332M7.33341 9.99999H7.34008M14.0001 7.33332C14.0001 11.0152 11.0153 14 7.33341 14C3.65152 14 0.666748 11.0152 0.666748 7.33332C0.666748 3.65142 3.65152 0.666656 7.33341 0.666656C11.0153 0.666656 14.0001 3.65142 14.0001 7.33332Z" stroke="#F04438" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-                                                </svg>
+                                                <img alt="" src="/iconsV3/alertV2.svg" />
                                             </div>
                                         )}
                                         <span style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
@@ -344,11 +315,7 @@ export default function CareerContentDetails({
                                         <input
                                             type="number"
                                             className={`form-control ${cardStyles.salaryInput}`}
-                                            style={{ 
-                                                paddingLeft: "28px", 
-                                                paddingRight: fieldErrors.maximumSalary ? "60px" : "35px",
-                                                border: fieldErrors.maximumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined 
-                                            }}
+                                            style={{ paddingLeft: "28px", paddingRight: fieldErrors.maximumSalary ? "60px" : "35px", border: fieldErrors.maximumSalary ? "1px solid var(--Input-border-destructive, #FDA29B) !important" : undefined }}
                                             placeholder="0"
                                             min={0}
                                             value={maximumSalary}
@@ -364,9 +331,7 @@ export default function CareerContentDetails({
                                         />
                                         {fieldErrors.maximumSalary && (
                                             <div style={{ position: "absolute", right: "50px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
-                                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M7.33341 4.66666V7.33332M7.33341 9.99999H7.34008M14.0001 7.33332C14.0001 11.0152 11.0153 14 7.33341 14C3.65152 14 0.666748 11.0152 0.666748 7.33332C0.666748 3.65142 3.65152 0.666656 7.33341 0.666656C11.0153 0.666656 14.0001 3.65142 14.0001 7.33332Z" stroke="#F04438" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-                                                </svg>
+                                                <img alt="" src="/iconsV3/alertV2.svg" />
                                             </div>
                                         )}
                                         <span style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
@@ -438,18 +403,8 @@ export default function CareerContentDetails({
 
                         {!teamMembers.some(member => member.role === "Job Owner") && (
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: "0px", gap: "8px" }}>
-                                <svg width="20" height="17" viewBox="0 0 20 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.54164 5.92058V9.25391M9.54164 12.5872H9.54998M8.11664 1.63725L1.05831 13.4206C0.912783 13.6726 0.835782 13.9583 0.834967 14.2493C0.834153 14.5404 0.909552 14.8265 1.05367 15.0794C1.19778 15.3322 1.40558 15.5429 1.6564 15.6905C1.90722 15.838 2.19231 15.9174 2.48331 15.9206H16.6C16.891 15.9174 17.1761 15.838 17.4269 15.6905C17.6777 15.5429 17.8855 15.3322 18.0296 15.0794C18.1737 14.8265 18.2491 14.5404 18.2483 14.2493C18.2475 13.9583 18.1705 13.6726 18.025 13.4206L10.9666 1.63725C10.8181 1.39234 10.6089 1.18985 10.3593 1.04932C10.1097 0.908788 9.82809 0.834961 9.54164 0.834961C9.2552 0.834961 8.97359 0.908788 8.72398 1.04932C8.47438 1.18985 8.2652 1.39234 8.11664 1.63725Z" stroke="#F04438" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                                <span style={{
-                                    fontFamily: 'Satoshi',
-                                    fontWeight: 500,
-                                    fontStyle: 'normal',
-                                    fontSize: '14px',
-                                    lineHeight: '20px',
-                                    letterSpacing: '0%',
-                                    color: 'var(--Text-text-error, #D92D20)'
-                                }}>
+                                <img alt="" src="/iconsV3/alertV3.svg" />
+                                <span style={{ fontFamily: 'Satoshi', fontWeight: 500, fontStyle: 'normal', fontSize: '14px', lineHeight: '20px', letterSpacing: '0%', color: 'var(--Text-text-error, #D92D20)' }}>
                                     Career must have a job owner. Please assign a job owner.
                                 </span>
                             </div>
@@ -509,17 +464,7 @@ export default function CareerContentDetails({
             <div className={styles.rightContainer}>
                 <div className="layered-card-middle">
                     <div className={cardStyles.careerCardHeader}>
-                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.58333 16.6667H7.91667C7.91667 17.5833 7.16667 18.3333 6.25 18.3333C5.33333 18.3333 4.58333 17.5833 4.58333 16.6667ZM2.91667 15.8333H9.58333V14.1667H2.91667V15.8333ZM12.5 7.91667C12.5 11.1 10.2833 12.8 9.35833 13.3333H3.14167C2.21667 12.8 0 11.1 0 7.91667C0 4.46667 2.8 1.66667 6.25 1.66667C9.7 1.66667 12.5 4.46667 12.5 7.91667ZM10.8333 7.91667C10.8333 5.39167 8.775 3.33333 6.25 3.33333C3.725 3.33333 1.66667 5.39167 1.66667 7.91667C1.66667 9.975 2.90833 11.1583 3.625 11.6667H8.875C9.59167 11.1583 10.8333 9.975 10.8333 7.91667ZM16.5583 6.14167L15.4167 6.66667L16.5583 7.19167L17.0833 8.33333L17.6083 7.19167L18.75 6.66667L17.6083 6.14167L17.0833 5L16.5583 6.14167ZM14.5833 5L15.3667 3.28333L17.0833 2.5L15.3667 1.71667L14.5833 0L13.8 1.71667L12.0833 2.5L13.8 3.28333L14.5833 5Z" fill="url(#paint0_linear_1238_3980)"/>
-                            <defs>
-                                <linearGradient id="paint0_linear_1238_3980" x1="-0.000291994" y1="18.3332" x2="18.3285" y2="-0.412159" gradientUnits="userSpaceOnUse">
-                                    <stop stopColor="#FCCEC0"/>
-                                    <stop offset="0.33" stopColor="#EBACC9"/>
-                                    <stop offset="0.66" stopColor="#CEB6DA"/>
-                                    <stop offset="1" stopColor="#9FCAED"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                        <img alt="" src="/iconsV3/bulb.svg" />
                         <span className={cardStyles.careerCardTitle}>Tips</span>
                     </div>
                     <div className={tipsStyles.tipsContent}>
