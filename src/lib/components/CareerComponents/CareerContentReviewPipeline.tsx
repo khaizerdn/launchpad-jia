@@ -12,7 +12,7 @@ interface CareerContentReviewPipelineProps {
 export default function CareerContentReviewPipeline({
     pipelineStages = [],
 }: CareerContentReviewPipelineProps) {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
 
     return (
         <div className={styles.mainContentContainer}>

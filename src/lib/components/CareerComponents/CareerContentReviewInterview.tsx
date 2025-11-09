@@ -18,7 +18,7 @@ export default function CareerContentReviewInterview({
     aiInterviewSecretPrompt = "",
     interviewQuestions = {},
 }: CareerContentReviewInterviewProps) {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
 
     const formatSecretPrompt = (html: string) => {
         if (!html) return [];

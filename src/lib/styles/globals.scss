@@ -227,6 +227,12 @@ td {
     border: 2px solid #5e39d6 !important;
     box-shadow: none !important;
   }
+
+  &.has-error,
+  &.has-error:focus {
+    border: 1px solid var(--Input-border-destructive, #FDA29B) !important;
+    border-color: var(--Input-border-destructive, #FDA29B) !important;
+  }
 }
 
 .rich-text-editor {

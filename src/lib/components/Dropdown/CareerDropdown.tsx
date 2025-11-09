@@ -108,6 +108,22 @@ export default function CareerDropdown({
     };
   }, [dropdownOpen]);
 
+  // Maintain error border even when focused or dropdown is open
+  useEffect(() => {
+    if (buttonRef.current) {
+      if (error) {
+        buttonRef.current.style.border = "1px solid var(--Input-border-destructive, #FDA29B)";
+        buttonRef.current.style.borderColor = "var(--Input-border-destructive, #FDA29B)";
+        buttonRef.current.style.borderWidth = "1px";
+      } else {
+        // Reset to default when no error
+        buttonRef.current.style.border = "1px solid var(--Button-border-primary, #D5D7DA)";
+        buttonRef.current.style.borderColor = undefined;
+        buttonRef.current.style.borderWidth = "1px";
+      }
+    }
+  }, [error, dropdownOpen]);
+
   // Find selected option - support both 'value' and 'name' properties
   const selectedOption = dropdownOptions.find(
     opt => (opt.value || opt.name) === selectedValue
@@ -121,7 +137,7 @@ export default function CareerDropdown({
       <button
         ref={buttonRef}
         disabled={!allowEmpty && dropdownOptions.length === 0}
-        className="form-control dropdown-btn fade-in-bottom"
+        className={`form-control dropdown-btn fade-in-bottom ${error ? 'has-error' : ''}`}
         style={{ 
           width: "100%",
           height: "44px",
@@ -134,6 +150,7 @@ export default function CareerDropdown({
           borderWidth: "1px",
           background: "var(--Input-bg-primary, #FFFFFF)",
           border: error ? "1px solid var(--Input-border-destructive, #FDA29B)" : "1px solid var(--Button-border-primary, #D5D7DA)",
+          borderColor: error ? "var(--Input-border-destructive, #FDA29B)" : undefined,
           boxShadow: "0px 1px 2px 0px #0A0D120D",
           marginTop: "0",
           display: "flex",
@@ -146,8 +163,22 @@ export default function CareerDropdown({
         }}
         type="button"
         onClick={() => setDropdownOpen((v) => !v)}
-        onFocus={(e) => e.currentTarget.style.outline = "none"}
-        onBlur={(e) => e.currentTarget.style.outline = "none"}
+        onFocus={(e) => {
+          e.currentTarget.style.outline = "none";
+          if (error) {
+            e.currentTarget.style.border = "1px solid var(--Input-border-destructive, #FDA29B)";
+            e.currentTarget.style.borderColor = "var(--Input-border-destructive, #FDA29B)";
+            e.currentTarget.style.borderWidth = "1px";
+          }
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.outline = "none";
+          if (error) {
+            e.currentTarget.style.border = "1px solid var(--Input-border-destructive, #FDA29B)";
+            e.currentTarget.style.borderColor = "var(--Input-border-destructive, #FDA29B)";
+            e.currentTarget.style.borderWidth = "1px";
+          }
+        }}
       >
         <span style={{
           fontFamily: "inherit",

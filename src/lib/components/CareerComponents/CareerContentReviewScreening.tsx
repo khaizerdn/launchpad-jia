@@ -20,7 +20,7 @@ export default function CareerContentReviewScreening({
     preScreeningQuestionOptions = {},
     preScreeningQuestionSalaryRanges = {},
 }: CareerContentReviewScreeningProps) {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
 
     const formatSecretPrompt = (html: string) => {
         if (!html) return [];
