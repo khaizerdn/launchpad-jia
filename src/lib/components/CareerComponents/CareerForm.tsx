@@ -13,9 +13,6 @@ import CareerContentCVReview from "./CareerContentCVReview";
 import CareerContentAIInterview from "./CareerContentAIInterview";
 import CareerContentPipelineStages from "./CareerContentPipelineStages";
 import CareerContentReviewCareer from "./CareerContentReviewCareer";
-import CareerContentReviewScreening from "./CareerContentReviewScreening";
-import CareerContentReviewInterview from "./CareerContentReviewInterview";
-import CareerContentReviewPipeline from "./CareerContentReviewPipeline";
 import styles from "@/lib/styles/components/careerForm.module.scss";
   // Setting List icons
   const screeningSettingList = [
@@ -546,37 +543,28 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
         )}
         {currentStep === 4 && <CareerContentPipelineStages />}
         {currentStep === 5 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-lg, 24px)" }}>
-                <CareerContentReviewCareer
-                    jobTitle={jobTitle}
-                    employmentType={employmentType}
-                    workSetup={workSetup}
-                    country={country}
-                    province={province}
-                    city={city}
-                    minimumSalary={minimumSalary}
-                    maximumSalary={maximumSalary}
-                    salaryNegotiable={salaryNegotiable}
-                    description={description}
-                    teamMembers={teamMembers}
-                />
-                <CareerContentReviewScreening
-                    screeningSetting={screeningSetting}
-                    cvSecretPrompt={cvSecretPrompt}
-                    preScreeningQuestions={preScreeningQuestions}
-                    preScreeningQuestionOptions={preScreeningQuestionOptions}
-                    preScreeningQuestionSalaryRanges={preScreeningQuestionSalaryRanges}
-                />
-                <CareerContentReviewInterview
-                    screeningSetting={screeningSetting}
-                    requireVideo={requireVideo}
-                    aiInterviewSecretPrompt={aiInterviewSecretPrompt}
-                    interviewQuestions={interviewQuestions}
-                />
-                <CareerContentReviewPipeline
-                    pipelineStages={[]}
-                />
-            </div>
+            <CareerContentReviewCareer
+                jobTitle={jobTitle}
+                employmentType={employmentType}
+                workSetup={workSetup}
+                country={country}
+                province={province}
+                city={city}
+                minimumSalary={minimumSalary}
+                maximumSalary={maximumSalary}
+                salaryNegotiable={salaryNegotiable}
+                description={description}
+                teamMembers={teamMembers}
+                screeningSetting={screeningSetting}
+                cvSecretPrompt={cvSecretPrompt}
+                preScreeningQuestions={preScreeningQuestions}
+                preScreeningQuestionOptions={preScreeningQuestionOptions}
+                preScreeningQuestionSalaryRanges={preScreeningQuestionSalaryRanges}
+                requireVideo={requireVideo}
+                aiInterviewSecretPrompt={aiInterviewSecretPrompt}
+                interviewQuestions={interviewQuestions}
+                pipelineStages={[]}
+            />
         )}
       {showSaveModal && (
          <CareerActionModal action={showSaveModal} onAction={(action) => saveCareer(action)} />

@@ -612,7 +612,7 @@ export default function CareerContentCVReview({
                                 </div>
                             </div>
                         </div>
-                        <div style={{ width: '100%', height: '1px', backgroundColor: '#E9EAEB' }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
                         <div className={cardStyles.sectionWrapper}>
                             <div className={cardStyles.sectionTitleDescriptionWrapper}>
                                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', position: 'relative' }}>
@@ -717,7 +717,7 @@ export default function CareerContentCVReview({
                                 No pre-screening questions added yet.
                             </p>
                         )}
-                        <div style={{ width: '100%', height: '1px', backgroundColor: '#E9EAEB' }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
                         <div className={preScreeningStyles.suggestedQuestionsContainer}>
                             <span className={cardStyles.sectionTitle}>Suggested Pre-screening Questions:</span>
                             <div className={preScreeningStyles.suggestedQuestionItem}>

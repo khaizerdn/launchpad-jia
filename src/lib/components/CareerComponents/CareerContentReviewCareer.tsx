@@ -20,6 +20,15 @@ interface CareerContentReviewCareerProps {
     qualifications?: string[];
     niceToHave?: string[];
     teamMembers?: any[];
+    screeningSetting?: string;
+    cvSecretPrompt?: string;
+    preScreeningQuestions?: any[];
+    preScreeningQuestionOptions?: {[questionId: string]: {id: string, value: string, number: number}[]};
+    preScreeningQuestionSalaryRanges?: {[questionId: string]: {minimum: string, maximum: string}};
+    requireVideo?: boolean;
+    aiInterviewSecretPrompt?: string;
+    interviewQuestions?: {[category: string]: {id: string, text: string, isEditing: boolean}[]};
+    pipelineStages?: any[];
 }
 
 export default function CareerContentReviewCareer({
@@ -37,8 +46,20 @@ export default function CareerContentReviewCareer({
     qualifications = [],
     niceToHave = [],
     teamMembers = [],
+    screeningSetting = "",
+    cvSecretPrompt = "",
+    preScreeningQuestions = [],
+    preScreeningQuestionOptions = {},
+    preScreeningQuestionSalaryRanges = {},
+    requireVideo = false,
+    aiInterviewSecretPrompt = "",
+    interviewQuestions = {},
+    pipelineStages = [],
 }: CareerContentReviewCareerProps) {
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpandedCareer, setIsExpandedCareer] = useState(true);
+    const [isExpandedScreening, setIsExpandedScreening] = useState(true);
+    const [isExpandedInterview, setIsExpandedInterview] = useState(true);
+    const [isExpandedPipeline, setIsExpandedPipeline] = useState(true);
 
     const formatSalary = (salary: string, isNegotiable: boolean) => {
         if (isNegotiable) return "Negotiable";
@@ -46,143 +67,173 @@ export default function CareerContentReviewCareer({
         return `₱${Number(salary).toLocaleString()}`;
     };
 
+    const formatSecretPrompt = (html: string) => {
+        if (!html) return [];
+        // Remove HTML tags and decode entities
+        if (typeof window !== "undefined") {
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = html;
+            const text = tempDiv.textContent || tempDiv.innerText || "";
+            // Split by line breaks or bullet points
+            return text.split(/\n|•|·/).filter(item => item.trim().length > 0);
+        }
+        // Fallback for SSR: simple regex to remove HTML tags
+        const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
+        return text.split(/\n|•|·/).filter(item => item.trim().length > 0);
+    };
+
+    const getQuestionOptions = (questionId: string) => {
+        return preScreeningQuestionOptions[questionId] || [];
+    };
+
+    const getSalaryRange = (questionId: string) => {
+        return preScreeningQuestionSalaryRanges[questionId];
+    };
+
+    const getTotalQuestions = () => {
+        return Object.values(interviewQuestions).reduce((total, questions) => total + (questions?.length || 0), 0);
+    };
+
+    const categories = ['CV Validation / Experience', 'Technical', 'Behavioral', 'Analytical', 'Others'];
+
     return (
-        <div className={styles.mainContentContainer}>
-            <div className={cardStyles.careerCard} style={{ width: "960px" }}>
-                <div className={cardStyles.careerCardHeader} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div className={styles.reviewMainContainer}>
+            {/* Career Details & Team Access */}
+            <div className={`${cardStyles.careerCard} ${cardStyles.reviewCard}`}>
+                <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
-                            style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
-                            onClick={() => setIsExpanded(!isExpanded)}
+                            className={cardStyles.reviewChevronContainer}
+                            onClick={() => setIsExpandedCareer(!isExpandedCareer)}
                         >
-                            <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}>
+                            <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: isExpandedCareer ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}>
                                 <path d="M0.833984 0.833328L5.83398 5.83333L10.834 0.833328" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                         </div>
                         <span className={cardStyles.careerCardTitle}>Career Details & Team Access</span>
                     </div>
-                    <div style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--Button-bg-secondary, #ffffff)", border: "1px solid var(--Button-border-primary, #d5d7da)", borderRadius: "50%", cursor: "pointer" }}>
+                    <div className={cardStyles.reviewEditIconContainer}>
                         <img alt="" src={assetConstants.edit} />
                     </div>
                 </div>
-                {isExpanded && (
+                {isExpandedCareer && (
                 <div className={cardStyles.careerCardContent} style={{ padding: "24px" }}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-md, 16px)" }}>
+                    <div className={cardStyles.reviewContentContainer}>
                         {/* Job Title */}
-                        <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                            <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Job Title</div>
-                            <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{jobTitle || "—"}</div>
+                        <div className={cardStyles.reviewSectionContainer}>
+                            <div className={cardStyles.reviewTitle}>Job Title</div>
+                            <div className={cardStyles.reviewData}>{jobTitle || "—"}</div>
                         </div>
-                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
 
                         {/* Employment Type & Work Arrangement */}
                         <div style={{ display: "flex", gap: "24px" }}>
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Employment Type</div>
-                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{employmentType || "—"}</div>
+                            <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
+                                <div className={cardStyles.reviewTitle}>Employment Type</div>
+                                <div className={cardStyles.reviewData}>{employmentType || "—"}</div>
                             </div>
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Work Arrangement</div>
-                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{workSetup || "—"}</div>
+                            <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
+                                <div className={cardStyles.reviewTitle}>Work Arrangement</div>
+                                <div className={cardStyles.reviewData}>{workSetup || "—"}</div>
                             </div>
                             <div style={{ flex: 1 }}></div>
                         </div>
-                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
 
                         {/* Location */}
                         <div style={{ display: "flex", gap: "24px" }}>
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Country</div>
-                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{country || "—"}</div>
+                            <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
+                                <div className={cardStyles.reviewTitle}>Country</div>
+                                <div className={cardStyles.reviewData}>{country || "—"}</div>
                             </div>
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>State / Province</div>
-                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{province || "—"}</div>
+                            <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
+                                <div className={cardStyles.reviewTitle}>State / Province</div>
+                                <div className={cardStyles.reviewData}>{province || "—"}</div>
                             </div>
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>City</div>
-                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{city || "—"}</div>
+                            <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
+                                <div className={cardStyles.reviewTitle}>City</div>
+                                <div className={cardStyles.reviewData}>{city || "—"}</div>
                             </div>
                         </div>
-                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
 
                         {/* Salary Range */}
                         <div style={{ display: "flex", gap: "24px" }}>
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Minimum Salary</div>
-                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{formatSalary(minimumSalary, salaryNegotiable)}</div>
+                            <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
+                                <div className={cardStyles.reviewTitle}>Minimum Salary</div>
+                                <div className={cardStyles.reviewData}>{formatSalary(minimumSalary, salaryNegotiable)}</div>
                             </div>
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Maximum Salary</div>
-                                <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{formatSalary(maximumSalary, salaryNegotiable)}</div>
+                            <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
+                                <div className={cardStyles.reviewTitle}>Maximum Salary</div>
+                                <div className={cardStyles.reviewData}>{formatSalary(maximumSalary, salaryNegotiable)}</div>
                             </div>
                             <div style={{ flex: 1 }}></div>
                         </div>
-                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
 
                         {/* Job Description */}
                         {description && (
                             <>
-                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                    <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Job Description</div>
+                                <div className={cardStyles.reviewSectionContainer}>
+                                    <div className={cardStyles.reviewTitle}>Job Description</div>
                                     <div 
-                                        style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}
+                                        className={cardStyles.reviewData}
                                         dangerouslySetInnerHTML={{ __html: description }}
                                     />
                                 </div>
-                                <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                                <div className={cardStyles.reviewDivider}></div>
                             </>
                         )}
 
                         {/* Responsibilities */}
                         {responsibilities.length > 0 && (
                             <>
-                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                    <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Responsibilities:</div>
-                                    <ul style={{ margin: 0, paddingLeft: "20px", fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>
+                                <div className={cardStyles.reviewSectionContainer}>
+                                    <div className={cardStyles.reviewTitle}>Responsibilities:</div>
+                                    <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
                                         {responsibilities.map((item, index) => (
                                             <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
                                         ))}
                                     </ul>
                                 </div>
-                                <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                                <div className={cardStyles.reviewDivider}></div>
                             </>
                         )}
 
                         {/* Qualifications */}
                         {qualifications.length > 0 && (
                             <>
-                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                    <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Qualifications:</div>
-                                    <ul style={{ margin: 0, paddingLeft: "20px", fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>
+                                <div className={cardStyles.reviewSectionContainer}>
+                                    <div className={cardStyles.reviewTitle}>Qualifications:</div>
+                                    <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
                                         {qualifications.map((item, index) => (
                                             <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
                                         ))}
                                     </ul>
                                 </div>
-                                <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                                <div className={cardStyles.reviewDivider}></div>
                             </>
                         )}
 
                         {/* Nice to have */}
                         {niceToHave.length > 0 && (
                             <>
-                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-xss, 4px)" }}>
-                                    <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Nice to have:</div>
-                                    <ul style={{ margin: 0, paddingLeft: "20px", fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>
+                                <div className={cardStyles.reviewSectionContainer}>
+                                    <div className={cardStyles.reviewTitle}>Nice to have:</div>
+                                    <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
                                         {niceToHave.map((item, index) => (
                                             <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
                                         ))}
                                     </ul>
                                 </div>
-                                <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                                <div className={cardStyles.reviewDivider}></div>
                             </>
                         )}
 
                         {/* Team Access */}
                         {teamMembers.length > 0 && (
                             <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-md, 16px)" }}>
-                                <div style={{ fontFamily: "inherit", fontWeight: 700, fontStyle: "normal", fontSize: "14px", lineHeight: "20px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-primary, #181D27)" }}>Team Access</div>
+                                <div className={cardStyles.reviewTitle}>Team Access</div>
                                 {teamMembers.map((member, index) => (
                                     <div key={index} style={{ display: "flex", alignItems: "center" }}>
                                         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -203,9 +254,293 @@ export default function CareerContentReviewCareer({
                                             </div>
                                         </div>
                                         <div style={{ flex: 1 }}></div>
-                                        <div style={{ fontFamily: "inherit", fontWeight: 500, fontStyle: "normal", fontSize: "16px", lineHeight: "24px", letterSpacing: "0%", verticalAlign: "middle", color: "var(--Text-text-secondary, #414651)" }}>{member.role || "—"}</div>
+                                        <div className={cardStyles.reviewData}>{member.role || "—"}</div>
                                     </div>
                                 ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                )}
+            </div>
+
+            {/* CV Review & Pre-screening */}
+            <div className={`${cardStyles.careerCard} ${cardStyles.reviewCard}`}>
+                <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <div 
+                            className={cardStyles.reviewChevronContainer}
+                            onClick={() => setIsExpandedScreening(!isExpandedScreening)}
+                        >
+                            <svg 
+                                width="12" 
+                                height="7" 
+                                viewBox="0 0 12 7" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg"
+                                style={{ transform: isExpandedScreening ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
+                            >
+                                <path d="M0.833984 0.833328L5.83398 5.83333L10.834 0.833328" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </div>
+                        <span className={cardStyles.careerCardTitle}>CV Review & Pre-screening</span>
+                    </div>
+                    <div className={cardStyles.reviewEditIconContainer}>
+                        <img alt="" src={assetConstants.edit} />
+                    </div>
+                </div>
+                {isExpandedScreening && (
+                <div className={cardStyles.careerCardContent} style={{ padding: "24px" }}>
+                    <div className={cardStyles.reviewContentContainer}>
+                        {/* CV Screening */}
+                        <div className={cardStyles.reviewSectionContainer}>
+                            <div className={cardStyles.reviewTitle}>CV Screening</div>
+                            <div className={cardStyles.reviewData}>
+                                Automatically endorse candidates who are {(() => {
+                                    if (!screeningSetting) return "—";
+                                    // Extract first part (e.g., "Good Fit") and the rest (e.g., "and above")
+                                    const parts = screeningSetting.split(" and ");
+                                    const firstPart = parts[0] || screeningSetting;
+                                    const rest = parts.length > 1 ? " and " + parts.slice(1).join(" and ") : "";
+                                    return (
+                                        <>
+                                            <span className={cardStyles.reviewBadge}>{firstPart}</span>
+                                            {rest}
+                                        </>
+                                    );
+                                })()}
+                            </div>
+                        </div>
+                        <div className={cardStyles.reviewDivider}></div>
+
+                        {/* CV Secret Prompt */}
+                        {cvSecretPrompt && (
+                            <>
+                                <div className={cardStyles.reviewSectionContainer}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                        <img alt="" src="/iconsV3/sparkle.svg" />
+                                        <div className={cardStyles.reviewTitle}>CV Secret Prompt</div>
+                                    </div>
+                                    <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
+                                        {formatSecretPrompt(cvSecretPrompt).map((item, index) => (
+                                            <li key={index} style={{ marginBottom: "8px" }}>{item.trim()}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className={cardStyles.reviewDivider}></div>
+                            </>
+                        )}
+
+                        {/* Pre-Screening Questions */}
+                        {preScreeningQuestions.length > 0 && (
+                            <div className={cardStyles.reviewSectionContainer}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                    <div className={cardStyles.reviewTitle}>Pre-Screening Questions</div>
+                                    <div className={cardStyles.reviewQuestionBadge}>
+                                        {preScreeningQuestions.length}
+                                    </div>
+                                </div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                                    {preScreeningQuestions.map((question, index) => {
+                                        const questionId = question.id;
+                                        const questionType = question.type || "Dropdown";
+                                        const options = getQuestionOptions(questionId);
+                                        const salaryRange = getSalaryRange(questionId);
+                                        
+                                        return (
+                                            <div key={question.id} className={cardStyles.reviewData}>
+                                                <strong>{index + 1}. {question.description || question.title || `Question ${index + 1}`}</strong>
+                                                {questionType === "Range" && salaryRange ? (
+                                                    <ul className={cardStyles.reviewList}>
+                                                        <li className={cardStyles.reviewListItem}>
+                                                            Preferred: PHP {Number(salaryRange.minimum).toLocaleString()} - PHP {Number(salaryRange.maximum).toLocaleString()}
+                                                        </li>
+                                                    </ul>
+                                                ) : options.length > 0 ? (
+                                                    <ul className={cardStyles.reviewList}>
+                                                        {options.map((option: any) => (
+                                                            <li key={option.id} className={cardStyles.reviewListItem}>{option.value}</li>
+                                                        ))}
+                                                    </ul>
+                                                ) : null}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                )}
+            </div>
+
+            {/* AI Interview Setup */}
+            <div className={`${cardStyles.careerCard} ${cardStyles.reviewCard}`}>
+                <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <div 
+                            className={cardStyles.reviewChevronContainer}
+                            onClick={() => setIsExpandedInterview(!isExpandedInterview)}
+                        >
+                            <svg 
+                                width="12" 
+                                height="7" 
+                                viewBox="0 0 12 7" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg"
+                                style={{ transform: isExpandedInterview ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
+                            >
+                                <path d="M0.833984 0.833328L5.83398 5.83333L10.834 0.833328" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </div>
+                        <span className={cardStyles.careerCardTitle}>AI Interview Setup</span>
+                    </div>
+                    <div className={cardStyles.reviewEditIconContainer}>
+                        <img alt="" src={assetConstants.edit} />
+                    </div>
+                </div>
+                {isExpandedInterview && (
+                <div className={cardStyles.careerCardContent} style={{ padding: "24px" }}>
+                    <div className={cardStyles.reviewContentContainer}>
+                        {/* AI Interview Screening */}
+                        <div className={cardStyles.reviewSectionContainer}>
+                            <div className={cardStyles.reviewTitle}>AI Interview Screening</div>
+                            <div className={cardStyles.reviewData}>
+                                Automatically endorse candidates who are {(() => {
+                                    if (!screeningSetting) return "—";
+                                    // Extract first part (e.g., "Good Fit") and the rest (e.g., "and above")
+                                    const parts = screeningSetting.split(" and ");
+                                    const firstPart = parts[0] || screeningSetting;
+                                    const rest = parts.length > 1 ? " and " + parts.slice(1).join(" and ") : "";
+                                    return (
+                                        <>
+                                            <span className={cardStyles.reviewBadge}>{firstPart}</span>
+                                            {rest}
+                                        </>
+                                    );
+                                })()}
+                            </div>
+                        </div>
+                        <div className={cardStyles.reviewDivider}></div>
+
+                        {/* Require Video on Interview */}
+                        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                            <div className={cardStyles.reviewTitle}>Require Video on Interview</div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                <div className={cardStyles.reviewData}>
+                                    {requireVideo ? "Yes" : "No"}
+                                </div>
+                                {requireVideo && (
+                                    <div style={{ width: "24px", height: "24px", borderRadius: "16px", borderWidth: "1px", padding: "6px", background: "var(--Colors-Primary_Colors-Success-50, #ECFDF3)", border: "1px solid var(--Colors-Primary_Colors-Success-200, #A6F4C5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                        <svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8.75 0.75L3.25 6.25L0.75 3.75" stroke="#12B76A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className={cardStyles.reviewDivider}></div>
+
+                        {/* AI Interview Secret Prompt */}
+                        {aiInterviewSecretPrompt && (
+                            <>
+                                <div className={cardStyles.reviewSectionContainer}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                        <img alt="" src="/iconsV3/sparkle.svg" />
+                                        <div className={cardStyles.reviewTitle}>AI Interview Secret Prompt</div>
+                                    </div>
+                                    <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
+                                        {formatSecretPrompt(aiInterviewSecretPrompt).map((item, index) => (
+                                            <li key={index} style={{ marginBottom: "8px" }}>{item.trim()}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className={cardStyles.reviewDivider}></div>
+                            </>
+                        )}
+
+                        {/* Interview Questions */}
+                        {getTotalQuestions() > 0 && (
+                            <div className={cardStyles.reviewSectionContainer}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                    <div className={cardStyles.reviewTitle}>Interview Questions</div>
+                                    <div className={cardStyles.reviewQuestionBadge}>
+                                        {getTotalQuestions()}
+                                    </div>
+                                </div>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                                    {(() => {
+                                        let globalQuestionNumber = 1;
+                                        return categories.map((category) => {
+                                            const questions = interviewQuestions[category] || [];
+                                            if (questions.length === 0) return null;
+
+                                            const categoryQuestions = questions.map((question) => {
+                                                const currentNumber = globalQuestionNumber++;
+                                                return { ...question, displayNumber: currentNumber };
+                                            });
+
+                                            return (
+                                                <div key={category} className={cardStyles.reviewData}>
+                                                    <strong>{category}:</strong>
+                                                    <ol className={cardStyles.reviewList}>
+                                                        {categoryQuestions.map((question) => (
+                                                            <li key={question.id} className={cardStyles.reviewListItem}>
+                                                                {question.text || `Question ${question.displayNumber}`}
+                                                            </li>
+                                                        ))}
+                                                    </ol>
+                                                </div>
+                                            );
+                                        });
+                                    })()}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                )}
+            </div>
+
+            {/* Pipeline Stages */}
+            <div className={`${cardStyles.careerCard} ${cardStyles.reviewCard}`}>
+                <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <div 
+                            className={cardStyles.reviewChevronContainer}
+                            onClick={() => setIsExpandedPipeline(!isExpandedPipeline)}
+                        >
+                            <svg 
+                                width="12" 
+                                height="7" 
+                                viewBox="0 0 12 7" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg"
+                                style={{ transform: isExpandedPipeline ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
+                            >
+                                <path d="M0.833984 0.833328L5.83398 5.83333L10.834 0.833328" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </div>
+                        <span className={cardStyles.careerCardTitle}>Pipeline Stages</span>
+                    </div>
+                    <div className={cardStyles.reviewEditIconContainer}>
+                        <img alt="" src={assetConstants.edit} />
+                    </div>
+                </div>
+                {isExpandedPipeline && (
+                <div className={cardStyles.careerCardContent} style={{ padding: "24px" }}>
+                    <div className={cardStyles.reviewContentContainer}>
+                        {pipelineStages && pipelineStages.length > 0 ? (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                                {pipelineStages.map((stage, index) => (
+                                    <div key={index} className={cardStyles.reviewData}>
+                                        {index + 1}. {stage.name || stage}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className={cardStyles.reviewData}>
+                                No pipeline stages configured.
                             </div>
                         )}
                     </div>

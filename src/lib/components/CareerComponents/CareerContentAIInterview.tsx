@@ -275,7 +275,7 @@ export default function CareerContentAIInterview({
                                 </div>
                             </div>
                         </div>
-                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
                         <div className={cardStyles.sectionWrapper}>
                             <div className={cardStyles.sectionTitleDescriptionWrapper}>
                                 <span className={cardStyles.sectionTitle}>Require Video on Interview</span>
@@ -297,7 +297,7 @@ export default function CareerContentAIInterview({
                                 </div>
                             </div>
                         </div>
-                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
                         <div className={cardStyles.sectionWrapper}>
                             <div className={cardStyles.sectionTitleDescriptionWrapper}>
                                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', position: 'relative' }}>
@@ -434,7 +434,7 @@ export default function CareerContentAIInterview({
                                         </div>
                                     </div>
                                     {index < 4 && (
-                                        <div style={{ width: '100%', height: '1px', backgroundColor: '#E9EAEB', marginTop: 'var(--spacing-lg, 24px)' }}></div>
+                                        <div className={cardStyles.reviewDivider} style={{ marginTop: 'var(--spacing-lg, 24px)' }}></div>
                                     )}
                                 </div>
                             ))}

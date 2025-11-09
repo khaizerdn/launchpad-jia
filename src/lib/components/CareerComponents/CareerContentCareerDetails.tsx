@@ -121,7 +121,7 @@ export default function CareerContentCareerDetails({
                         <span className={cardStyles.careerCardTitle}>1. Career Information</span>
                     </div>
                     <div className={cardStyles.careerCardContent}>
-                        <div className={styles.basicInfoContainer}>
+                        <div className={styles.sectionContainer}>
                             <span className={cardStyles.sectionTitle}>Basic Information</span>
                             <div className={styles.jobTitleField}>
                                 <span>Job Title</span>
@@ -399,7 +399,7 @@ export default function CareerContentCareerDetails({
                             />
                         </div>
 
-                        <div style={{ width: "100%", height: "1px", backgroundColor: "#E9EAEB" }}></div>
+                        <div className={cardStyles.reviewDivider}></div>
 
                         {!teamMembers.some(member => member.role === "Job Owner") && (
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: "0px", gap: "8px" }}>

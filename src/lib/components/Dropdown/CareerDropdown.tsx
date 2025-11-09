@@ -270,7 +270,7 @@ export default function CareerDropdown({
                   alignItems: hasDescription ? "flex-start" : "center",
                   gap: hasDescription ? "4px" : "8px",
                   whiteSpace: "normal",
-                  textTransform: "capitalize",
+                  textTransform: "none",
                   border: "none",
                   borderBottom: "none",
                   marginTop: "0",
