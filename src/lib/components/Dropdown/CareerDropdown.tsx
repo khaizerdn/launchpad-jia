@@ -8,6 +8,7 @@ interface CareerDropdownOption {
   name?: string;
   number?: number;
   icon?: string;
+  iconComponent?: React.ReactNode;
   description?: string;
 }
 
@@ -156,13 +157,22 @@ export default function CareerDropdown({
           lineHeight: "24px",
           letterSpacing: "0%",
           color: !selectedValue ? "var(--Input-text-placeholder-or-disabled, #717680)" : "var(--Input-text-primary, #181D27)",
-          textTransform: "none"
+          textTransform: "none",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "row"
         }}>
-          {selectedOption?.icon && <i className={selectedOption.icon} style={{ marginRight: "5px" }}></i>}
+          {selectedOption?.iconComponent ? (
+            <div style={{ width: "20px", height: "20px", marginRight: "5px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {selectedOption.iconComponent}
+            </div>
+          ) : selectedOption?.icon ? (
+            <i className={selectedOption.icon} style={{ marginRight: "5px" }}></i>
+          ) : null}
           {displayValue?.replace("_", " ")}
         </span>
-        <div style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", margin: 0, padding: 0 }}>
+          <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: 0 }}>
             <path d="M0.833252 0.833313L5.83325 5.83331L10.8333 0.833313" stroke="#717680" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
@@ -257,7 +267,13 @@ export default function CareerDropdown({
                   <div style={{ display: "flex", flexDirection: "column", width: "100%", gap: "4px" }}>
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", height: "20px" }}>
                       <span style={{ fontFamily: "Satoshi", fontStyle: "normal", fontWeight: 700, fontSize: "14px", lineHeight: "20px", color: isSelected ? "#181D27" : "#414651" }}>
-                        {option.icon && <i className={option.icon} style={{ marginRight: "5px" }}></i>}
+                        {option.iconComponent ? (
+                          <div style={{ width: "20px", height: "20px", marginRight: "5px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            {option.iconComponent}
+                          </div>
+                        ) : option.icon ? (
+                          <i className={option.icon} style={{ marginRight: "5px" }}></i>
+                        ) : null}
                         {optionValue?.replace("_", " ")}
                       </span>
                       {isSelected && (
@@ -285,7 +301,13 @@ export default function CareerDropdown({
                 ) : (
                   <>
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "5px" }}>
-                      {option.icon && <i className={option.icon}></i>} {optionValue?.replace("_", " ")}
+                      {option.iconComponent ? (
+                        <div style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {option.iconComponent}
+                        </div>
+                      ) : option.icon ? (
+                        <i className={option.icon}></i>
+                      ) : null} {optionValue?.replace("_", " ")}
                     </div>
                     {isSelected && (
                       <div style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}>

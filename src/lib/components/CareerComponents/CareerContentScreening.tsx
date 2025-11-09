@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
+import CareerDropdown from "@/lib/components/Dropdown/CareerDropdown";
 import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
 import styles from "@/lib/styles/components/careerForm.module.scss";
 import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
@@ -110,9 +110,6 @@ function SortableQuestionItem({ question, onDelete, options, onAddOption, onRemo
         isDragging,
     } = useSortable({ id: question.id });
 
-    const [typeDropdownOpen, setTypeDropdownOpen] = useState(false);
-    const typeDropdownRef = useRef<HTMLDivElement>(null);
-    const typeButtonRef = useRef<HTMLButtonElement>(null);
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -121,81 +118,53 @@ function SortableQuestionItem({ question, onDelete, options, onAddOption, onRemo
     };
 
     const questionTypes = [
-        { name: 'Short Answer', value: 'Short Answer' },
-        { name: 'Long Answer', value: 'Long Answer' },
-        { name: 'Dropdown', value: 'Dropdown' },
-        { name: 'Checkboxes', value: 'Checkboxes' },
-        { name: 'Range', value: 'Range' },
+        { 
+            name: 'Short Answer', 
+            value: 'Short Answer',
+            iconComponent: (
+                <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.1683 15.835V14.1683C14.1683 13.2842 13.8171 12.4364 13.192 11.8113C12.5669 11.1862 11.719 10.835 10.835 10.835H4.16829C3.28424 10.835 2.43639 11.1862 1.81127 11.8113C1.18615 12.4364 0.834961 13.2842 0.834961 14.1683V15.835M10.835 4.16829C10.835 6.00924 9.34258 7.50163 7.50163 7.50163C5.66068 7.50163 4.16829 6.00924 4.16829 4.16829C4.16829 2.32735 5.66068 0.834961 7.50163 0.834961C9.34258 0.834961 10.835 2.32735 10.835 4.16829Z" stroke="#717680" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+            )
+        },
+        { 
+            name: 'Long Answer', 
+            value: 'Long Answer',
+            iconComponent: (
+                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.33333 10H0V11.6667H8.33333V10ZM13.3333 3.33333H0V5H13.3333V3.33333ZM0 8.33333H13.3333V6.66667H0V8.33333ZM0 0V1.66667H13.3333V0H0Z" fill="#717680"/>
+                </svg>
+            )
+        },
+        { 
+            name: 'Dropdown', 
+            value: 'Dropdown',
+            iconComponent: (
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8.5" cy="8.5" r="7.5" stroke="#717680" strokeWidth="1.5"/>
+                    <path d="M6.5 7.5L8.5 9.5L10.5 7.5" stroke="#717680" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+            )
+        },
+        { 
+            name: 'Checkboxes', 
+            value: 'Checkboxes',
+            iconComponent: (
+                <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.1683 15.835V14.1683C14.1683 13.2842 13.8171 12.4364 13.192 11.8113C12.5669 11.1862 11.719 10.835 10.835 10.835H4.16829C3.28424 10.835 2.43639 11.1862 1.81127 11.8113C1.18615 12.4364 0.834961 13.2842 0.834961 14.1683V15.835M10.835 4.16829C10.835 6.00924 9.34258 7.50163 7.50163 7.50163C5.66068 7.50163 4.16829 6.00924 4.16829 4.16829C4.16829 2.32735 5.66068 0.834961 7.50163 0.834961C9.34258 0.834961 10.835 2.32735 10.835 4.16829Z" stroke="#717680" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+            )
+        },
+        { 
+            name: 'Range', 
+            value: 'Range',
+            iconComponent: (
+                <svg width="13" height="5" viewBox="0 0 13 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.5 5H1.25V1.25H0V0H2.5V5ZM7.91667 3.75H5.41667V2.91667H7.08333C7.54167 2.91667 7.91667 2.54167 7.91667 2.08333V0.833333C7.91667 0.375 7.54167 0 7.08333 0H4.16667V1.25H6.66667V2.08333H5C4.54167 2.08333 4.16667 2.45833 4.16667 2.91667V5H7.91667V3.75ZM12.9167 4.16667V0.833333C12.9167 0.375 12.5417 0 12.0833 0H9.16667V1.25H11.6667V2.08333H10V2.91667H11.6667V3.75H9.16667V5H12.0833C12.5417 5 12.9167 4.625 12.9167 4.16667Z" fill="#717680"/>
+                </svg>
+            )
+        },
     ];
-
-    const getQuestionTypeIcon = (type?: string) => {
-        switch (type) {
-            case 'Short Answer':
-                return (
-                    <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14.1683 15.835V14.1683C14.1683 13.2842 13.8171 12.4364 13.192 11.8113C12.5669 11.1862 11.719 10.835 10.835 10.835H4.16829C3.28424 10.835 2.43639 11.1862 1.81127 11.8113C1.18615 12.4364 0.834961 13.2842 0.834961 14.1683V15.835M10.835 4.16829C10.835 6.00924 9.34258 7.50163 7.50163 7.50163C5.66068 7.50163 4.16829 6.00924 4.16829 4.16829C4.16829 2.32735 5.66068 0.834961 7.50163 0.834961C9.34258 0.834961 10.835 2.32735 10.835 4.16829Z" stroke="#717680" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                );
-            case 'Long Answer':
-                return (
-                    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.33333 10H0V11.6667H8.33333V10ZM13.3333 3.33333H0V5H13.3333V3.33333ZM0 8.33333H13.3333V6.66667H0V8.33333ZM0 0V1.66667H13.3333V0H0Z" fill="#717680"/>
-                    </svg>
-                );
-            case 'Dropdown':
-                return (
-                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="8.5" cy="8.5" r="7.5" stroke="#717680" strokeWidth="1.5"/>
-                        <path d="M6.5 7.5L8.5 9.5L10.5 7.5" stroke="#717680" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                );
-            case 'Checkboxes':
-                return (
-                    <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14.1683 15.835V14.1683C14.1683 13.2842 13.8171 12.4364 13.192 11.8113C12.5669 11.1862 11.719 10.835 10.835 10.835H4.16829C3.28424 10.835 2.43639 11.1862 1.81127 11.8113C1.18615 12.4364 0.834961 13.2842 0.834961 14.1683V15.835M10.835 4.16829C10.835 6.00924 9.34258 7.50163 7.50163 7.50163C5.66068 7.50163 4.16829 6.00924 4.16829 4.16829C4.16829 2.32735 5.66068 0.834961 7.50163 0.834961C9.34258 0.834961 10.835 2.32735 10.835 4.16829Z" stroke="#717680" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                );
-            case 'Range':
-                return (
-                    <svg width="13" height="5" viewBox="0 0 13 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2.5 5H1.25V1.25H0V0H2.5V5ZM7.91667 3.75H5.41667V2.91667H7.08333C7.54167 2.91667 7.91667 2.54167 7.91667 2.08333V0.833333C7.91667 0.375 7.54167 0 7.08333 0H4.16667V1.25H6.66667V2.08333H5C4.54167 2.08333 4.16667 2.45833 4.16667 2.91667V5H7.91667V3.75ZM12.9167 4.16667V0.833333C12.9167 0.375 12.5417 0 12.0833 0H9.16667V1.25H11.6667V2.08333H10V2.91667H11.6667V3.75H9.16667V5H12.0833C12.5417 5 12.9167 4.625 12.9167 4.16667Z" fill="#717680"/>
-                    </svg>
-                );
-            default:
-                return (
-                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="8.5" cy="8.5" r="7.5" stroke="#717680" strokeWidth="1.5"/>
-                        <path d="M6.5 7.5L8.5 9.5L10.5 7.5" stroke="#717680" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                );
-        }
-    };
-
-    const getCurrentTypeDisplay = () => {
-        return question.type || 'Dropdown';
-    };
-
-    // Close dropdown on outside click
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (
-                typeDropdownRef.current &&
-                typeButtonRef.current &&
-                !typeDropdownRef.current.contains(event.target as Node) &&
-                !typeButtonRef.current.contains(event.target as Node)
-            ) {
-                setTypeDropdownOpen(false);
-            }
-        }
-
-        if (typeDropdownOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [typeDropdownOpen]);
 
     return (
         <div
@@ -223,58 +192,15 @@ function SortableQuestionItem({ question, onDelete, options, onAddOption, onRemo
                     ) : (
                         <span className={preScreeningStyles.questionText}>{question.description}</span>
                     )}
-                    <div style={{ position: 'relative' }} ref={typeDropdownRef}>
-                        <button 
-                            ref={typeButtonRef}
-                            className={preScreeningStyles.typeDropdown}
-                            onClick={() => setTypeDropdownOpen(!typeDropdownOpen)}
-                        >
-                            <div className={preScreeningStyles.dropdownContent}>
-                                <div style={{ width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    {getQuestionTypeIcon(getCurrentTypeDisplay())}
-                                </div>
-                                <span className={preScreeningStyles.dropdownText}>{getCurrentTypeDisplay()}</span>
-                            </div>
-                            <i className="la la-angle-down" style={{ fontSize: '20px', color: '#717680' }}></i>
-                        </button>
-                        {typeDropdownOpen && (
-                            <div className={preScreeningStyles.typeDropdownMenu}>
-                                {questionTypes.map((type) => {
-                                    const isSelected = (question.type || 'Dropdown') === type.value;
-                                    return (
-                                        <div
-                                            key={type.value}
-                                            className={preScreeningStyles.typeDropdownItem}
-                                            onClick={() => {
-                                                onUpdateType(question.id, type.value);
-                                                setTypeDropdownOpen(false);
-                                            }}
-                                        >
-                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '8px', width: '100%' }}>
-                                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
-                                                    <div style={{ width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                        {getQuestionTypeIcon(type.value)}
-                                                    </div>
-                                                    <span 
-                                                        className={preScreeningStyles.typeDropdownItemText}
-                                                        style={{ fontWeight: isSelected ? 700 : 500 }}
-                                                    >
-                                                        {type.name}
-                                                    </span>
-                                                </div>
-                                                {isSelected && (
-                                                    <div style={{ width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                        <svg width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M14.1668 0.833252L5.00016 9.99992L0.833496 5.83325" stroke="#8098F9" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                                        </svg>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
+                    <div style={{ width: '232px' }}>
+                        <CareerDropdown
+                            onSelectSetting={(type) => {
+                                onUpdateType(question.id, type);
+                            }}
+                            screeningSetting={question.type || 'Dropdown'}
+                            settingList={questionTypes}
+                            placeholder="Select type"
+                        />
                     </div>
                 </div>
                 <div className={preScreeningStyles.questionOptionsContainer}>
@@ -683,7 +609,7 @@ export default function CareerContentScreening({
                             </div>
                             <div className={cardStyles.fieldContainer}>
                                 <div style={{ width: "320px" }}>
-                                    <CustomDropdown
+                                    <CareerDropdown
                                         onSelectSetting={(setting) => {
                                             setScreeningSetting(setting);
                                         }}

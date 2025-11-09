@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
+import CareerDropdown from "@/lib/components/Dropdown/CareerDropdown";
 import styles from "@/lib/styles/components/careerForm.module.scss";
 import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
@@ -315,7 +315,7 @@ export default function CareerContentInterview({
                             </div>
                             <div className={cardStyles.fieldContainer}>
                                 <div style={{ width: "320px" }}>
-                                    <CustomDropdown
+                                    <CareerDropdown
                                         onSelectSetting={(setting) => {
                                             setScreeningSetting(setting);
                                         }}
