@@ -160,16 +160,23 @@ export default function CareerDropdown({
           textTransform: "none",
           display: "flex",
           alignItems: "center",
-          flexDirection: "row"
+          flexDirection: "row",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          flex: 1,
+          minWidth: 0
         }}>
           {selectedOption?.iconComponent ? (
-            <div style={{ width: "20px", height: "20px", marginRight: "5px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: "20px", height: "20px", marginRight: "5px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               {selectedOption.iconComponent}
             </div>
           ) : selectedOption?.icon ? (
-            <i className={selectedOption.icon} style={{ marginRight: "5px" }}></i>
+            <i className={selectedOption.icon} style={{ marginRight: "5px", flexShrink: 0 }}></i>
           ) : null}
-          {displayValue?.replace("_", " ")}
+          <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {displayValue?.replace("_", " ")}
+          </span>
         </span>
         <div style={{ width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", margin: 0, padding: 0 }}>
           <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: 0 }}>
