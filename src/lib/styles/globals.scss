@@ -2000,6 +2000,16 @@ $gifURL: "/gr-1.gif";
       @media screen and (max-width: 1000px) {
         display: none;
       }
+
+      &.navbar-job-hunters {
+        text-decoration: underline;
+        color: var(--Text-text-secondary, #414651);
+        cursor: pointer;
+
+        &:hover {
+          color: var(--Text-text-secondary, #414651);
+        }
+      }
     }
 
     .navbar-login-btn {

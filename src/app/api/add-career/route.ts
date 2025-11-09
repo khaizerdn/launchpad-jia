@@ -257,6 +257,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: createdByValidation.error }, { status: 400 });
     }
 
+    // Validate pre-screening questions (optional)
+    const preScreeningQuestionsValidation = validateArray(requestData.preScreeningQuestions, "Pre-screening questions", {
+      required: false,
+    });
+    const preScreeningQuestions = preScreeningQuestionsValidation.isValid ? (preScreeningQuestionsValidation.value || []) : [];
+
+    // Validate pre-screening question options (optional)
+    const preScreeningQuestionOptions = requestData.preScreeningQuestionOptions && typeof requestData.preScreeningQuestionOptions === 'object' 
+      ? requestData.preScreeningQuestionOptions 
+      : {};
+
+    // Validate pre-screening question salary ranges (optional)
+    const preScreeningQuestionSalaryRanges = requestData.preScreeningQuestionSalaryRanges && typeof requestData.preScreeningQuestionSalaryRanges === 'object'
+      ? requestData.preScreeningQuestionSalaryRanges
+      : {};
+
     // Extract validated values
     const {
       jobTitle,
@@ -363,6 +379,9 @@ export async function POST(request: Request) {
       employmentType,
       currentStep: currentStep,
       teamMembers: teamMembers,
+      preScreeningQuestions,
+      preScreeningQuestionOptions,
+      preScreeningQuestionSalaryRanges,
     };
 
     await db.collection("careers").insertOne(career);

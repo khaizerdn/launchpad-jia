@@ -71,6 +71,9 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
     const [salaryNegotiable, setSalaryNegotiable] = useState(career?.salaryNegotiable || true);
     const [minimumSalary, setMinimumSalary] = useState(career?.minimumSalary ? String(career.minimumSalary) : "");
     const [maximumSalary, setMaximumSalary] = useState(career?.maximumSalary ? String(career.maximumSalary) : "");
+    const [preScreeningQuestions, setPreScreeningQuestions] = useState(career?.preScreeningQuestions || []);
+    const [preScreeningQuestionOptions, setPreScreeningQuestionOptions] = useState(career?.preScreeningQuestionOptions || {});
+    const [preScreeningQuestionSalaryRanges, setPreScreeningQuestionSalaryRanges] = useState(career?.preScreeningQuestionSalaryRanges || {});
     const [questions, setQuestions] = useState(career?.questions || [
       {
         id: 1,
@@ -260,6 +263,9 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
             location: city,
             employmentType,
             currentStep, // Save the current step progress
+            preScreeningQuestions,
+            preScreeningQuestionOptions,
+            preScreeningQuestionSalaryRanges,
         }
         try {
             setIsSavingCareer(true);
@@ -330,6 +336,9 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
             employmentType,
             teamMembers,
             currentStep, // Save the current step progress
+            preScreeningQuestions,
+            preScreeningQuestionOptions,
+            preScreeningQuestionSalaryRanges,
         }
 
         try {
@@ -486,6 +495,12 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                 screeningSettingList={screeningSettingList}
                 cvSecretPrompt={cvSecretPrompt}
                 setCvSecretPrompt={setCvSecretPrompt}
+                preScreeningQuestions={preScreeningQuestions}
+                setPreScreeningQuestions={setPreScreeningQuestions}
+                questionOptions={preScreeningQuestionOptions}
+                setQuestionOptions={setPreScreeningQuestionOptions}
+                questionSalaryRanges={preScreeningQuestionSalaryRanges}
+                setQuestionSalaryRanges={setPreScreeningQuestionSalaryRanges}
             />
         )}
         {currentStep === 3 && (

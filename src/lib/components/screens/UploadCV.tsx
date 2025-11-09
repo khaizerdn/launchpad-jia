@@ -11,6 +11,7 @@ import { CORE_API_URL } from "@/lib/Utils";
 import axios from "axios";
 import Markdown from "react-markdown";
 import { useEffect, useRef, useState } from "react";
+import CVScreening from "./CVScreening";
 
 export default function () {
   const fileInputRef = useRef(null);
@@ -25,6 +26,7 @@ export default function () {
   const [interview, setInterview] = useState(null);
   const [screeningResult, setScreeningResult] = useState(null);
   const [userCV, setUserCV] = useState(null);
+  const [isScreeningInProgress, setIsScreeningInProgress] = useState(false);
   const cvSections = [
     "Introduction",
     "Current Position",
@@ -36,7 +38,7 @@ export default function () {
     "Certifications",
     "Awards",
   ];
-  const step = ["Submit CV", "CV Screening", "Review Next Steps"];
+  const step = ["Submit CV", "Pre-screening Questions", "Review Next Steps"];
   const stepStatus = ["Completed", "Pending", "In Progress"];
 
   function handleDragOver(e) {
@@ -129,6 +131,38 @@ export default function () {
 
   function processState(index, isAdvance = false) {
     const currentStepIndex = step.indexOf(currentStep);
+
+    // Special handling for Pre-screening Questions step (index 1 - middle circle)
+    if (index === 1) {
+      // For progress bar (hr): show completed when screening starts OR when result exists
+      if (!isAdvance) {
+        if (isScreeningInProgress || screeningResult) {
+          return stepStatus[0]; // Completed - makes the hr full
+        }
+      }
+      // For icon: show check immediately when screening starts
+      if (isAdvance) {
+        if (isScreeningInProgress || screeningResult) {
+          return stepStatus[0]; // Completed - shows check icon when "Sit tight!" appears
+        }
+      }
+    }
+
+    // Special handling for Review Next Steps (index 2 - third circle)
+    if (index === 2) {
+      // For progress bar (hr): show completed when screening result exists
+      if (!isAdvance) {
+        if (screeningResult) {
+          return stepStatus[0]; // Completed - makes the hr full
+        }
+      }
+      // For icon: show check when screening completes
+      if (isAdvance) {
+        if (screeningResult) {
+          return stepStatus[0]; // Completed - shows check icon when screening is done
+        }
+      }
+    }
 
     if (currentStepIndex == index) {
       if (index == stepStatus.length - 1) {
@@ -228,78 +262,8 @@ export default function () {
       }
     }
 
+    // Just navigate to Pre-screening Questions step - the component will handle the screening
     setCurrentStep(step[1]);
-
-    if (hasChanges) {
-      const formattedUserCV = cvSections.map((section) => ({
-        name: section,
-        content: userCV[section]?.trim() || "",
-      }));
-
-      parsedDigitalCV.digitalCV = formattedUserCV;
-
-      const data = {
-        name: user.name,
-        cvData: parsedDigitalCV,
-        email: user.email,
-        fileInfo: null,
-      };
-
-      if (file) {
-        data.fileInfo = {
-          name: file.name,
-          size: file.size,
-          type: file.type,
-        };
-      }
-
-      axios({
-        method: "POST",
-        url: `/api/whitecloak/save-cv`,
-        data,
-      })
-        .then(() => {
-          localStorage.setItem(
-            "userCV",
-            JSON.stringify({ ...data, ...data.cvData })
-          );
-        })
-        .catch((err) => {
-          alert("Error saving CV. Please try again.");
-          setCurrentStep(step[0]);
-          console.log(err);
-        });
-    }
-
-    setHasChanges(true);
-
-    axios({
-      url: "/api/whitecloak/screen-cv",
-      method: "POST",
-      data: {
-        interviewID: interview.interviewID,
-        userEmail: user.email,
-      },
-    })
-      .then((res) => {
-        const result = res.data;
-
-        if (result.error) {
-          alert(result.message);
-          setCurrentStep(step[0]);
-        } else {
-          setCurrentStep(step[2]);
-          setScreeningResult(result);
-        }
-      })
-      .catch((err) => {
-        alert("Error screening CV. Please try again.");
-        setCurrentStep(step[0]);
-        console.log(err);
-      })
-      .finally(() => {
-        setHasChanges(false);
-      });
   }
 
   function handleFileSubmit(file) {
@@ -356,66 +320,83 @@ export default function () {
 
       {interview && (
         <div className={styles.uploadCVContainer}>
-          <div className={styles.uploadCVHeader}>
-            {interview.organization && interview.organization.image && (
-              <img alt="" src={interview.organization.image} />
-            )}
-            <div className={styles.textContainer}>
-              <span className={styles.tag}>You're applying for</span>
-              <span className={styles.title}>{interview.jobTitle}</span>
-              {interview.organization && interview.organization.name && (
-                <span className={styles.name}>
-                  {interview.organization.name}
-                </span>
-              )}
-              <span className={styles.description} onClick={handleModal}>
-                View job description
-              </span>
-            </div>
-          </div>
-
-          <div className={styles.stepContainer}>
-            <div className={styles.step}>
-              {step.map((_, index) => (
-                <div className={styles.stepBar} key={index}>
-                  <img
-                    alt=""
-                    src={
-                      assetConstants[
-                        processState(index, true)
-                          .toLowerCase()
-                          .replace(" ", "_")
-                      ]
-                    }
-                  />
-                  {index < step.length - 1 && (
-                    <hr
-                      className={
-                        styles[
-                          processState(index).toLowerCase().replace(" ", "_")
-                        ]
-                      }
-                    />
+          {currentStep != step[1] && (
+            <>
+              <div className={styles.uploadCVHeader}>
+                {interview.organization && interview.organization.image && (
+                  <img alt="" src={interview.organization.image} />
+                )}
+                <div className={styles.textContainer}>
+                  <span className={styles.tag}>You're applying for</span>
+                  <span className={styles.title}>{interview.jobTitle}</span>
+                  {interview.organization && interview.organization.name && (
+                    <span className={styles.name}>
+                      {interview.organization.name}
+                    </span>
                   )}
+                  <span className={styles.description} onClick={handleModal}>
+                    View job description
+                  </span>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            <div className={styles.step}>
-              {step.map((item, index) => (
-                <span
-                  className={`${styles.stepDetails} ${
-                    styles[
-                      processState(index, true).toLowerCase().replace(" ", "_")
-                    ]
-                  }`}
-                  key={index}
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
+              <div className={styles.stepContainer}>
+                <div className={styles.step}>
+                  {step.map((_, index) => (
+                    <div 
+                      className={styles.stepBar} 
+                      key={index}
+                      onClick={() => {
+                        // TEMPORARY: Make steps clickable for navigation
+                        setCurrentStep(step[index]);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <img
+                        alt=""
+                        src={
+                          assetConstants[
+                            processState(index, true)
+                              .toLowerCase()
+                              .replace(" ", "_")
+                          ]
+                        }
+                      />
+                      {index < step.length - 1 && (
+                        <hr
+                          className={
+                            styles[
+                              processState(index).toLowerCase().replace(" ", "_")
+                            ]
+                          }
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className={styles.step}>
+                  {step.map((item, index) => (
+                    <span
+                      className={`${styles.stepDetails} ${
+                        styles[
+                          processState(index, true).toLowerCase().replace(" ", "_")
+                        ]
+                      }`}
+                      key={index}
+                      onClick={() => {
+                        // TEMPORARY: Make steps clickable for navigation
+                        setCurrentStep(step[index]);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
           {currentStep == step[0] && (
             <>
@@ -609,87 +590,37 @@ export default function () {
           )}
 
           {currentStep == step[1] && (
-            <div className={styles.cvScreeningContainer}>
-              <img alt="" src={assetConstants.loading} />
-              <span className={styles.title}>Sit tight!</span>
-              <span className={styles.description}>
-                Our smart reviewer is checking your qualifications.
-              </span>
-              <span className={styles.description}>
-                We'll let you know what's next in just a moment.
-              </span>
-            </div>
+            <CVScreening
+              interview={interview}
+              user={user}
+              userCV={userCV}
+              digitalCV={digitalCV}
+              file={file}
+              hasChanges={hasChanges}
+              setHasChanges={setHasChanges}
+              step={step}
+              processState={processState}
+              assetConstants={assetConstants}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+              onScreeningStart={() => {
+                setIsScreeningInProgress(true);
+              }}
+              onScreeningComplete={(result) => {
+                if (result) {
+                  setScreeningResult(result);
+                }
+                setIsScreeningInProgress(false);
+              }}
+              onGoToDashboard={() => {
+                handleRedirection("dashboard");
+              }}
+              onStartInterview={() => {
+                handleRedirection("interview");
+              }}
+            />
           )}
 
-          {currentStep == step[2] && screeningResult && (
-            <div className={styles.cvResultContainer}>
-              {screeningResult.applicationStatus == "Dropped" ? (
-                <>
-                  <img alt="" src={assetConstants.userRejected} />
-                  <span className={styles.title}>
-                    This role may not be the best match.
-                  </span>
-                  <span className={styles.description}>
-                    Based on your CV, it looks like this position might not be
-                    the right fit at the moment.
-                  </span>
-                  <br />
-                  <span className={styles.description}>
-                    Review your screening results and see recommended next
-                    steps.
-                  </span>
-                  <div className={styles.buttonContainer}>
-                    <button onClick={() => handleRedirection("dashboard")}>
-                      View Dashboard
-                    </button>
-                  </div>
-                </>
-              ) : screeningResult.status == "For AI Interview" ? (
-                <>
-                  <img alt="" src={assetConstants.checkV3} />
-                  <span className={styles.title}>
-                    Hooray! You’re a strong fit for this role.
-                  </span>
-                  <span className={styles.description}>
-                    Jia thinks you might be a great match.
-                  </span>
-                  <br />
-                  <span className={`${styles.description} ${styles.bold}`}>
-                    Ready to take the next step?
-                  </span>
-                  <span className={styles.description}>
-                    You may start your AI interview now.
-                  </span>
-                  <div className={styles.buttonContainer}>
-                    <button onClick={() => handleRedirection("interview")}>
-                      Start AI Interview
-                    </button>
-                    <button
-                      className="secondaryBtn"
-                      onClick={() => handleRedirection("dashboard")}
-                    >
-                      View Dashboard
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <img alt="" src={assetConstants.userCheck} />
-                  <span className={styles.title}>
-                    Your CV is now being reviewed by the hiring team.
-                  </span>
-                  <span className={styles.description}>
-                    We’ll be in touch soon with updates about your application.
-                  </span>
-                  <div className={styles.buttonContainer}>
-                    <button onClick={() => handleRedirection("dashboard")}>
-                      View Dashboard
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
         </div>
       )}
     </>

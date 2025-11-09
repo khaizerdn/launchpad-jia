@@ -73,11 +73,26 @@ export async function signInWithGoogle(type) {
 
       successToast("Login successful");
 
+      // Update localStorage.user with the actual API response data
+      if (res.data && res.data.email) {
+        localStorage.user = JSON.stringify({
+          email: res.data.email,
+          image: res.data.image || profile.picture,
+          name: res.data.name || profile.name,
+          role: res.data.role || type,
+        });
+      }
+
       const host = window.location.host;
 
+      // Only block applicants if they're trying to access employer portal
+      // and not signing in from the general login page (where type is undefined)
       if (
         (host.includes("localhost") || host.includes("hirejia.ai")) &&
-        res.data.role == "applicant"
+        res.data.role == "applicant" &&
+        type !== undefined &&
+        type !== "job-portal" &&
+        type !== "whitecloak-careers"
       ) {
         Swal.fire({
           title: "No Account Found",

@@ -35,24 +35,33 @@ export async function POST(request: Request) {
         .findOne({ email: email });
 
       if (applicant) {
+        // Update last seen for existing applicant
+        await db.collection("applicants").updateOne(
+          { email: email },
+          {
+            $set: {
+              name: name,
+              image: image,
+              lastSeen: new Date(),
+            },
+          }
+        );
         return NextResponse.json(applicant);
       }
 
-      if (!applicant) {
-        await db.collection("applicants").insertOne({
-          email: email,
-          name: name,
-          image: image,
-          createdAt: new Date(),
-          lastSeen: new Date(),
-          role: "applicant",
-        });
-      }
+      // Create new applicant and return it
+      const newApplicant = {
+        email: email,
+        name: name,
+        image: image,
+        createdAt: new Date(),
+        lastSeen: new Date(),
+        role: "applicant",
+      };
+      
+      await db.collection("applicants").insertOne(newApplicant);
+      return NextResponse.json(newApplicant);
     }
-
-    return NextResponse.json({
-      message: "Default Fallback",
-    });
   } catch (error) {
     console.error("Authentication error:", error);
     return NextResponse.json(

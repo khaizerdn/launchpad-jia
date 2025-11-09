@@ -4,20 +4,34 @@ import connectMongoDB from "@/lib/mongoDB/mongoDB";
 
 export async function POST(request: Request) {
   try {
-    const { careerID } = await request.json();
+    const body = await request.json();
+    const { careerID, careerId, preScreeningOnly } = body;
 
-    if (!careerID) {
+    if (!careerID && !careerId) {
       return NextResponse.json(
-        { error: "careerID is required" },
+        { error: "careerID or careerId is required" },
         { status: 400 }
       );
     }
 
     const { db } = await connectMongoDB();
 
-    const career = await db
-      .collection("careers")
-      .findOne({ _id: new ObjectId(careerID) });
+    // Try to find by MongoDB _id first, then by GUID id
+    let career;
+    if (careerID && ObjectId.isValid(careerID)) {
+      career = await db
+        .collection("careers")
+        .findOne({ _id: new ObjectId(careerID) });
+    } else if (careerId) {
+      career = await db
+        .collection("careers")
+        .findOne({ id: careerId });
+    } else if (careerID) {
+      // Fallback: try as GUID id
+      career = await db
+        .collection("careers")
+        .findOne({ id: careerID });
+    }
 
     if (!career) {
       return NextResponse.json({ error: "Career not found" }, { status: 404 });
@@ -28,6 +42,15 @@ export async function POST(request: Request) {
         { error: "Career is inactive" },
         { status: 403 }
       );
+    }
+
+    // Check if this is a request for pre-screening questions only
+    if (preScreeningOnly) {
+      return NextResponse.json({
+        preScreeningQuestions: career.preScreeningQuestions || [],
+        preScreeningQuestionOptions: career.preScreeningQuestionOptions || {},
+        preScreeningQuestionSalaryRanges: career.preScreeningQuestionSalaryRanges || {},
+      });
     }
 
     return NextResponse.json(career);

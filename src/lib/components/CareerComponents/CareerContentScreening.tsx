@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -17,6 +17,12 @@ interface CareerContentScreeningProps {
     screeningSettingList: any[];
     cvSecretPrompt: string;
     setCvSecretPrompt: (value: string) => void;
+    preScreeningQuestions?: any[];
+    setPreScreeningQuestions?: (questions: any[]) => void;
+    questionOptions?: {[questionId: string]: {id: string, value: string, number: number}[]};
+    setQuestionOptions?: (options: {[questionId: string]: {id: string, value: string, number: number}[]}) => void;
+    questionSalaryRanges?: {[questionId: string]: {minimum: string, maximum: string}};
+    setQuestionSalaryRanges?: (ranges: {[questionId: string]: {minimum: string, maximum: string}}) => void;
 }
 
 interface SortableQuestionItemProps {
@@ -387,14 +393,21 @@ export default function CareerContentScreening({
     screeningSettingList,
     cvSecretPrompt,
     setCvSecretPrompt,
+    preScreeningQuestions: externalPreScreeningQuestions,
+    setPreScreeningQuestions: setExternalPreScreeningQuestions,
+    questionOptions: externalQuestionOptions,
+    setQuestionOptions: setExternalQuestionOptions,
+    questionSalaryRanges: externalQuestionSalaryRanges,
+    setQuestionSalaryRanges: setExternalQuestionSalaryRanges,
 }: CareerContentScreeningProps) {
     const [showTooltip, setShowTooltip] = useState(false);
-    const [activeQuestions, setActiveQuestions] = useState<{id: string, title: string, description: string, type?: string}[]>([]);
-    const [questionOptions, setQuestionOptions] = useState<{[questionId: string]: {id: string, value: string, number: number}[]}>({});
-    const [questionSalaryRanges, setQuestionSalaryRanges] = useState<{[questionId: string]: {minimum: string, maximum: string}}>({});
+    const [activeQuestions, setActiveQuestions] = useState<{id: string, title: string, description: string, type?: string}[]>(externalPreScreeningQuestions || []);
+    const [questionOptions, setQuestionOptions] = useState<{[questionId: string]: {id: string, value: string, number: number}[]}>(externalQuestionOptions || {});
+    const [questionSalaryRanges, setQuestionSalaryRanges] = useState<{[questionId: string]: {minimum: string, maximum: string}}>(externalQuestionSalaryRanges || {});
     const tooltipRef = useRef<HTMLDivElement>(null);
     const cvSecretPromptRef = useRef<HTMLDivElement>(null);
     const iconRef = useRef<HTMLDivElement>(null);
+    const isUpdatingFromExternal = useRef(false);
 
     // Sync editor content when cvSecretPrompt changes from outside
     useEffect(() => {
@@ -402,6 +415,54 @@ export default function CareerContentScreening({
             cvSecretPromptRef.current.innerHTML = cvSecretPrompt || '';
         }
     }, [cvSecretPrompt]);
+
+    // Sync activeQuestions with external prop
+    useEffect(() => {
+        if (externalPreScreeningQuestions && externalPreScreeningQuestions !== activeQuestions) {
+            isUpdatingFromExternal.current = true;
+            setActiveQuestions(externalPreScreeningQuestions);
+            setTimeout(() => { isUpdatingFromExternal.current = false; }, 0);
+        }
+    }, [externalPreScreeningQuestions]);
+
+    // Sync questionOptions with external prop
+    useEffect(() => {
+        if (externalQuestionOptions && externalQuestionOptions !== questionOptions) {
+            isUpdatingFromExternal.current = true;
+            setQuestionOptions(externalQuestionOptions);
+            setTimeout(() => { isUpdatingFromExternal.current = false; }, 0);
+        }
+    }, [externalQuestionOptions]);
+
+    // Sync questionSalaryRanges with external prop
+    useEffect(() => {
+        if (externalQuestionSalaryRanges && externalQuestionSalaryRanges !== questionSalaryRanges) {
+            isUpdatingFromExternal.current = true;
+            setQuestionSalaryRanges(externalQuestionSalaryRanges);
+            setTimeout(() => { isUpdatingFromExternal.current = false; }, 0);
+        }
+    }, [externalQuestionSalaryRanges]);
+
+    // Notify parent when activeQuestions changes (only if not updating from external)
+    useEffect(() => {
+        if (setExternalPreScreeningQuestions && !isUpdatingFromExternal.current) {
+            setExternalPreScreeningQuestions(activeQuestions);
+        }
+    }, [activeQuestions, setExternalPreScreeningQuestions]);
+
+    // Notify parent when questionOptions changes (only if not updating from external)
+    useEffect(() => {
+        if (setExternalQuestionOptions && !isUpdatingFromExternal.current) {
+            setExternalQuestionOptions(questionOptions);
+        }
+    }, [questionOptions, setExternalQuestionOptions]);
+
+    // Notify parent when questionSalaryRanges changes (only if not updating from external)
+    useEffect(() => {
+        if (setExternalQuestionSalaryRanges && !isUpdatingFromExternal.current) {
+            setExternalQuestionSalaryRanges(questionSalaryRanges);
+        }
+    }, [questionSalaryRanges, setExternalQuestionSalaryRanges]);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -574,6 +635,18 @@ export default function CareerContentScreening({
                 [questionId]: { minimum: '', maximum: '' }
             }));
         }
+        // If changing to Dropdown or Checkboxes, initialize empty options array if it doesn't exist
+        if (type === 'Dropdown' || type === 'Checkboxes') {
+            setQuestionOptions(prev => {
+                if (!prev[questionId]) {
+                    return {
+                        ...prev,
+                        [questionId]: []
+                    };
+                }
+                return prev;
+            });
+        }
         // If changing from Range to something else, clear salary range
         const currentQuestion = activeQuestions.find(q => q.id === questionId);
         if (currentQuestion?.type === 'Range' && type !== 'Range') {
@@ -581,6 +654,14 @@ export default function CareerContentScreening({
                 const newRanges = { ...prev };
                 delete newRanges[questionId];
                 return newRanges;
+            });
+        }
+        // If changing from Dropdown/Checkboxes to something else, clear options
+        if ((currentQuestion?.type === 'Dropdown' || currentQuestion?.type === 'Checkboxes') && type !== 'Dropdown' && type !== 'Checkboxes') {
+            setQuestionOptions(prev => {
+                const newOptions = { ...prev };
+                delete newOptions[questionId];
+                return newOptions;
             });
         }
     };
