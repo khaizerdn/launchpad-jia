@@ -13,6 +13,33 @@ import Markdown from "react-markdown";
 import { useEffect, useRef, useState } from "react";
 import UploadCV_PreScreeningQuestions from "./UploadCV_PreScreeningQuestions";
 
+// Helper function to strip markdown formatting and remove title line
+const stripMarkdown = (text: string): string => {
+  if (!text) return "";
+  // Split into lines
+  const lines = text.split('\n');
+  // Remove the first line if it's a header (starts with #)
+  const filteredLines = lines.filter((line, index) => {
+    // Remove first line if it's a header
+    if (index === 0 && /^#{1,6}\s+/.test(line.trim())) {
+      return false;
+    }
+    return true;
+  });
+  // Join back and remove markdown formatting from remaining content
+  return filteredLines
+    .join('\n')
+    .replace(/\*\*(.*?)\*\*/g, "$1") // Remove bold (**text**)
+    .replace(/\*(.*?)\*/g, "$1") // Remove italic (*text*)
+    .replace(/__(.*?)__/g, "$1") // Remove bold (__text__)
+    .replace(/_(.*?)_/g, "$1") // Remove italic (_text_)
+    .replace(/`(.*?)`/g, "$1") // Remove inline code
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links [text](url)
+    .replace(/^\s*[-*+]\s+/gm, "") // Remove list markers
+    .replace(/^\s*\d+\.\s+/gm, "") // Remove numbered list markers
+    .trim();
+};
+
 export default function () {
   const fileInputRef = useRef(null);
   const { user, setModalType } = useAppContext();
@@ -543,7 +570,7 @@ export default function () {
                               id={section}
                               placeholder="Upload your CV to auto-fill this section."
                               value={
-                                userCV && userCV[section] ? userCV[section] : ""
+                                userCV && userCV[section] ? stripMarkdown(userCV[section]) : ""
                               }
                               onBlur={(e) => {
                                 e.target.placeholder =
@@ -583,7 +610,17 @@ export default function () {
                       </div>
                     </div>
                   ))}
-                  <button onClick={handleCVScreen}>Submit CV</button>
+                  <button 
+                    onClick={handleCVScreen}
+                    className={styles.continueButton}
+                  >
+                    Continue
+                    <span className={styles.iconContainer}>
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.835938 6.66836H12.5026M12.5026 6.66836L6.66927 0.835022M12.5026 6.66836L6.66927 12.5017" stroke="white" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
                 </div>
               )}
             </>

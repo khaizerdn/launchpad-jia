@@ -176,10 +176,10 @@
           font-family: inherit; // Font family/body
           font-weight: 700;
           font-style: normal;
-          font-size: 16px;
-          line-height: 24px;
+          font-size: 18px;
+          line-height: 28px;
           letter-spacing: 0%;
-          color: var(--Text-text-secondary, #414651);
+          color: var(--Text-text-primary, #181D27);
           .editIcon {
             $size: 36px;
             height: $size;
@@ -238,18 +238,24 @@
             }
           }
           .sectionDetails {
+            font-family: Satoshi;
             font-weight: 500;
+            font-style: normal;
             font-size: 14px;
             line-height: 20px;
-            color: var(--Text-text-tertiary, #717680);
+            letter-spacing: 0%;
+            color: #6A6A6A;
             &.withDetails {
-              color: #6a6a6a;
+              color: #6A6A6A;
               p {
                 margin: revert;
               }
             }
             p {
               margin: 0;
+            }
+            h2 {
+              display: none;
             }
           }
           textarea {
