@@ -351,74 +351,74 @@ For detailed testing instructions and code flow diagrams, see:
 
 ## 🔌 Backend Files and Its Usage
 
-### `src/app/api/add-career/route.ts`
-**Usage:** Creates a new career/job posting with validation, sanitization, and job limit checking.
+**src/app/api/add-career/route.ts**
+- **Usage:** Creates a new career/job posting with validation, sanitization, and job limit checking.
 
-### `src/app/api/update-career/route.tsx`
-**Usage:** Updates an existing career/job posting with all form data including currentStep progress.
+**src/app/api/update-career/route.tsx**
+- **Usage:** Updates an existing career/job posting with all form data including currentStep progress.
 
-### `src/app/api/career-data/route.tsx`
-**Usage:** Fetches a single career by MongoDB ObjectId for recruiter/admin editing or viewing.
+**src/app/api/career-data/route.tsx**
+- **Usage:** Fetches a single career by MongoDB ObjectId for recruiter/admin editing or viewing.
 
-### `src/app/api/fetch-career-data/route.tsx`
-**Usage:** Fetches a single career by MongoDB ObjectId or GUID, with inactive status check and optional pre-screening-only response for candidate-facing pages.
+**src/app/api/fetch-career-data/route.tsx**
+- **Usage:** Fetches a single career by MongoDB ObjectId or GUID, with inactive status check and optional pre-screening-only response for candidate-facing pages.
 
-### `src/app/api/update-member/route.ts`
-**Usage:** Updates team member information and roles in a career.
+**src/app/api/update-member/route.ts**
+- **Usage:** Updates team member information and roles in a career.
 
 ---
 
 ## 🗂️ Front End Files and Its Usage
 
-### `src/lib/components/CareerComponents/CareerForm.tsx`
-**Usage:** Main form orchestrator used in `/careers/new-career` and `/careers/edit/[slug]` pages to manage the 5-step career creation/editing workflow.
+**src/lib/components/CareerComponents/CareerForm.tsx**
+- **Usage:** Main form orchestrator used in `/careers/new-career` and `/careers/edit/[slug]` pages to manage the 5-step career creation/editing workflow.
 
-### `src/lib/components/CareerComponents/CareerContentCareerDetails.tsx`
-**Usage:** Step 1 component in CareerForm for editing job title, employment type, work setup, location, salary, job description, and team access.
+**src/lib/components/CareerComponents/CareerContentCareerDetails.tsx**
+- **Usage:** Step 1 component in CareerForm for editing job title, employment type, work setup, location, salary, job description, and team access.
 
-### `src/lib/components/CareerComponents/CareerContentCVReview.tsx`
-**Usage:** Step 2 component in CareerForm for configuring CV screening settings, CV secret prompts, and pre-screening questions.
+**src/lib/components/CareerComponents/CareerContentCVReview.tsx**
+- **Usage:** Step 2 component in CareerForm for configuring CV screening settings, CV secret prompts, and pre-screening questions.
 
-### `src/lib/components/CareerComponents/CareerContentAIInterview.tsx`
-**Usage:** Step 3 component in CareerForm for setting up AI interview screening, video requirements, secret prompts, and interview questions by category.
+**src/lib/components/CareerComponents/CareerContentAIInterview.tsx**
+- **Usage:** Step 3 component in CareerForm for setting up AI interview screening, video requirements, secret prompts, and interview questions by category.
 
-### `src/lib/components/CareerComponents/CareerContentPipelineStages.tsx`
-**Usage:** Step 4 component in CareerForm for configuring pipeline stages (currently displays empty state).
+**src/lib/components/CareerComponents/CareerContentPipelineStages.tsx**
+- **Usage:** Step 4 component in CareerForm for configuring pipeline stages (currently displays empty state).
 
-### `src/lib/components/CareerComponents/CareerContentReviewCareer.tsx`
-**Usage:** Step 5 (Review) component in CareerForm that displays all review cards (Career Details, CV Review, AI Interview, Pipeline Stages) in a merged, collapsible format.
+**src/lib/components/CareerComponents/CareerContentReviewCareer.tsx**
+- **Usage:** Step 5 (Review) component in CareerForm that displays all review cards (Career Details, CV Review, AI Interview, Pipeline Stages) in a merged, collapsible format.
 
-### `src/lib/components/CareerComponents/CareerProgressBar.tsx`
-**Usage:** Progress indicator component used in CareerForm to show current step and validation status.
+**src/lib/components/CareerComponents/CareerProgressBar.tsx**
+- **Usage:** Progress indicator component used in CareerForm to show current step and validation status.
 
-### `src/lib/components/Dropdown/CareerDropdown.tsx`
-**Usage:** Reusable dropdown component used across CareerContentCareerDetails, CareerContentCVReview, CareerContentAIInterview, and UploadCV_PreScreeningQuestions for consistent dropdown UI with dynamic positioning.
+**src/lib/components/Dropdown/CareerDropdown.tsx**
+- **Usage:** Reusable dropdown component used across CareerContentCareerDetails, CareerContentCVReview, CareerContentAIInterview, and UploadCV_PreScreeningQuestions for consistent dropdown UI with dynamic positioning.
 
-### `src/lib/components/InputField/CareerInputField.tsx`
-**Usage:** Reusable input field component used in CareerContentCareerDetails for job title input with error handling and validation display.
+**src/lib/components/InputField/CareerInputField.tsx**
+- **Usage:** Reusable input field component used in CareerContentCareerDetails for job title input with error handling and validation display.
 
-### `src/lib/components/screens/UploadCV.tsx`
-**Usage:** Main CV upload page component used in `/dashboard/upload-cv` route for displaying and editing uploaded CV sections with markdown stripping.
+**src/lib/components/screens/UploadCV.tsx**
+- **Usage:** Main CV upload page component used in `/dashboard/upload-cv` route for displaying and editing uploaded CV sections with markdown stripping.
 
-### `src/lib/components/screens/UploadCV_PreScreeningQuestions.tsx`
-**Usage:** Pre-screening questions component used in UploadCV page for candidates to answer pre-screening questions before submitting their application.
+**src/lib/components/screens/UploadCV_PreScreeningQuestions.tsx**
+- **Usage:** Pre-screening questions component used in UploadCV page for candidates to answer pre-screening questions before submitting their application.
 
 ## Style Files
 
-### `src/lib/styles/components/careerForm.module.scss`
-**Usage:** CSS module for CareerForm and related components, containing styles for mainContentContainer, sectionContainer, reviewMainContainer, member management, and form layouts.
+**src/lib/styles/components/careerForm.module.scss**
+- **Usage:** CSS module for CareerForm and related components, containing styles for mainContentContainer, sectionContainer, reviewMainContainer, member management, and form layouts.
 
-### `src/lib/styles/components/careerContentCards.module.scss`
-**Usage:** CSS module for career card components, containing shared review card styles (reviewCard, reviewCardHeader, reviewTitle, reviewData, reviewDivider, reviewBadge, etc.) used across all review components.
+**src/lib/styles/components/careerContentCards.module.scss**
+- **Usage:** CSS module for career card components, containing shared review card styles (reviewCard, reviewCardHeader, reviewTitle, reviewData, reviewDivider, reviewBadge, etc.) used across all review components.
 
-### `src/lib/styles/components/careerPreScreeningQuestions.module.scss`
-**Usage:** CSS module for pre-screening questions UI, containing styles for question containers, drag handles, option items, add/delete buttons, and suggested questions.
+**src/lib/styles/components/careerPreScreeningQuestions.module.scss**
+- **Usage:** CSS module for pre-screening questions UI, containing styles for question containers, drag handles, option items, add/delete buttons, and suggested questions.
 
-### `src/lib/styles/screens/uploadCV.module.scss`
-**Usage:** CSS module for UploadCV page, containing styles for section titles, section details, and CV display formatting.
+**src/lib/styles/screens/uploadCV.module.scss**
+- **Usage:** CSS module for UploadCV page, containing styles for section titles, section details, and CV display formatting.
 
-### `src/lib/styles/globals.scss`
-**Usage:** Global stylesheet containing form-control classes, error states, and shared utility styles used across the entire application.
+**src/lib/styles/globals.scss**
+- **Usage:** Global stylesheet containing form-control classes, error states, and shared utility styles used across the entire application.
 
 ---
 
