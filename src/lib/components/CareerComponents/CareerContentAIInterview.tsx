@@ -9,6 +9,7 @@ import styles from "@/lib/styles/components/careerForm.module.scss";
 import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
 import preScreeningStyles from "@/lib/styles/components/careerPreScreeningQuestions.module.scss";
+import LayeredCard from "@/lib/components/LayeredCard";
 
 interface CareerContentAIInterviewProps {
     screeningSetting: string;
@@ -250,7 +251,7 @@ export default function CareerContentAIInterview({
     return (
         <div className={styles.mainContentContainer}>
             <div className={styles.leftContainer}>
-                <div className={cardStyles.careerCard}>
+                <LayeredCard>
                     <div className={cardStyles.careerCardHeader}>
                         <span className={cardStyles.careerCardTitle}>1. AI Interview Settings</span>
                     </div>
@@ -352,9 +353,9 @@ export default function CareerContentAIInterview({
                             ></div>
                         </div>
                     </div>
-                </div>
+                </LayeredCard>
 
-                <div className={cardStyles.careerCard}>
+                <LayeredCard>
                     <div className={cardStyles.careerCardHeader} style={{ justifyContent: 'space-between', width: '100%' }}>
                         <span className={cardStyles.careerCardTitle} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                             <span>
@@ -440,7 +441,7 @@ export default function CareerContentAIInterview({
                             ))}
                         </div>
                     </div>
-                </div>
+                </LayeredCard>
             </div>
 
             <div className={styles.rightContainer}>
@@ -449,7 +450,7 @@ export default function CareerContentAIInterview({
                         <img alt="" src="/iconsV3/bulb.svg" />
                         <span className={cardStyles.careerCardTitle}>Tips</span>
                     </div>
-                    <div className={tipsStyles.tipsContent}>
+                    <div className={cardStyles.careerCardContent}>
                         <div className={tipsStyles.tipsText}>
                             <span className={tipsStyles.tipsTextBold}>Add a Secret Prompt</span> to fine-tune how Jia scores and evaluates the interview responses.
                             <br /><br />

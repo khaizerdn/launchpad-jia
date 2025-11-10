@@ -4,6 +4,7 @@ import { useState } from "react";
 import styles from "@/lib/styles/components/careerForm.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
 import { assetConstants } from "@/lib/utils/constantsV2";
+import LayeredCard from "@/lib/components/LayeredCard";
 
 interface CareerContentReviewCareerProps {
     jobTitle?: string;
@@ -99,7 +100,7 @@ export default function CareerContentReviewCareer({
     return (
         <div className={styles.reviewMainContainer}>
             {/* Career Details & Team Access */}
-            <div className={`${cardStyles.careerCard} ${cardStyles.reviewCard}`}>
+            <LayeredCard className={cardStyles.reviewCard}>
                 <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
@@ -262,10 +263,10 @@ export default function CareerContentReviewCareer({
                     </div>
                 </div>
                 )}
-            </div>
+            </LayeredCard>
 
             {/* CV Review & Pre-screening */}
-            <div className={`${cardStyles.careerCard} ${cardStyles.reviewCard}`}>
+            <LayeredCard className={cardStyles.reviewCard}>
                 <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
@@ -372,10 +373,10 @@ export default function CareerContentReviewCareer({
                     </div>
                 </div>
                 )}
-            </div>
+            </LayeredCard>
 
             {/* AI Interview Setup */}
-            <div className={`${cardStyles.careerCard} ${cardStyles.reviewCard}`}>
+            <LayeredCard className={cardStyles.reviewCard}>
                 <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
@@ -500,10 +501,10 @@ export default function CareerContentReviewCareer({
                     </div>
                 </div>
                 )}
-            </div>
+            </LayeredCard>
 
             {/* Pipeline Stages */}
-            <div className={`${cardStyles.careerCard} ${cardStyles.reviewCard}`}>
+            <LayeredCard className={cardStyles.reviewCard}>
                 <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
@@ -546,7 +547,7 @@ export default function CareerContentReviewCareer({
                     </div>
                 </div>
                 )}
-            </div>
+            </LayeredCard>
         </div>
     );
 }

@@ -10,6 +10,7 @@ import styles from "@/lib/styles/components/careerForm.module.scss";
 import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
 import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
 import errorStyles from "@/lib/styles/components/careerErrorField.module.scss";
+import LayeredCard from "@/lib/components/LayeredCard";
 
 const workSetupOptions = [{ name: "Fully Remote" }, { name: "Onsite" }, { name: "Hybrid" }];
 const employmentTypeOptions = [{ name: "Full-Time" }, { name: "Part-Time" }];
@@ -116,7 +117,7 @@ export default function CareerContentCareerDetails({
     return (
         <div className={styles.mainContentContainer}>
             <div className={styles.leftContainer}>
-                <div className={cardStyles.careerCard}>
+                <LayeredCard>
                     <div className={cardStyles.careerCardHeader}>
                         <span className={cardStyles.careerCardTitle}>1. Career Information</span>
                     </div>
@@ -345,9 +346,9 @@ export default function CareerContentCareerDetails({
                             </div>
                         </div>
                     </div>
-                </div>
+                </LayeredCard>
 
-                <div className={cardStyles.careerCard}>
+                <LayeredCard>
                     <div className={cardStyles.careerCardHeader}>
                         <span className={cardStyles.careerCardTitle}>2. Job Description</span>
                     </div>
@@ -372,9 +373,9 @@ export default function CareerContentCareerDetails({
                             )}
                         </div>
                     </div>
-                </div>
+                </LayeredCard>
 
-                <div className={cardStyles.careerCard}>
+                <LayeredCard>
                     <div className={cardStyles.careerCardHeader}>
                         <span className={cardStyles.careerCardTitle}>3. Team Access</span>
                     </div>
@@ -458,7 +459,7 @@ export default function CareerContentCareerDetails({
 
                         <p className={styles.adminNote}>*Admins can view all careers regardless of specific access settings.</p>
                     </div>
-                </div>
+                </LayeredCard>
             </div>
 
             <div className={styles.rightContainer}>
@@ -467,7 +468,7 @@ export default function CareerContentCareerDetails({
                         <img alt="" src="/iconsV3/bulb.svg" />
                         <span className={cardStyles.careerCardTitle}>Tips</span>
                     </div>
-                    <div className={tipsStyles.tipsContent}>
+                    <div className={cardStyles.careerCardContent}>
                         <div className={tipsStyles.tipsText}>
                             <span className={tipsStyles.tipsTextBold}>Use clear, standard job titles</span> for better searchability (e.g., "Software Engineer" instead of "Code Ninja" or "Tech Rockstar").
                             <br /><br />

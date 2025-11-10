@@ -12,13 +12,11 @@ export default function LayeredCard({
   innerCardClassName?: string;
 }) {
   return (
-    <div className={`layered-card-outer ${className}`} style={{ ...style }}>
-      <div
-        className={`layered-card-middle ${innerCardClassName}`}
-        style={{ ...innerCardStyle }}
-      >
-        {children}
-      </div>
+    <div
+      className={`layered-card-middle ${className || ""} ${innerCardClassName || ""}`}
+      style={{ ...style, ...innerCardStyle }}
+    >
+      {children}
     </div>
   );
 }
