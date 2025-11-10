@@ -962,15 +962,20 @@ $gifURL: "/gr-1.gif";
 }
 
 .sidebar-v2 {
-  width: 100%;
+  width: 240px;
   background: #f8f9fc;
   display: block;
   position: relative;
-  max-width: 260px;
   height: 100%;
   overflow-y: auto;
   flex-direction: column;
   justify-content: space-between;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 
   .sidebar-header {
     display: flex;
@@ -1000,7 +1005,7 @@ $gifURL: "/gr-1.gif";
   .nav-section {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0;
     padding: 0 16px;
   }
 
@@ -1016,6 +1021,11 @@ $gifURL: "/gr-1.gif";
     cursor: pointer;
     color: #414651;
     background: #f8f9fc;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background: #eaecf5;
+    }
 
     &.active {
       background: #eaecf5;
@@ -1235,6 +1245,10 @@ $gifURL: "/gr-1.gif";
     padding: 0 2px !important;
   }
 }
+
+.container-fluid.mt--7 {
+  padding-bottom: 24px;
+}
 @media (max-width: 900px) {
   .sidebar-main {
     display: none !important;
@@ -1293,6 +1307,12 @@ $gifURL: "/gr-1.gif";
   border: 1px solid var(--Colors-Secondary_Colors-Blue-gray-100, #EAECF5);
   box-shadow: 0px 0px 2px 0px #00103529 inset;
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 }
 
 .sidebar-content {
@@ -2571,4 +2591,28 @@ html {
 
 .bg-green-100 {
   background-color: #e6f9f0 !important;
+}
+
+.breadcrumb-item {
+  height: 28px;
+  border-radius: 4px; /* xs */
+  gap: 8px;
+  opacity: 1;
+  padding-top: 4px; /* padding-xxs */
+  padding-right: 8px; /* padding-xs */
+  padding-bottom: 4px; /* padding-xxs */
+  padding-left: 8px; /* padding-xs */
+  background: var(--Colors-Secondary_Colors-Blue-gray-50, #F8F9FC);
+  display: inline-flex;
+  align-items: center;
+  font-family: inherit; /* Font family/body */
+  font-weight: 500; /* Medium */
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: var(--Colors-Primary_Colors-Neutrals-900, #181D27);
+
+  &.breadcrumb-item-no-bg {
+    background: transparent;
+  }
 }

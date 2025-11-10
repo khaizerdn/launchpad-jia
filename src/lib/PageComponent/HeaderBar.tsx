@@ -19,6 +19,12 @@ const ChevronLeftIcon = () => (
     </svg>
 );
 
+const SuitcaseIcon = ({ color = "#A4A7AE" }: { color?: string }) => (
+  <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 3.33333V1.66667H6.66667V3.33333H10ZM1.66667 5V14.1667H15V5H1.66667ZM15 3.33333C15.925 3.33333 16.6667 4.075 16.6667 5V14.1667C16.6667 15.0917 15.925 15.8333 15 15.8333H1.66667C0.741667 15.8333 0 15.0917 0 14.1667L0.00833333 5C0.00833333 4.075 0.741667 3.33333 1.66667 3.33333H5V1.66667C5 0.741667 5.74167 0 6.66667 0H10C10.925 0 11.6667 0.741667 11.6667 1.66667V3.33333H15Z" fill={color}/>
+  </svg>
+);
+
 export default function HeaderBar(props: { activeLink: string, currentPage: string, icon?: string }) {
   const router = useRouter();
   const { user } = useAppContext();
@@ -57,17 +63,33 @@ export default function HeaderBar(props: { activeLink: string, currentPage: stri
                     <div style={{ display: 'flex', alignItems: 'center', marginRight: 10, color: "gray" }}>
                       |
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', marginRight: 10 }}>
-                      <i className={icon || "la la-home"} style={{ color: "#414651", fontSize: 24 }}></i>
-                    </div>
-                    <h4 className="text-gray d-inline-block mb-0" style={{ fontSize: "16px", fontWeight: 550 }}>
-                       {activeLink}
-                    </h4>
+                    <li className="breadcrumb-item breadcrumb-item-no-bg">
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <SuitcaseIcon color="var(--Colors-Primary_Colors-Neutrals-400, #A4A7AE)" />
+                      </div>
+                      <h4 className="text-gray d-inline-block mb-0" style={{ 
+                        fontFamily: "inherit",
+                        fontWeight: 500,
+                        fontSize: "14px",
+                        lineHeight: "20px",
+                        letterSpacing: "0%",
+                        color: "var(--Colors-Primary_Colors-Neutrals-400, #A4A7AE)"
+                      }}>
+                         {activeLink}
+                      </h4>
+                    </li>
                     <div style={{ display: 'flex', alignItems: 'center', margin: "0 10px", cursor: 'pointer' }} onClick={() => router.forward()}>
                       <ChevronRightIcon />
                     </div>
                     <li className="breadcrumb-item">
-                      <h4 className="text-black d-inline-block mb-0" style={{ fontSize: "16px", fontWeight: 550 }}>
+                      <h4 className="text-black d-inline-block mb-0" style={{ 
+                        fontFamily: "inherit",
+                        fontWeight: 500,
+                        fontSize: "14px",
+                        lineHeight: "20px",
+                        letterSpacing: "0%",
+                        color: "var(--Colors-Primary_Colors-Neutrals-900, #181D27)"
+                      }}>
                         {currentPage}
                       </h4>
                     </li> 
