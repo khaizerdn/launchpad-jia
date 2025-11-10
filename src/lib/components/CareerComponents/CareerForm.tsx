@@ -380,25 +380,15 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
               </h1>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
                   <button
+                  className={styles.saveAsUnpublishedBtn}
                   disabled={currentStep === 1 || isSavingCareer}
-                   style={{ 
-                     width: "fit-content", 
-                     color: (currentStep === 1 || isSavingCareer) ? "var(--Button-text-secondary-disabled, #D5D7DA)" : "var(--Button-text-secondary, #414651)", 
-                     background: "#fff", 
-                     border: (currentStep === 1 || isSavingCareer) ? "1px solid var(--Button-border-primary_disabled, #E9EAEB)" : "1px solid var(--Button-border-primary, #D5D7DA)", 
-                     padding: "8px 16px", 
-                     borderRadius: "60px", 
-                     cursor: (currentStep === 1 || isSavingCareer) ? "not-allowed" : "pointer", 
-                     whiteSpace: "nowrap" 
-                   }} onClick={() => {
+                  onClick={() => {
                     confirmSaveCareer("inactive");
-                      }}>
+                  }}>
                           Save as Unpublished
                   </button>
                   <button 
-                  style={{ width: "fit-content", background: "black", color: "#fff", border: "1px solid #E9EAEB", padding: "8px 16px", borderRadius: "60px", cursor: "pointer", whiteSpace: "nowrap", display: "flex", flexDirection: "row", alignItems: "center", gap: 8, outline: "none" }} 
-                  onFocus={(e) => e.target.style.outline = "none"}
-                  onBlur={(e) => e.target.style.outline = "none"}
+                  className={styles.saveAndContinueBtn}
                   onClick={handleSaveAndContinue}>
                       {currentStep === 5 ? (
                           <>
@@ -443,26 +433,16 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                     }}>
                         Cancel
                 </button>
-                <button
+                  <button
+                  className={styles.saveAsUnpublishedBtn}
                   disabled={currentStep === 1 || isSavingCareer}
-                   style={{ 
-                     width: "fit-content", 
-                     color: (currentStep === 1 || isSavingCareer) ? "var(--Button-text-secondary-disabled, #D5D7DA)" : "var(--Button-text-secondary, #414651)", 
-                     background: "#fff", 
-                     border: (currentStep === 1 || isSavingCareer) ? "1px solid var(--Button-border-primary_disabled, #E9EAEB)" : "1px solid var(--Button-border-primary, #D5D7DA)", 
-                     padding: "8px 16px", 
-                     borderRadius: "60px", 
-                     cursor: (currentStep === 1 || isSavingCareer) ? "not-allowed" : "pointer", 
-                     whiteSpace: "nowrap" 
-                   }} onClick={() => {
+                  onClick={() => {
                     updateCareer("inactive");
-                    }}>
+                  }}>
                           Save as Unpublished
                   </button>
                   <button 
-                  style={{ width: "fit-content", background: "black", color: "#fff", border: "1px solid #E9EAEB", padding: "8px 16px", borderRadius: "60px", cursor: "pointer", whiteSpace: "nowrap", display: "flex", flexDirection: "row", alignItems: "center", gap: 8, outline: "none" }} 
-                  onFocus={(e) => e.target.style.outline = "none"}
-                  onBlur={(e) => e.target.style.outline = "none"}
+                  className={styles.saveAndContinueBtn}
                   onClick={handleSaveAndContinue}>
                       {currentStep === 5 ? (
                           <>

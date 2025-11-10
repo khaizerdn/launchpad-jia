@@ -13,31 +13,31 @@ export default function Layout({ children }) {
     {
       label: "Dashboard",
       href: "/recruiter-dashboard",
-      icon: "la la-chart-area",
+      icon: "/iconsV3/dashboard.svg",
     },
     {
       label: "Careers",
       href: "/recruiter-dashboard/careers",
-      icon: "la la-suitcase",
+      icon: "/iconsV3/suitcase.svg",
     },
     {
       label: "Candidates",
       href: "/recruiter-dashboard/candidates",
-      icon: "la la-id-badge",
+      icon: "/iconsV3/candidates.svg",
     },
-    { label: "To Do", href: "/recruiter-dashboard/to-do", icon: "la la-cogs" },
-    // {
-    //   label: "Inbox",
-    //   href: "/recruiter-dashboard/inbox",
-    //   icon: "la la-envelope",
-    // },
+    { label: "To Do", href: "/recruiter-dashboard/to-do", icon: "/iconsV3/todo.svg" },
+    {
+      label: "Inbox",
+      href: "/recruiter-dashboard/inbox",
+      icon: "/iconsV3/mail.svg",
+    },
   ];
 
   const footerNavItems = [
     {
       label: "Feedback",
       href: "/recruiter-dashboard/feedback",
-      icon: "la la-comments",
+      icon: "/iconsV3/feedback.svg",
     },
     {
       label: "Members",
@@ -52,11 +52,6 @@ export default function Layout({ children }) {
   ];
 
   const superAdminNavItems = [
-    {
-      label: "Inbox",
-      href: "/recruiter-dashboard/inbox",
-      icon: "la la-envelope",
-    },
     {
       label: "Email Automation [Beta]",
       href: "/recruiter-dashboard/email-automation",

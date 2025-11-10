@@ -67,10 +67,18 @@ export default function SidebarV2(props: any) {
                     }`}
                   >
                     <span>
-                      <i
-                        className={item.icon}
-                        style={{ color: "#414651", fontSize: 24 }}
-                      ></i>
+                      {item.icon?.startsWith("/") ? (
+                        <img
+                          src={item.icon}
+                          alt={item.label}
+                          style={{ width: 24, height: 24 }}
+                        />
+                      ) : (
+                        <i
+                          className={item.icon}
+                          style={{ color: "#414651", fontSize: 24 }}
+                        ></i>
+                      )}
                     </span>
                     <span>{item.label}</span>
                   </div>
@@ -98,10 +106,18 @@ export default function SidebarV2(props: any) {
                     }`}
                   >
                     <span>
-                      <i
-                        className={item.icon}
-                        style={{ color: "#414651", fontSize: 24 }}
-                      ></i>
+                      {item.icon?.startsWith("/") ? (
+                        <img
+                          src={item.icon}
+                          alt={item.label}
+                          style={{ width: 24, height: 24 }}
+                        />
+                      ) : (
+                        <i
+                          className={item.icon}
+                          style={{ color: "#414651", fontSize: 24 }}
+                        ></i>
+                      )}
                     </span>
                     <span>{item.label}</span>
                   </div>

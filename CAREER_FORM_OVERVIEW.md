@@ -457,6 +457,15 @@ All SVG icons used in the career form components are centralized in `public/icon
 **Status Icons:**
 - `circleDot.svg` - Circle with dot icon (used in progress bar for inactive steps)
 
+**Navigation Icons:**
+- `dashboard.svg` - Dashboard icon (used in recruiter dashboard navigation)
+- `suitcase.svg` - Careers/briefcase icon (used in recruiter dashboard navigation, color: #414651)
+- `candidates.svg` - Candidates/user card icon (used in recruiter dashboard navigation)
+- `todo.svg` - To-do list icon with connected circles (used in recruiter dashboard navigation)
+- `feedback.svg` - Feedback/chat bubble with star icon (used in recruiter dashboard navigation)
+- `mail.svg` - Mail/envelope icon (used in recruiter dashboard navigation for Inbox)
+
 **Directories:**
 - All icon files: `public/iconsV3/*.svg`
 - Component files reference icons via: `<img alt="" src="/iconsV3/[icon-name].svg" />`
+- Navigation icons are used in `src/lib/PageComponent/SidebarV2.tsx` and referenced in `src/app/recruiter-dashboard/layout.tsx`
