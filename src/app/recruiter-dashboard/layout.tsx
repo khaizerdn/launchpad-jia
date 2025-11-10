@@ -42,12 +42,12 @@ export default function Layout({ children }) {
     {
       label: "Members",
       href: "/recruiter-dashboard/members",
-      icon: "la la-users",
+      icon: "/iconsV3/members.svg",
     },
     {
       label: "Settings",
       href: "/recruiter-dashboard/settings",
-      icon: "la la-cog",
+      icon: "/iconsV3/settingsV2.svg",
     },
   ];
 

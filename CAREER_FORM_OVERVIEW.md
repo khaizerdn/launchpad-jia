@@ -462,8 +462,10 @@ All SVG icons used in the career form components are centralized in `public/icon
 - `suitcase.svg` - Careers/briefcase icon (used in recruiter dashboard navigation, color: #414651)
 - `candidates.svg` - Candidates/user card icon (used in recruiter dashboard navigation)
 - `todo.svg` - To-do list icon with connected circles (used in recruiter dashboard navigation)
-- `feedback.svg` - Feedback/chat bubble with star icon (used in recruiter dashboard navigation)
 - `mail.svg` - Mail/envelope icon (used in recruiter dashboard navigation for Inbox)
+- `feedback.svg` - Feedback/chat bubble with star icon (used in recruiter dashboard navigation)
+- `members.svg` - Members/users icon (used in recruiter dashboard navigation)
+- `settingsV2.svg` - Settings/gear icon (used in recruiter dashboard navigation, stroke color: #535862)
 
 **Directories:**
 - All icon files: `public/iconsV3/*.svg`
