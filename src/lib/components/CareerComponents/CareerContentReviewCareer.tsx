@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react";
-import styles from "@/lib/styles/components/careerForm.module.scss";
-import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
+import styles from "@/lib/styles/components/career/careerForm.module.scss";
+import cardStyles from "@/lib/styles/components/career/careerContentCards.module.scss";
 import { assetConstants } from "@/lib/utils/constantsV2";
 import LayeredCard from "@/lib/components/LayeredCard";
 
@@ -350,7 +350,7 @@ export default function CareerContentReviewCareer({
                                         
                                         return (
                                             <div key={question.id} className={cardStyles.reviewData}>
-                                                <strong>{index + 1}. {question.description || question.title || `Question ${index + 1}`}</strong>
+                                                {index + 1}. {question.description || question.title || `Question ${index + 1}`}
                                                 {questionType === "Range" && salaryRange ? (
                                                     <ul className={cardStyles.reviewList}>
                                                         <li className={cardStyles.reviewListItem}>

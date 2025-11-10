@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/lib/styles/screens/uploadCV.module.scss";
-import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
+import cardStyles from "@/lib/styles/components/career/careerContentCards.module.scss";
 import { assetConstants } from "@/lib/utils/constantsV2";
 import axios from "axios";
 import { useState, useEffect } from "react";

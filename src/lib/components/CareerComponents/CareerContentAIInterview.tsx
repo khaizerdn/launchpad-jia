@@ -5,10 +5,10 @@ import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, us
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import CareerDropdown from "@/lib/components/Dropdown/CareerDropdown";
-import styles from "@/lib/styles/components/careerForm.module.scss";
-import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
-import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
-import preScreeningStyles from "@/lib/styles/components/careerPreScreeningQuestions.module.scss";
+import styles from "@/lib/styles/components/career/careerForm.module.scss";
+import tipsStyles from "@/lib/styles/components/career/careerTips.module.scss";
+import cardStyles from "@/lib/styles/components/career/careerContentCards.module.scss";
+import preScreeningStyles from "@/lib/styles/components/career/careerPreScreeningQuestions.module.scss";
 import LayeredCard from "@/lib/components/LayeredCard";
 
 interface CareerContentAIInterviewProps {

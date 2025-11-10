@@ -13,7 +13,7 @@ import CareerContentCVReview from "./CareerContentCVReview";
 import CareerContentAIInterview from "./CareerContentAIInterview";
 import CareerContentPipelineStages from "./CareerContentPipelineStages";
 import CareerContentReviewCareer from "./CareerContentReviewCareer";
-import styles from "@/lib/styles/components/careerForm.module.scss";
+import styles from "@/lib/styles/components/career/careerForm.module.scss";
   // Setting List icons
   const screeningSettingList = [
     {

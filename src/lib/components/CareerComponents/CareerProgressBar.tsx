@@ -1,6 +1,6 @@
 "use client"
 
-import styles from "@/lib/styles/components/careerProgressBar.module.scss";
+import styles from "@/lib/styles/components/career/careerProgressBar.module.scss";
 
 interface CareerProgressBarProps {
     isStep1Complete?: boolean;

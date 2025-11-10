@@ -2,6 +2,17 @@
 
 import { useState, useRef, useEffect } from "react";
 
+// Error message style
+export const errorMessageStyle: React.CSSProperties = {
+  fontFamily: 'Satoshi',
+  fontWeight: 400,
+  fontStyle: 'normal',
+  fontSize: '14px',
+  lineHeight: '20px',
+  letterSpacing: '0%',
+  color: 'var(--Input-text-hint-text-destructive, #F04438)',
+};
+
 interface CareerInputFieldProps {
   value: string;
   onChange: (value: string) => void;

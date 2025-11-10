@@ -6,10 +6,11 @@ import CareerDropdown from "@/lib/components/Dropdown/CareerDropdown";
 import CareerInputField from "@/lib/components/InputField/CareerInputField";
 import philippineCitiesAndProvinces from "../../../../public/philippines-locations.json";
 import CareerMemberDropdown from "@/lib/components/Dropdown/CareerMemberDropdown";
-import styles from "@/lib/styles/components/careerForm.module.scss";
-import tipsStyles from "@/lib/styles/components/careerTips.module.scss";
-import cardStyles from "@/lib/styles/components/careerContentCards.module.scss";
-import errorStyles from "@/lib/styles/components/careerErrorField.module.scss";
+import styles from "@/lib/styles/components/career/careerForm.module.scss";
+import tipsStyles from "@/lib/styles/components/career/careerTips.module.scss";
+import cardStyles from "@/lib/styles/components/career/careerContentCards.module.scss";
+import teamStyles from "@/lib/styles/components/career/careerTeamsAccess.module.scss";
+import { errorMessageStyle } from "@/lib/components/InputField/CareerInputField";
 import LayeredCard from "@/lib/components/LayeredCard";
 
 const workSetupOptions = [{ name: "Fully Remote" }, { name: "Onsite" }, { name: "Hybrid" }];
@@ -124,7 +125,7 @@ export default function CareerContentCareerDetails({
                     <div className={cardStyles.careerCardContent}>
                         <div className={styles.sectionContainer}>
                             <span className={cardStyles.sectionTitle}>Basic Information</span>
-                            <div className={styles.jobTitleField}>
+                            <div className={cardStyles.jobTitleField}>
                                 <span>Job Title</span>
                                 <CareerInputField
                                     value={jobTitle}
@@ -138,7 +139,7 @@ export default function CareerContentCareerDetails({
                                     }}
                                 />
                                 {fieldErrors.jobTitle && (
-                                    <span className={errorStyles.errorMessage}>
+                                    <span style={errorMessageStyle}>
                                         {fieldErrors.jobTitle}
                                     </span>
                                 )}
@@ -165,7 +166,7 @@ export default function CareerContentCareerDetails({
                                         error={fieldErrors.employmentType}
                                     />
                                     {fieldErrors.employmentType && (
-                                        <span className={errorStyles.errorMessage}>
+                                        <span style={errorMessageStyle}>
                                             {fieldErrors.employmentType}
                                         </span>
                                     )}
@@ -187,7 +188,7 @@ export default function CareerContentCareerDetails({
                                         error={fieldErrors.workSetup}
                                     />
                                     {fieldErrors.workSetup && (
-                                        <span className={errorStyles.errorMessage}>
+                                        <span style={errorMessageStyle}>
                                             {fieldErrors.workSetup}
                                         </span>
                                     )}
@@ -232,7 +233,7 @@ export default function CareerContentCareerDetails({
                                         error={fieldErrors.province}
                                     />
                                     {fieldErrors.province && (
-                                        <span className={errorStyles.errorMessage}>
+                                        <span style={errorMessageStyle}>
                                             {fieldErrors.province}
                                         </span>
                                     )}
@@ -255,7 +256,7 @@ export default function CareerContentCareerDetails({
                                         error={fieldErrors.city}
                                     />
                                     {fieldErrors.city && (
-                                        <span className={errorStyles.errorMessage}>
+                                        <span style={errorMessageStyle}>
                                             {fieldErrors.city}
                                         </span>
                                     )}
@@ -304,7 +305,7 @@ export default function CareerContentCareerDetails({
                                         <span style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
                                     </div>
                                     {fieldErrors.minimumSalary && (
-                                        <span className={errorStyles.errorMessage}>
+                                        <span style={errorMessageStyle}>
                                             {fieldErrors.minimumSalary}
                                         </span>
                                     )}
@@ -338,7 +339,7 @@ export default function CareerContentCareerDetails({
                                         <span style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", color: "#6c757d", fontSize: "16px", pointerEvents: "none" }}>PHP</span>
                                     </div>
                                     {fieldErrors.maximumSalary && (
-                                        <span className={errorStyles.errorMessage}>
+                                        <span style={errorMessageStyle}>
                                             {fieldErrors.maximumSalary}
                                         </span>
                                     )}
@@ -367,7 +368,7 @@ export default function CareerContentCareerDetails({
                                 error={fieldErrors.description}
                             />
                             {fieldErrors.description && (
-                                <span className={errorStyles.errorMessage}>
+                                <span style={errorMessageStyle}>
                                     {fieldErrors.description}
                                 </span>
                             )}
@@ -380,10 +381,10 @@ export default function CareerContentCareerDetails({
                         <span className={cardStyles.careerCardTitle}>3. Team Access</span>
                     </div>
                     <div className={cardStyles.careerCardContent}>
-                        <div className={styles.addMembersSection}>
-                            <div className={styles.addMembersText}>
+                        <div className={teamStyles.addMembersSection}>
+                            <div className={teamStyles.addMembersText}>
                                 <span className={cardStyles.sectionTitle}>Add more members</span>
-                                <span className={styles.addMembersDescription}>You can add other members to collaborate on this career.</span>
+                                <span className={teamStyles.addMembersDescription}>You can add other members to collaborate on this career.</span>
                             </div>
                             <CareerMemberDropdown
                                 onSelectMember={(member) => {
@@ -411,17 +412,17 @@ export default function CareerContentCareerDetails({
                             </div>
                         )}
 
-                        <div className={styles.memberList}>
+                        <div className={teamStyles.memberList}>
                             {teamMembers.map((member) => (
-                                <div key={member.id} className={styles.memberRow}>
-                                    <div className={styles.memberInfo}>
-                                        <div className={styles.memberAvatar} style={{ backgroundImage: member.avatar ? `url(${member.avatar})` : 'none', backgroundColor: member.avatar ? 'transparent' : '#D7C0DD' }}></div>
-                                        <div className={styles.memberDetails}>
-                                            <span className={styles.memberName}>{member.name}{member.isCurrentUser ? " (You)" : ""}</span>
-                                            <span className={styles.memberEmail}>{member.email}</span>
+                                <div key={member.id} className={teamStyles.memberRow}>
+                                    <div className={teamStyles.memberInfo}>
+                                        <div className={teamStyles.memberAvatar} style={{ backgroundImage: member.avatar ? `url(${member.avatar})` : 'none', backgroundColor: member.avatar ? 'transparent' : '#D7C0DD' }}></div>
+                                        <div className={teamStyles.memberDetails}>
+                                            <span className={teamStyles.memberName}>{member.name}{member.isCurrentUser ? " (You)" : ""}</span>
+                                            <span className={teamStyles.memberEmail}>{member.email}</span>
                                         </div>
                                     </div>
-                                    <div className={styles.memberActions}>
+                                    <div className={teamStyles.memberActions}>
                                         <CareerDropdown
                                             onSelectSetting={(role) => {
                                                 setTeamMembers(teamMembers.map(m => m.id === member.id ? { ...m, role } : m));
@@ -440,7 +441,7 @@ export default function CareerContentCareerDetails({
                                             placeholder="Select Role"
                                         />
                                         <button
-                                            className={styles.deleteMemberButton}
+                                            className={teamStyles.deleteMemberButton}
                                             onClick={() => {
                                                 if (!member.isCurrentUser) {
                                                     const updatedMembers = teamMembers.filter(m => m.id !== member.id);
@@ -457,7 +458,7 @@ export default function CareerContentCareerDetails({
                             ))}
                         </div>
 
-                        <p className={styles.adminNote}>*Admins can view all careers regardless of specific access settings.</p>
+                        <p className={teamStyles.adminNote}>*Admins can view all careers regardless of specific access settings.</p>
                     </div>
                 </LayeredCard>
             </div>
