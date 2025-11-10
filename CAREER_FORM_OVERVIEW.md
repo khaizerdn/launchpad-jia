@@ -412,7 +412,7 @@ For detailed testing instructions and code flow diagrams, see:
 - **Usage:** CSS module for CareerForm and related components, containing styles for mainContentContainer, sectionContainer, reviewMainContainer, member management, and form layouts.
 
 **src/lib/styles/components/careerContentCards.module.scss**
-- **Usage:** CSS module for career card components, containing shared review card styles (reviewCard, reviewCardHeader, reviewTitle, reviewData, reviewDivider, reviewBadge, etc.) used across all review components.
+- **Usage:** CSS module for career card components, containing shared card styles (careerCard, careerCardHeader, careerCardContent, sectionTitle, sectionDescription, fieldContainer, reviewData, reviewDivider, reviewBadge, etc.)
 
 **src/lib/styles/components/careerPreScreeningQuestions.module.scss**
 - **Usage:** CSS module for pre-screening questions UI, containing styles for question containers, drag handles, option items, add/delete buttons, and suggested questions.
