@@ -8,10 +8,10 @@ A comprehensive overview of the segmented career form system with validation, sa
 
 The career form is divided into **5 steps** that users must complete sequentially:
 - **Step 1:** Career Details & Team Access
-- **Step 2:** CV Screening
+- **Step 2:** CV Screening & Pre-screening
 - **Step 3:** AI Interview Setup
-- **Step 4:** Pipeline
-- **Step 5:** Review
+- **Step 4:** Pipeline Stage
+- **Step 5:** Review Career
 
 **How it works:**
 - Users navigate between steps using the "Save and Continue" button
