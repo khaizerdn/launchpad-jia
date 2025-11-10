@@ -101,18 +101,19 @@ export default function Layout({ children }) {
       <AuthGuard />
       <div className="g-sidenav-show g-sidenav-pinned">
         <title>Jia - WhiteCloak Technologies</title>
-        <SidebarV2
-          activeLink={activeLink}
-          navItems={navItems}
-          footerNavItems={footerNavItems}
-          superAdminNavItems={superAdminNavItems}
-        />
-        <div
-          className="main-content bg-white"
-          id="panel"
-          style={{ marginLeft: "260px", height: "100vh", overflowY: "scroll" }}
-        >
-          {children}
+        <div className="dashboard-container">
+          <SidebarV2
+            activeLink={activeLink}
+            navItems={navItems}
+            footerNavItems={footerNavItems}
+            superAdminNavItems={superAdminNavItems}
+          />
+          <div
+            className="main-content bg-white"
+            id="panel"
+          >
+            {children}
+          </div>
         </div>
       </div>
     </>
