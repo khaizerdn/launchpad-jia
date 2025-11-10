@@ -403,6 +403,9 @@ For detailed testing instructions and code flow diagrams, see:
 **src/lib/components/screens/UploadCV_PreScreeningQuestions.tsx**
 - **Usage:** Pre-screening questions component used in UploadCV page for candidates to answer pre-screening questions before submitting their application.
 
+**src/lib/components/LayeredCard.tsx**
+- **Usage:** Reusable card wrapper component that provides consistent card styling across all career form steps.
+
 ## Style Files
 
 **src/lib/styles/components/careerForm.module.scss**

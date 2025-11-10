@@ -40,10 +40,11 @@
   font-family: 'Satoshi';
   font-weight: 700;
   font-style: normal;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   letter-spacing: 0%;
-  color: #181D27;
+  color: var(--Text-text-primary, #181D27);
+
 }
 
 .sectionDescription {
@@ -84,6 +85,12 @@
   width: 100%;
 
   > span {
+    font-family: inherit;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
     color: var(--Input-text-label, #414651);
   }
 }

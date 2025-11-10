@@ -100,8 +100,8 @@ export default function CareerContentReviewCareer({
     return (
         <div className={styles.reviewMainContainer}>
             {/* Career Details & Team Access */}
-            <LayeredCard className={cardStyles.reviewCard}>
-                <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
+            <LayeredCard>
+                <div className={cardStyles.careerCardHeader}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
                             className={cardStyles.reviewChevronContainer}
@@ -122,7 +122,7 @@ export default function CareerContentReviewCareer({
                     <div className={cardStyles.reviewContentContainer}>
                         {/* Job Title */}
                         <div className={cardStyles.reviewSectionContainer}>
-                            <div className={cardStyles.reviewTitle}>Job Title</div>
+                            <div className={cardStyles.sectionTitle}>Job Title</div>
                             <div className={cardStyles.reviewData}>{jobTitle || "—"}</div>
                         </div>
                         <div className={cardStyles.reviewDivider}></div>
@@ -130,11 +130,11 @@ export default function CareerContentReviewCareer({
                         {/* Employment Type & Work Arrangement */}
                         <div style={{ display: "flex", gap: "24px" }}>
                             <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
-                                <div className={cardStyles.reviewTitle}>Employment Type</div>
+                                <div className={cardStyles.sectionTitle}>Employment Type</div>
                                 <div className={cardStyles.reviewData}>{employmentType || "—"}</div>
                             </div>
                             <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
-                                <div className={cardStyles.reviewTitle}>Work Arrangement</div>
+                                <div className={cardStyles.sectionTitle}>Work Arrangement</div>
                                 <div className={cardStyles.reviewData}>{workSetup || "—"}</div>
                             </div>
                             <div style={{ flex: 1 }}></div>
@@ -144,15 +144,15 @@ export default function CareerContentReviewCareer({
                         {/* Location */}
                         <div style={{ display: "flex", gap: "24px" }}>
                             <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
-                                <div className={cardStyles.reviewTitle}>Country</div>
+                                <div className={cardStyles.sectionTitle}>Country</div>
                                 <div className={cardStyles.reviewData}>{country || "—"}</div>
                             </div>
                             <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
-                                <div className={cardStyles.reviewTitle}>State / Province</div>
+                                <div className={cardStyles.sectionTitle}>State / Province</div>
                                 <div className={cardStyles.reviewData}>{province || "—"}</div>
                             </div>
                             <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
-                                <div className={cardStyles.reviewTitle}>City</div>
+                                <div className={cardStyles.sectionTitle}>City</div>
                                 <div className={cardStyles.reviewData}>{city || "—"}</div>
                             </div>
                         </div>
@@ -161,11 +161,11 @@ export default function CareerContentReviewCareer({
                         {/* Salary Range */}
                         <div style={{ display: "flex", gap: "24px" }}>
                             <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
-                                <div className={cardStyles.reviewTitle}>Minimum Salary</div>
+                                <div className={cardStyles.sectionTitle}>Minimum Salary</div>
                                 <div className={cardStyles.reviewData}>{formatSalary(minimumSalary, salaryNegotiable)}</div>
                             </div>
                             <div style={{ flex: 1 }} className={cardStyles.reviewSectionContainer}>
-                                <div className={cardStyles.reviewTitle}>Maximum Salary</div>
+                                <div className={cardStyles.sectionTitle}>Maximum Salary</div>
                                 <div className={cardStyles.reviewData}>{formatSalary(maximumSalary, salaryNegotiable)}</div>
                             </div>
                             <div style={{ flex: 1 }}></div>
@@ -176,7 +176,7 @@ export default function CareerContentReviewCareer({
                         {description && (
                             <>
                                 <div className={cardStyles.reviewSectionContainer}>
-                                    <div className={cardStyles.reviewTitle}>Job Description</div>
+                                    <div className={cardStyles.sectionTitle}>Job Description</div>
                                     <div 
                                         className={cardStyles.reviewData}
                                         dangerouslySetInnerHTML={{ __html: description }}
@@ -190,7 +190,7 @@ export default function CareerContentReviewCareer({
                         {responsibilities.length > 0 && (
                             <>
                                 <div className={cardStyles.reviewSectionContainer}>
-                                    <div className={cardStyles.reviewTitle}>Responsibilities:</div>
+                                    <div className={cardStyles.sectionTitle}>Responsibilities:</div>
                                     <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
                                         {responsibilities.map((item, index) => (
                                             <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
@@ -205,7 +205,7 @@ export default function CareerContentReviewCareer({
                         {qualifications.length > 0 && (
                             <>
                                 <div className={cardStyles.reviewSectionContainer}>
-                                    <div className={cardStyles.reviewTitle}>Qualifications:</div>
+                                    <div className={cardStyles.sectionTitle}>Qualifications:</div>
                                     <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
                                         {qualifications.map((item, index) => (
                                             <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
@@ -220,7 +220,7 @@ export default function CareerContentReviewCareer({
                         {niceToHave.length > 0 && (
                             <>
                                 <div className={cardStyles.reviewSectionContainer}>
-                                    <div className={cardStyles.reviewTitle}>Nice to have:</div>
+                                    <div className={cardStyles.sectionTitle}>Nice to have:</div>
                                     <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
                                         {niceToHave.map((item, index) => (
                                             <li key={index} style={{ marginBottom: "8px" }}>{item}</li>
@@ -234,7 +234,7 @@ export default function CareerContentReviewCareer({
                         {/* Team Access */}
                         {teamMembers.length > 0 && (
                             <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-md, 16px)" }}>
-                                <div className={cardStyles.reviewTitle}>Team Access</div>
+                                <div className={cardStyles.sectionTitle}>Team Access</div>
                                 {teamMembers.map((member, index) => (
                                     <div key={index} style={{ display: "flex", alignItems: "center" }}>
                                         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -266,8 +266,8 @@ export default function CareerContentReviewCareer({
             </LayeredCard>
 
             {/* CV Review & Pre-screening */}
-            <LayeredCard className={cardStyles.reviewCard}>
-                <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
+            <LayeredCard>
+                <div className={cardStyles.careerCardHeader}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
                             className={cardStyles.reviewChevronContainer}
@@ -295,7 +295,7 @@ export default function CareerContentReviewCareer({
                     <div className={cardStyles.reviewContentContainer}>
                         {/* CV Screening */}
                         <div className={cardStyles.reviewSectionContainer}>
-                            <div className={cardStyles.reviewTitle}>CV Screening</div>
+                            <div className={cardStyles.sectionTitle}>CV Screening</div>
                             <div className={cardStyles.reviewData}>
                                 Automatically endorse candidates who are {(() => {
                                     if (!screeningSetting) return "—";
@@ -320,7 +320,7 @@ export default function CareerContentReviewCareer({
                                 <div className={cardStyles.reviewSectionContainer}>
                                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                         <img alt="" src="/iconsV3/sparkle.svg" />
-                                        <div className={cardStyles.reviewTitle}>CV Secret Prompt</div>
+                                        <div className={cardStyles.sectionTitle}>CV Secret Prompt</div>
                                     </div>
                                     <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
                                         {formatSecretPrompt(cvSecretPrompt).map((item, index) => (
@@ -336,7 +336,7 @@ export default function CareerContentReviewCareer({
                         {preScreeningQuestions.length > 0 && (
                             <div className={cardStyles.reviewSectionContainer}>
                                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                    <div className={cardStyles.reviewTitle}>Pre-Screening Questions</div>
+                                    <div className={cardStyles.sectionTitle}>Pre-Screening Questions</div>
                                     <div className={cardStyles.reviewQuestionBadge}>
                                         {preScreeningQuestions.length}
                                     </div>
@@ -376,8 +376,8 @@ export default function CareerContentReviewCareer({
             </LayeredCard>
 
             {/* AI Interview Setup */}
-            <LayeredCard className={cardStyles.reviewCard}>
-                <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
+            <LayeredCard>
+                <div className={cardStyles.careerCardHeader}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
                             className={cardStyles.reviewChevronContainer}
@@ -405,7 +405,7 @@ export default function CareerContentReviewCareer({
                     <div className={cardStyles.reviewContentContainer}>
                         {/* AI Interview Screening */}
                         <div className={cardStyles.reviewSectionContainer}>
-                            <div className={cardStyles.reviewTitle}>AI Interview Screening</div>
+                            <div className={cardStyles.sectionTitle}>AI Interview Screening</div>
                             <div className={cardStyles.reviewData}>
                                 Automatically endorse candidates who are {(() => {
                                     if (!screeningSetting) return "—";
@@ -426,7 +426,7 @@ export default function CareerContentReviewCareer({
 
                         {/* Require Video on Interview */}
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                            <div className={cardStyles.reviewTitle}>Require Video on Interview</div>
+                            <div className={cardStyles.sectionTitle}>Require Video on Interview</div>
                             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                 <div className={cardStyles.reviewData}>
                                     {requireVideo ? "Yes" : "No"}
@@ -448,7 +448,7 @@ export default function CareerContentReviewCareer({
                                 <div className={cardStyles.reviewSectionContainer}>
                                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                         <img alt="" src="/iconsV3/sparkle.svg" />
-                                        <div className={cardStyles.reviewTitle}>AI Interview Secret Prompt</div>
+                                        <div className={cardStyles.sectionTitle}>AI Interview Secret Prompt</div>
                                     </div>
                                     <ul style={{ margin: 0, paddingLeft: "20px" }} className={cardStyles.reviewData}>
                                         {formatSecretPrompt(aiInterviewSecretPrompt).map((item, index) => (
@@ -464,7 +464,7 @@ export default function CareerContentReviewCareer({
                         {getTotalQuestions() > 0 && (
                             <div className={cardStyles.reviewSectionContainer}>
                                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                    <div className={cardStyles.reviewTitle}>Interview Questions</div>
+                                    <div className={cardStyles.sectionTitle}>Interview Questions</div>
                                     <div className={cardStyles.reviewQuestionBadge}>
                                         {getTotalQuestions()}
                                     </div>
@@ -504,8 +504,8 @@ export default function CareerContentReviewCareer({
             </LayeredCard>
 
             {/* Pipeline Stages */}
-            <LayeredCard className={cardStyles.reviewCard}>
-                <div className={`${cardStyles.careerCardHeader} ${cardStyles.reviewCardHeader}`}>
+            <LayeredCard>
+                <div className={cardStyles.careerCardHeader}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div 
                             className={cardStyles.reviewChevronContainer}
