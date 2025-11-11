@@ -212,7 +212,7 @@ export default function ({ modalType, setModalType }) {
       sessionStorage.clear();
 
       window.location.href = `${
-        window.location.origin.includes("localhost")
+        window.location.origin.includes("localhost") || window.location.origin.includes("vercel")
           ? "/job-portal"
           : pathConstants.employee
       }`;

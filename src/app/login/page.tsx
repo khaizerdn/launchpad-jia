@@ -9,7 +9,7 @@ export default function () {
         window.location.href = "/recruiter-dashboard";
       } else {
         // Applicant dashboard
-        window.location.href = window.location.origin.includes("localhost")
+        window.location.href = window.location.origin.includes("localhost") || window.location.origin.includes("vercel")
           ? "/job-portal"
           : "https://www.hellojia.ai";
       }

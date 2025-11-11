@@ -78,7 +78,7 @@ export default function ({ children }) {
       alert("Please sign in to continue.");
       handleRedirection(
         `${
-          window.location.origin.includes("localhost")
+          window.location.origin.includes("localhost") || window.location.origin.includes("vercel")
             ? "/job-portal"
             : pathConstants.employee
         }`

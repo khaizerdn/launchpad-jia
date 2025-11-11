@@ -67,6 +67,10 @@ export default function () {
 
   function handleRedirection(path) {
     if (path.includes(pathConstants.employer)) {
+      // Don't redirect to external employer site on localhost or vercel
+      if (window.location.origin.includes("localhost") || window.location.origin.includes("vercel")) {
+        return null;
+      }
       window.open(path, "_blank");
       return null;
     }
@@ -116,7 +120,7 @@ export default function () {
     <nav
       className={`${styles.navbarContainer} ${
         pathname == pathConstants.home ||
-        (window.location.origin.includes("localhost") &&
+        ((window.location.origin.includes("localhost") || window.location.origin.includes("vercel")) &&
           pathname.includes("job-portal"))
           ? styles.home
           : ""
@@ -129,7 +133,7 @@ export default function () {
         onClick={() =>
           handleRedirection(
             `${
-              window.location.origin.includes("localhost")
+              window.location.origin.includes("localhost") || window.location.origin.includes("vercel")
                 ? "/job-portal"
                 : pathConstants.employee
             }`
@@ -139,7 +143,7 @@ export default function () {
       />
 
       {(pathname == pathConstants.home ||
-        (window.location.origin.includes("localhost") &&
+        ((window.location.origin.includes("localhost") || window.location.origin.includes("vercel")) &&
           pathname.includes("job-portal"))) && (
         <div className={`webView ${styles.linkContainer}`}>
           {links.slice(0, 2).map((item, index) => (
