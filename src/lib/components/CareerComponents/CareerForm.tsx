@@ -14,6 +14,7 @@ import CareerContentAIInterview from "./CareerContentAIInterview";
 import CareerContentPipelineStages from "./CareerContentPipelineStages";
 import CareerContentReviewCareer from "./CareerContentReviewCareer";
 import styles from "@/lib/styles/components/career/careerForm.module.scss";
+import { stripHTMLTags } from "@/lib/utils/validation";
   // Setting List icons
   const screeningSettingList = [
     {
@@ -372,7 +373,7 @@ export default function CareerForm({ career, formType, setShowEditModal, initial
                 {currentStep > 1 && jobTitle?.trim() ? (
                   <>
                     <span style={{ color: "var(--Text-text-tertiary, #717680)" }}>[Draft]</span>
-                    <span>{jobTitle}</span>
+                    <span>{stripHTMLTags(jobTitle)}</span>
                   </>
                 ) : (
                   "Add new career"

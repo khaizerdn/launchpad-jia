@@ -5,6 +5,7 @@ import styles from "@/lib/styles/components/career/careerForm.module.scss";
 import cardStyles from "@/lib/styles/components/career/careerContentCards.module.scss";
 import { assetConstants } from "@/lib/utils/constantsV2";
 import LayeredCard from "@/lib/components/LayeredCard";
+import { stripHTMLTags, sanitizeHTML } from "@/lib/utils/validation";
 
 interface CareerContentReviewCareerProps {
     jobTitle?: string;
@@ -123,7 +124,7 @@ export default function CareerContentReviewCareer({
                         {/* Job Title */}
                         <div className={cardStyles.reviewSectionContainer}>
                             <div className={cardStyles.sectionTitle}>Job Title</div>
-                            <div className={cardStyles.reviewData}>{jobTitle || "—"}</div>
+                            <div className={cardStyles.reviewData}>{jobTitle ? stripHTMLTags(jobTitle) : "—"}</div>
                         </div>
                         <div className={cardStyles.reviewDivider}></div>
 
@@ -179,7 +180,7 @@ export default function CareerContentReviewCareer({
                                     <div className={cardStyles.sectionTitle}>Job Description</div>
                                     <div 
                                         className={cardStyles.reviewData}
-                                        dangerouslySetInnerHTML={{ __html: description }}
+                                        dangerouslySetInnerHTML={{ __html: sanitizeHTML(description) }}
                                     />
                                 </div>
                                 <div className={cardStyles.reviewDivider}></div>

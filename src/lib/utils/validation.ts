@@ -33,6 +33,40 @@ export function sanitizeHTML(html: string): string {
 }
 
 /**
+ * Strips all HTML tags and returns plain text
+ * Useful for displaying user input as plain text (e.g., job titles)
+ */
+export function stripHTMLTags(input: string): string {
+  if (!input || typeof input !== 'string') {
+    return '';
+  }
+  
+  // First sanitize to remove dangerous content
+  let sanitized = sanitizeHTML(input);
+  
+  // Then remove all remaining HTML tags
+  sanitized = sanitized.replace(/<[^>]*>/g, '');
+  
+  // Decode HTML entities
+  const textarea = typeof document !== 'undefined' ? document.createElement('textarea') : null;
+  if (textarea) {
+    textarea.innerHTML = sanitized;
+    sanitized = textarea.value;
+  } else {
+    // Fallback for server-side: basic entity decoding
+    sanitized = sanitized
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&nbsp;/g, ' ');
+  }
+  
+  return sanitized.trim();
+}
+
+/**
  * Validates and sanitizes string input
  */
 export function validateString(input: any, fieldName: string, options: {
