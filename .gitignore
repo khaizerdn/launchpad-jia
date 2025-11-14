@@ -9,3 +9,6 @@ next-env.d.ts
 
 .cursorignore
 note.txt
+
+# MongoDB exports
+mongodb-export/

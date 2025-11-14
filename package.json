@@ -3,7 +3,8 @@
     "build": "next build",
     "clean": "rm -rf node_modules .next bun.lock next-env.d.ts",
     "dev": "next dev",
-    "start": "next start"
+    "start": "next start",
+    "export:db": "node scripts/export-mongodb.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.821.0",
